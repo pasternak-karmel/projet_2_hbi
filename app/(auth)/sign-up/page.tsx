@@ -32,7 +32,7 @@ export default function AuthenticationPage() {
       </div>
       <div className="container relative hidden h-[800px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <Link
-          href="/sign-in"
+          href="/examples/authentication"
           className={cn(
             buttonVariants({ variant: "ghost" }),
             "absolute right-4 top-4 md:right-8 md:top-8"
@@ -55,14 +55,16 @@ export default function AuthenticationPage() {
             >
               <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
             </svg>
-            Projet 2
+            Acme Inc
           </div>
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
-                &ldquo;Phrase d&apos;approche.&rdquo;
+                &ldquo;This library has saved me countless hours of work and
+                helped me deliver stunning designs to my clients faster than
+                ever before.&rdquo;
               </p>
-              <footer className="text-sm">Karmel AVENON</footer>
+              <footer className="text-sm">Sofia Davis</footer>
             </blockquote>
           </div>
         </div>

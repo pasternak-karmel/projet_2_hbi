@@ -3,9 +3,15 @@
 import { prisma } from "@/utils/prisma";
 
 
-export async function createTodo(values: any) {
+export async function createUser(values: any) {
     try {
       const { nom, email, password, type } = values;
+      const user = await prisma.user.findFirst({
+        where: { email: email },
+      });
+      if (user) {
+        return { success: false, message: 'User already exists'}
+    }
       const res = await prisma.user.create({
         data: {
           name: nom,
@@ -15,8 +21,13 @@ export async function createTodo(values: any) {
           type: type,
         },
       });
-      
-    //   return { success: true };
+
+      if (!res)
+      {
+        return { success: false, message: 'An error occurred while creating the user.' };
+      }
+
+      return { success: true, message: 'User created successfully.' };
     } catch (error: any) {
       return { success: false, message: error.message };
     }
