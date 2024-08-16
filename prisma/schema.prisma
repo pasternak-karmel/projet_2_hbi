@@ -109,5 +109,3 @@ model Categories {
   updatedAt    DateTime @updatedAt
   articles     Article[]
 }
-
-order 

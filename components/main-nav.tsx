@@ -39,38 +39,20 @@ export function MainNav() {
   const counter = 2;
 
   return (
-    <div className="flex gap-4 items-center justify-center">
+    <div className="flex gap-4 items-between justify-between">
       <CustomLink href="/">
         <Button variant="ghost" className="p-0">
-          <Image
+          {/* <Image
             src="/logo.jpeg"
             alt="Home"
             width="32"
             height="32"
             className="min-w-8"
-          />
+          /> */}MARKETPLACE
         </Button>
       </CustomLink>
       <NavigationMenu>
         <NavigationMenuList>
-          {/* <NavigationMenuItem>
-            <NavigationMenuTrigger className="px-2">
-              Server Side
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                <ListItem href="/server-example" title="RSC Example">
-                  Protecting React Server Component.
-                </ListItem>
-                <ListItem href="/middleware-example" title="Middleware Example">
-                  Using Middleware to protect pages & APIs.
-                </ListItem>
-                <ListItem href="/api-example" title="Route Handler Example">
-                  Getting the session inside an API Route.
-                </ListItem>
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem> */}
           <NavigationMenuItem>
             <NavigationMenuLink
               href="/categories"
@@ -163,7 +145,7 @@ export function MainNav() {
         onClick={() => setIsCartOpen((prev) => !prev)}
       >
         <Image src="/cart.png" alt="" width={22} height={22} />
-        <div className="absolute -top-4 -right-4 w-6 h-6 bg-lama rounded-full text-white text-sm flex items-center justify-center">
+        <div className="absolute -top-4 -right-4 w-6 h-6 bg-blue-400 rounded-full text-white text-sm flex items-center justify-center">
           {counter}
         </div>
       </div>

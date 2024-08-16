@@ -5,6 +5,7 @@ import CategoryCard from "@/components/categories-card";
 import { CategoriesProps, categoriesItems } from "@/types";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
 
 const Categories = () => {
   // const [categories, setCategories] = useState<CategoriesProps[]>([]);
@@ -38,6 +39,7 @@ const Categories = () => {
           />
         ))}
       </div>
+
     </div>
 
     // <div className="container mx-auto my-8">

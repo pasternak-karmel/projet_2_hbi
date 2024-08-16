@@ -18,17 +18,17 @@ export const categoriesItems: CategoriesProps[] = [
   {
     id: 1,
     name: "iphone",
-    image: "/iphone.jpg",
+    image: "/iphone.png",
   },
   {
     id: 2,
     name: "Montre",
-    image: "/montre.jpg",
+    image: "/montre.png",
   },
   {
     id: "objfv68",
     name: "Sac",
-    image: "/sac.jpg",
+    image: "/sac.png",
   },
 ];
 
@@ -36,7 +36,7 @@ export const produitItems: ProduitProps[] = [
   {
     id: 1,
     nom: "iphone",
-    image: "/iphone.jpg",
+    image: "/iphone.png",
     description: "iPhone",
     usage: true,
     prix: 0,
@@ -45,7 +45,7 @@ export const produitItems: ProduitProps[] = [
   {
     id: 2,
     nom: "Montre",
-    image: "/montre.jpg",
+    image: "/montre.png",
     description: "iPhone",
     usage: false,
     prix: 0,
@@ -54,7 +54,7 @@ export const produitItems: ProduitProps[] = [
   {
     id: "objfv68",
     nom: "Sac",
-    image: "/sac.jpg",
+    image: "/sac.png",
     description: "iPhone",
     usage: false,
     prix: 0,
@@ -63,7 +63,7 @@ export const produitItems: ProduitProps[] = [
   {
     id: 3,
     nom: "Montre",
-    image: "/montre.jpg",
+    image: "/montre.png",
     description: "iPhone",
     usage: true,
     prix: 0,
@@ -72,7 +72,7 @@ export const produitItems: ProduitProps[] = [
   {
     id: "rerf",
     nom: "Sac",
-    image: "/sac.jpg",
+    image: "/sac.png",
     description: "iPhone",
     usage: false,
     prix: 0,
@@ -81,7 +81,7 @@ export const produitItems: ProduitProps[] = [
   {
     id: "zrfze",
     nom: "Sac",
-    image: "/sac.jpg",
+    image: "/sac.png",
     description: "iPhone",
     usage: true,
     prix: 0,
@@ -90,7 +90,7 @@ export const produitItems: ProduitProps[] = [
   {
     id: "ryh",
     nom: "Sac",
-    image: "/sac.jpg",
+    image: "/sac.png",
     description: "iPhone",
     usage: false,
     prix: 0,
@@ -108,7 +108,7 @@ export const produitItems: ProduitProps[] = [
   {
     id: "uoilk",
     nom: "Sac",
-    image: "/sac.jpg",
+    image: "/sac.png",
     description: "iPhone",
     usage: true,
     prix: 0,
@@ -142,3 +142,41 @@ export const produitItems: ProduitProps[] = [
     categories: "habit",
   },
 ];
+
+export const berengerproduit: ProduitProps[] = [
+  {
+    id: 1,
+    nom: "iphone",
+    image: "/iphone.png",
+    description: "iPhone",
+    usage: true,
+    prix: 0,
+    categories: "habit",
+  },
+  {
+    id: 2,
+    nom: "Montre",
+    image: "/montre.png",
+    description: "iPhone",
+    usage: false,
+    prix: 0,
+    categories: "habit",
+  },
+  {
+    id: "objfv68",
+    nom: "Sac",
+    image: "/sac.png",
+    description: "iPhone",
+    usage: false,
+    prix: 0,
+    categories: "habit",
+  },
+  {
+    id: 3,
+    nom: "Montre",
+    image: "/montre.png",
+    description: "iPhone",
+    usage: true,
+    prix: 0,
+    categories: "habit",
+  }];

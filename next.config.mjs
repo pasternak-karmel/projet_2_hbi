@@ -9,6 +9,10 @@ const nextConfig = {
         // blurDataURL: "https://example.com/blur-image1.jpg",
         hostname: "files.edgestore.dev",
       },
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+      },
     ],
   },
 };

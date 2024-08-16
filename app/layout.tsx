@@ -24,10 +24,10 @@ export default function RootLayout({
     <SessionWrapper>
       <html lang="en">
         <body className={inter.className}>
-          <div className="flex flex-col w-full h-full min-h-screen ">
+          <div className="flex flex-col w-full h-full min-h-screen  ">
             <Header />
             <main
-              className="flex flex-col 
+              className="flex flex-col  
             "
             >
               {/* items-center justify-center w-[75%] h-auto max-w-3xl px-4 py-4 mx-auto sm:px-6 md:py-6 */}
