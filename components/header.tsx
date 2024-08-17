@@ -1,5 +1,5 @@
-import { MainNav } from "./main-nav"
-
+import { MainNav } from "./main-nav";
+import React from "react";
 export default function Header() {
   return (
     <header className="sticky flex justify-center border-b">
@@ -7,5 +7,5 @@ export default function Header() {
         <MainNav />
       </div>
     </header>
-  )
+  );
 }

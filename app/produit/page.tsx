@@ -44,7 +44,7 @@ const formSchema = z.object({
 });
 
 export default function AddProduit() {
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File>();
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [urls, setUrls] = useState<{
@@ -59,6 +59,7 @@ export default function AddProduit() {
     defaultValues: {
       nom: "",
       description: "",
+      usage: false,
     },
   });
 

@@ -1,61 +1,63 @@
 import React from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-
-interface Article {
-  id: string;
-  nom: string;
-  description: string;
-  prix: number;
-  usage: boolean;
-  image: string;
-  categories: {
-    id: string;
-    nom: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-}
+import { Article } from "@/types";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 interface ArticleCardProps {
-  articles: Article[];
+  article: Article;
 }
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ articles }) => {
+const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
-      {articles.map((article) => (
-        <div
-          key={article.id}
-          className="flex flex-col bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
-        >
-          <div className="relative h-56">
-            <Image
-              src={article.image}
-              alt={article.nom}
-              layout="fill"
-              objectFit="cover"
-              className="w-full h-full object-cover"
-            />
-            {/* <Badge className="absolute top-2 left-2 bg-blue-500 text-white">
-              {article.categories.nom}
-            </Badge> */}
-          </div>
-          <div className="p-4">
-            <h2 className="text-xl font-semibold text-gray-800">
-              {article.nom}
-            </h2>
-            <p className="text-gray-600 mt-2">{article.description}</p>
-            <p className="text-lg font-bold text-gray-800 mt-4">
-              {article.prix} XOF
-            </p>
-          </div>
-          <Button className="flex flex-col items-center justify-center">
-            Voir les détails
-          </Button>
+    <Link href={`/articles/${article.id}`}>
+      <div
+        className={cn(
+          "group relative overflow-hidden rounded-lg shadow-md bg-white",
+          "transition-transform transform hover:scale-105 hover:shadow-lg"
+        )}
+      >
+        {/* Article Image */}
+        <div className="relative w-full h-48">
+          <Image
+            src={article.image}
+            alt={article.nom}
+            fill
+            objectFit="cover"
+            className="rounded-t-lg"
+          />
         </div>
-      ))}
-    </div>
+
+        {/* Article Content */}
+        <div className="p-4">
+          <h3 className="text-lg font-semibold text-gray-800 truncate">
+            {article.nom}
+          </h3>
+          <p className="text-sm text-gray-500 truncate mb-2">
+            {article.description}
+          </p>
+
+          <div className="flex items-center justify-between mt-4">
+            {/* Article Price */}
+            <div className="text-lg font-bold text-blue-600">
+              ${article.prix.toFixed(2)}
+            </div>
+
+            {/* Article Category (Usage) */}
+            <span
+              className={cn(
+                "px-3 py-1 rounded-full text-xs font-medium",
+                article.usage
+                  ? "bg-green-100 text-green-800"
+                  : "bg-yellow-100 text-yellow-800"
+              )}
+            >
+              {article.usage ? "Used" : "New"}
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
   );
 };
 

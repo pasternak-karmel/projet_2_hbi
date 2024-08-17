@@ -4,6 +4,17 @@ export interface CategoriesProps {
   image: string;
 }
 
+export interface Article {
+  id: string;
+  userId: string;
+  nom: string;
+  description: string;
+  prix: number;
+  usage: Boolean;
+  image: string;
+  categoriesId: String;
+}
+
 export interface ProduitProps {
   id: any;
   nom: string;
@@ -179,4 +190,5 @@ export const berengerproduit: ProduitProps[] = [
     usage: true,
     prix: 0,
     categories: "habit",
-  }];
+  },
+];

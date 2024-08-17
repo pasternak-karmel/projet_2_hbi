@@ -16,7 +16,7 @@ const CartModal = () => {
             {/* ITEMS */}
             <div className="flex gap-4">
               <Image
-                src="/sac.jpg"
+                src="/sac.png"
                 alt=""
                 width={72}
                 height={96}
@@ -44,7 +44,7 @@ const CartModal = () => {
             {/* ITEMS */}
             <div className="flex gap-4">
               <Image
-                src="/sac.jpg"
+                src="/sac.png"
                 alt=""
                 width={72}
                 height={96}
