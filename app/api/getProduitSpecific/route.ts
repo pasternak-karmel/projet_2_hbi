@@ -1,19 +1,19 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/utils/prisma";
-// import { getSession } from "next-auth/react";
+import { auth } from "@/auth";
 
 export async function GET(request: Request) {
-  //   const session = await getSession();
+  const session = await auth();
 
-  //   if (!session || !session.user) {
-  //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  //   }
+  if (!session || !session.user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-  //   const userId = session.user.id;
+  const userId = session.user.id;
 
   try {
     const articles = await prisma.article.findMany({
-      // where: { userId },
+      where: { userId },
       include: {
         categories: true,
       },

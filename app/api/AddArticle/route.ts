@@ -1,7 +1,16 @@
+import { auth } from "@/auth";
 import { prisma } from "@/utils/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+  const session = await auth();
+
+  if (!session || !session.user) {
+    return NextResponse.json(
+      { succes: false, message: "User not authenticated" },
+      { status: 401 }
+    );
+  }
   try {
     const values = await req.json();
     const { nom, description, usage, categories, image } = values;
@@ -21,20 +30,9 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-    const response = await fetch(`http://localhost:3000/api/getUser`, {
-      method: "GET",
-      credentials: "include",
-    });
-    // if (response.status === 401) {
-    //   return NextResponse.json(
-    //     { succes: false, message: "User not authenticated" },
-    //     { status: 401 }
-    //   );
-    // }
 
-    const session = await response.json();
-    // const userid = session.data.id;
-    const userId = "66ba12bc2ac1d22de85c617b";
+    // const userId = "66ba12bc2ac1d22de85c617b";
+    const userId = session.user.id;
 
     const isExist = await prisma.article.findFirst({
       where: { userId, nom },

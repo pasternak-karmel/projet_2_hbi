@@ -7,7 +7,7 @@ const ArticlePage: React.FC = () => {
 
   useEffect(() => {
     const fetchArticles = async () => {
-      const response = await fetch("/api/getProduit");
+      const response = await fetch("/api/getProduitSpecific");
       const data = await response.json();
       setArticles(data.articles);
     };

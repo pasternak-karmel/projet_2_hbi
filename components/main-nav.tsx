@@ -1,20 +1,16 @@
 "use client";
-import { useEffect, useState } from "react";
 
+import React, { useState, useMemo } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
-
 import Image from "next/image";
-
+import Link from "next/link";
 import CustomLink from "./custom-link";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
 import {
@@ -24,33 +20,38 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import React from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import Link from "next/link";
-import CartModal from "./CartModal";
+import { Avatar, AvatarImage } from "./ui/avatar";
+import dynamic from "next/dynamic";
+import { cn } from "@/lib/utils";
+
+const CartModal = dynamic(() => import("./CartModal"), { ssr: false });
 
 export function MainNav() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { replace } = useRouter();
   const { data: session } = useSession();
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const counter = 2;
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const params = new URLSearchParams(searchParams);
+    params.set(name, value);
+    replace(`${pathname}?${params.toString()}`);
+  };
+
+  const counter = useMemo(() => 2, []);
 
   return (
-    <div className="flex gap-4 items-between justify-between">
+    <div className="flex gap-4 items-center justify-between">
       <CustomLink href="/">
         <Button variant="ghost" className="p-0">
-          {/* <Image
-            src="/logo.jpeg"
-            alt="Home"
-            width="32"
-            height="32"
-            className="min-w-8"
-          /> */}MARKETPLACE
+          MARKETPLACE
         </Button>
       </CustomLink>
+
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -71,69 +72,52 @@ export function MainNav() {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
+
       <Input
         type="search"
+        name="search"
         placeholder="Entrez pour recherchez un élément"
         className="w-[300px]"
-      ></Input>
+        onChange={handleFilterChange}
+      />
+
       {session ? (
-        <>
-          <div className="flex gap-2 items-center">
-            {/* <span className="hidden text-sm sm:inline-flex">
-              {session.user?.email}
-            </span> */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="relative w-8 h-8 rounded-full"
-                >
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage
-                      src={
-                        (session.user?.image as string) ??
-                        "https://source.boringavatars.com/marble/120"
-                      }
-                      alt={session.user?.name ?? ""}
-                    />
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">
-                      {session.user?.name}
-                    </p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {session.user?.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuItem>
-                  <Button
-                    onClick={() => {
-                      signOut();
-                    }}
-                  >
-                    SignOut
-                  </Button>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </>
+        <div className="flex gap-2 items-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="relative w-8 h-8 rounded-full">
+                <Avatar className="w-8 h-8">
+                  <AvatarImage
+                    src={
+                      session.user?.image ??
+                      "https://source.boringavatars.com/marble/120"
+                    }
+                    alt={session.user?.name ?? ""}
+                  />
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="end">
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">
+                    {session.user?.name}
+                  </p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    {session.user?.email}
+                  </p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuItem onClick={() => signOut()}>
+                SignOut
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       ) : (
-        <>
-          <Button
-            onClick={() => {
-              signIn();
-            }}
-          >
-            Inscription/Connexion
-          </Button>
-        </>
+        <Button onClick={() => signIn()}>Inscription/Connexion</Button>
       )}
+
       {pathname !== "/produit" && (
         <Link href="/produit">
           <Button>Publier un produit</Button>
@@ -149,6 +133,7 @@ export function MainNav() {
           {counter}
         </div>
       </div>
+
       {isCartOpen && <CartModal />}
     </div>
   );
@@ -157,25 +142,23 @@ export function MainNav() {
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
   React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="text-sm leading-snug line-clamp-2 text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
+>(({ className, title, children, ...props }, ref) => (
+  <li>
+    <NavigationMenuLink asChild>
+      <a
+        ref={ref}
+        className={cn(
+          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+          className
+        )}
+        {...props}
+      >
+        <div className="text-sm font-medium leading-none">{title}</div>
+        <p className="text-sm leading-snug line-clamp-2 text-muted-foreground">
+          {children}
+        </p>
+      </a>
+    </NavigationMenuLink>
+  </li>
+));
 ListItem.displayName = "ListItem";

@@ -16,12 +16,12 @@ export interface ProduitProps {
 
 export const categoriesItems: CategoriesProps[] = [
   {
-    id: 1,
+    id: "pqnd",
     name: "iphone",
     image: "/iphone.png",
   },
   {
-    id: 2,
+    id: "pl",
     name: "Montre",
     image: "/montre.png",
   },
@@ -34,7 +34,7 @@ export const categoriesItems: CategoriesProps[] = [
 
 export const produitItems: ProduitProps[] = [
   {
-    id: 1,
+    id: "ff",
     nom: "iphone",
     image: "/iphone.png",
     description: "iPhone",
@@ -43,7 +43,7 @@ export const produitItems: ProduitProps[] = [
     categories: "habit",
   },
   {
-    id: 2,
+    id: "zeze",
     nom: "Montre",
     image: "/montre.png",
     description: "iPhone",
@@ -61,7 +61,7 @@ export const produitItems: ProduitProps[] = [
     categories: "habit",
   },
   {
-    id: 3,
+    id: "mzeo",
     nom: "Montre",
     image: "/montre.png",
     description: "iPhone",
@@ -145,7 +145,7 @@ export const produitItems: ProduitProps[] = [
 
 export const berengerproduit: ProduitProps[] = [
   {
-    id: 1,
+    id: "aaqx",
     nom: "iphone",
     image: "/iphone.png",
     description: "iPhone",
@@ -154,7 +154,7 @@ export const berengerproduit: ProduitProps[] = [
     categories: "habit",
   },
   {
-    id: 2,
+    id: "azod",
     nom: "Montre",
     image: "/montre.png",
     description: "iPhone",
@@ -172,7 +172,7 @@ export const berengerproduit: ProduitProps[] = [
     categories: "habit",
   },
   {
-    id: 3,
+    id: "sfef",
     nom: "Montre",
     image: "/montre.png",
     description: "iPhone",
