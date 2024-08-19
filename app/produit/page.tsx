@@ -60,6 +60,7 @@ export default function AddProduit() {
       nom: "",
       description: "",
       usage: false,
+      prix: "",
     },
   });
 
@@ -71,6 +72,9 @@ export default function AddProduit() {
       if (file) {
         const res = await edgestore.myPublicImages.upload({
           file,
+          options: {
+            temporary: true,
+          },
           input: { type: "post" },
           onProgressChange: (progress) => setProgress(progress),
         });
@@ -91,12 +95,19 @@ export default function AddProduit() {
       const result = await response.json();
       if (result.status === 401) return <AccessDenied />;
       if (result.succes) {
+        await edgestore.myPublicImages.confirmUpload({
+          url: urls?.url,
+        });
+
         toast("Article ajouté avec succès", {
           description: result.message,
           action: { label: "Fermer", onClick: () => console.log("Undo") },
         });
         form.reset();
       } else {
+        await edgestore.myPublicImages.delete({
+          url: "",
+        });
         toast.error("Erreur lors de l'ajout de l'article", {
           description: result.message,
           action: { label: "Fermer", onClick: () => console.log("Undo") },

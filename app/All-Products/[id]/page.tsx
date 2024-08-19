@@ -1,12 +1,10 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { produitItems } from "@/types";
+import { useQuery } from "@tanstack/react-query";
 import AccessDenied from "@/components/access-denied";
 import { useSession } from "next-auth/react";
-
 import { Button } from "@/components/ui/button";
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,23 +13,29 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { BreadcrumbEllipsis } from "@/components/ui/breadcrumb";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import Loader from "@/components/Loader";
 
 export default function ProductSpecificPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const product = produitItems.find((item) => item.id === String(params.id));
   const { data: session } = useSession();
   if (!session) return <AccessDenied />;
+
+  const {
+    isLoading,
+    error,
+    data: product,
+  } = useQuery({
+    queryKey: ["product", params.id],
+    queryFn: () =>
+      fetch(`/api/getProduit/${params.id}`).then((res) => res.json()),
+  });
+
+  if (isLoading) return <Loader />;
+  if (error) return <div>Error: {error.message}</div>;
 
   if (!product) {
     return (
@@ -50,76 +54,8 @@ export default function ProductSpecificPage({
       </div>
     );
   }
-  return (
-    // <div className="container mx-auto my-8 p-4">
-    //   <Breadcrumb>
-    //     <BreadcrumbList>
-    //       <BreadcrumbItem>
-    //         <BreadcrumbLink href="/">Acceuil</BreadcrumbLink>
-    //       </BreadcrumbItem>
-    //       <BreadcrumbSeparator />
-    //       <BreadcrumbItem>
-    //         <DropdownMenu>
-    //           <DropdownMenuTrigger className="flex items-center gap-1">
-    //             <BreadcrumbEllipsis className="h-4 w-4" />
-    //             <span className="sr-only">Toggle menu</span>
-    //           </DropdownMenuTrigger>
-    //           <DropdownMenuContent align="start">
-    //             <DropdownMenuItem>Categories</DropdownMenuItem>
-    //             <DropdownMenuItem>Produits</DropdownMenuItem>
-    //             {/* <DropdownMenuItem>GitHub</DropdownMenuItem> */}
-    //           </DropdownMenuContent>
-    //         </DropdownMenu>
-    //       </BreadcrumbItem>
-    //       <BreadcrumbSeparator />
-    //       <BreadcrumbItem>
-    //         <BreadcrumbLink href="/All-Products">Articles</BreadcrumbLink>
-    //       </BreadcrumbItem>
-    //       <BreadcrumbSeparator />
-    //       <BreadcrumbItem>
-    //         <BreadcrumbPage>{params.id}</BreadcrumbPage>
-    //       </BreadcrumbItem>
-    //     </BreadcrumbList>
-    //   </Breadcrumb>
-    //   <div className="flex flex-col md:flex-row md:items-center bg-white rounded-lg shadow-lg p-6">
-    //     <div className="flex justify-center md:w-1/2">
-    //       <Image
-    //         width={400}
-    //         height={400}
-    //         src={product.image}
-    //         alt={product.nom}
-    //         className="w-full h-auto object-contain rounded-md"
-    //       />
-    //     </div>
-    //     <div className="md:w-1/2 mt-6 md:mt-0 md:ml-8">
-    //       <h1 className="text-3xl font-semibold text-gray-800">
-    //         {product.nom}
-    //       </h1>
-    //       <p className="mt-4 text-gray-600">{product.description}</p>
-    //       <p className="mt-4 text-xl text-muted-foreground  font-bold">
-    //         Prix: <span className="text-green-600">{product.prix}</span> XOF
-    //       </p>
-    //       <p className="mt-2 text-gray-500">Category: {product.categories}</p>
-    //       <p className="mt-2 text-gray-500">
-    //         Usage: {product.usage ? "Déja utilisé" : "Neuf"}
-    //       </p>
-    //       <div className="mt-6 grid gap-3">
-    //         <Button className="w-full py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300">
-    //           Ajouter au panier
-    //         </Button>
-    //         <Link
-    //           href={`/All-Products/${params.id}/success?orderId=${params.id}`}
-    //           passHref
-    //         >
-    //           <Button className="w-full py-3 bg-black text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300">
-    //             Buy now
-    //           </Button>
-    //         </Link>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
 
+  return (
     <div className="container mx-auto my-8 p-4">
       <Breadcrumb>
         <BreadcrumbList>
@@ -128,28 +64,11 @@ export default function ProductSpecificPage({
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1">
-                <BreadcrumbEllipsis className="h-4 w-4" />
-                <span className="sr-only">Toggle menu</span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                <DropdownMenuItem>
-                  <Link href="/categories">Categories</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/All-Products">Products</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
             <BreadcrumbLink href="/All-Products">Products</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{params.id}</BreadcrumbPage>
+            <BreadcrumbPage>{product.nom}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -159,7 +78,7 @@ export default function ProductSpecificPage({
           <Image
             width={500}
             height={500}
-            src={product.image}
+            src={product.image || "/default-product.png"}
             alt={product.nom}
             className="w-full h-auto object-contain rounded-lg"
           />
@@ -170,9 +89,15 @@ export default function ProductSpecificPage({
           <p className="mt-4 text-2xl text-green-600 font-semibold">
             {product.prix} XOF
           </p>
-          <p className="mt-2 text-gray-500">Category: {product.categories}</p>
           <p className="mt-2 text-gray-500">
-            Condition: {product.usage ? "Used" : "New"}
+            Category:{" "}
+            {/* {product.categories.map((cat: any) => cat.name).join(", ")} */}
+          </p>
+          <p className="mt-2 text-gray-500">
+            Condition:{" "}
+            {product.usage
+              ? "Ce produit a été déjà utilisé au moins une fois"
+              : "Nouveau, jamais utilisé"}
           </p>
           <div className="mt-6 grid gap-4">
             <Button className="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300">

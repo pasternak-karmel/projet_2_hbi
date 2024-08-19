@@ -5,8 +5,8 @@ import SessionWrapper from "@/components/sessionWrapper";
 import Header from "@/components/header";
 
 import { Toaster } from "@/components/ui/sonner";
-
 import { EdgeStoreProvider } from "@/lib/edgestore";
+import { ReactQueryProviders } from "@/feature/reactQueryProviders";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,22 +21,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SessionWrapper>
-      <html lang="en">
-        <body className={inter.className}>
-          <div className="flex flex-col w-full h-full min-h-screen  ">
-            <Header />
-            <main
-              className="flex flex-col  
-            "
-            >
-              {/* items-center justify-center w-[75%] h-auto max-w-3xl px-4 py-4 mx-auto sm:px-6 md:py-6 */}
-              <EdgeStoreProvider>{children}</EdgeStoreProvider>
-            </main>
-          </div>
-          <Toaster />
-        </body>
-      </html>
-    </SessionWrapper>
+    <ReactQueryProviders>
+      <SessionWrapper>
+        <html lang="en">
+          <body className={inter.className}>
+            <div className="flex flex-col w-full h-full min-h-screen  ">
+              <Header />
+              <main className="flex flex-col">
+                <EdgeStoreProvider>{children}</EdgeStoreProvider>
+              </main>
+            </div>
+            <Toaster />
+          </body>
+        </html>
+        {/* {process.env.NODE_ENV === "development" && <ReactQueryDevtools />} */}
+      </SessionWrapper>
+    </ReactQueryProviders>
   );
 }

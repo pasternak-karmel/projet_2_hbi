@@ -1,26 +1,35 @@
+// ArticlePage.tsx
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ArticleCard from "@/components/ArticleCard";
+import { useQuery } from "@tanstack/react-query";
+import { Article } from "@/types";
+import Loader from "@/components/Loader";
 
 const ArticlePage: React.FC = () => {
-  const [articles, setArticles] = useState<Article[]>([]);
+  const { isLoading, error, data } = useQuery<Article[]>({
+    queryKey: ["vosproduits"],
+    queryFn: () =>
+      fetch("/api/getProduitSpecific")
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`Error: ${res.statusText}`);
+          }
+          return res.json();
+        })
+        .then((data) => data.articles),
+  });
 
-  useEffect(() => {
-    const fetchArticles = async () => {
-      const response = await fetch("/api/getProduitSpecific");
-      const data = await response.json();
-      setArticles(data.articles);
-    };
+  if (isLoading) return <Loader />;
 
-    fetchArticles();
-  }, []);
+  if (error instanceof Error) return <div>Error: {error.message}</div>;
 
   return (
     <div className="container mx-auto p-8">
-      <h1 className="text-4xl font-extrabold text-center mb-10">Articles</h1>
-      {articles.length > 0 ? (
+      <h1 className="text-4xl font-extrabold text-center mb-10">Mes articles en vente</h1>
+      {data && data.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.map((article) => (
+          {data.map((article: Article) => (
             <ArticleCard key={article.id} article={article} />
           ))}
         </div>

@@ -12,7 +12,7 @@ const sidebarNavItems = [
     href: "/produit",
   },
   {
-    title: "Vos produits",
+    title: "Mes produits",
     href: "/produit/vosproduits",
   },
 ];

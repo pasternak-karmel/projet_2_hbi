@@ -1,30 +1,57 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/utils/prisma";
-// import { getSession } from "next-auth/react";
 
 export async function GET(request: Request) {
-  //   const session = await getSession();
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get("id");
 
-  //   if (!session || !session.user) {
-  //     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  //   }
+  if (id) {
+    try {
+      const article = await prisma.article.findUnique({
+        where: { id },
+        include: {
+          categories: true,
+        },
+      });
 
-  //   const userId = session.user.id;
+      if (!article) {
+        return NextResponse.json(
+          { error: "Product not found" },
+          { status: 404 }
+        );
+      }
 
-  try {
-    const articles = await prisma.article.findMany({
-      // where: { userId },
-      include: {
-        categories: true,
-      },
-    });
+      return NextResponse.json(article, { status: 200 });
+    } catch (error) {
+      console.error("Error retrieving articles:", error);
+      return NextResponse.json(
+        { error: "Failed to retrieve articles" },
+        { status: 500 }
+      );
+    }
+  } else {
+    try {
+      const articles = await prisma.article.findMany({
+        include: {
+          categories: true,
+        },
+      });
 
-    return NextResponse.json({ articles }, { status: 200 });
-  } catch (error) {
-    console.error("Error retrieving articles:", error);
-    return NextResponse.json(
-      { error: "Failed to retrieve articles" },
-      { status: 500 }
-    );
+      const plainArticles = articles.map((article) => ({
+        id: article.id,
+        nom: article.nom,
+        prix: article.prix,
+        image: article.image,
+        categories: article.categories,
+      }));
+
+      return NextResponse.json({ articles: plainArticles }, { status: 200 });
+    } catch (error) {
+      console.error("Error retrieving articles:", error);
+      return NextResponse.json(
+        { error: "Failed to retrieve articles" },
+        { status: 500 }
+      );
+    }
   }
 }

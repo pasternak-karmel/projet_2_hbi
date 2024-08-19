@@ -95,7 +95,7 @@ model Article{
   description      String
   prix             Int
   usage            Boolean
-  image            String?
+  image            String
   categories       Categories      @relation(fields: [categoriesId], references: [id])
   categoriesId     String
   createdAt        DateTime @default(now())

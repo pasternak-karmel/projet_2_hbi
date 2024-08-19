@@ -17,7 +17,6 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           "transition-transform transform hover:scale-105 hover:shadow-lg"
         )}
       >
-        {/* Article Image */}
         <div className="relative w-full h-48">
           <Image
             src={article.image}
@@ -28,7 +27,6 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           />
         </div>
 
-        {/* Article Content */}
         <div className="p-4">
           <h3 className="text-lg font-semibold text-gray-800 truncate">
             {article.nom}
@@ -38,12 +36,10 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           </p>
 
           <div className="flex items-center justify-between mt-4">
-            {/* Article Price */}
             <div className="text-lg font-bold text-blue-600">
               ${article.prix.toFixed(2)}
             </div>
 
-            {/* Article Category (Usage) */}
             <span
               className={cn(
                 "px-3 py-1 rounded-full text-xs font-medium",

@@ -1,16 +1,10 @@
 import NextAuth from "next-auth";
+import type { NextAuthConfig } from "next-auth";
 import "next-auth/jwt";
 import google from "next-auth/providers/google";
 import github from "next-auth/providers/github";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
-
-import type {
-  GetServerSidePropsContext,
-  NextApiRequest,
-  NextApiResponse,
-} from "next";
-import type { NextAuthConfig } from "next-auth";
 
 const prisma = new PrismaClient();
 
@@ -40,7 +34,7 @@ const config = {
   experimental: {
     enableWebAuthn: true,
   },
-  debug: process.env.NODE_ENV !== "production" ? true : false,
+  // debug: process.env.NODE_ENV !== "production" ? true : false,
 } satisfies NextAuthConfig;
 
 export const { handlers, auth, signIn, signOut } = NextAuth(config);
@@ -53,7 +47,13 @@ declare module "next-auth" {
       name: string;
       email: string;
       image: string;
-      cart?: { productId: string; quantity: number }[];
+      cart?: {
+        productId: string;
+        quantity: number;
+        nom: string;
+        prix: number;
+        image: string;
+      }[];
     };
   }
 }

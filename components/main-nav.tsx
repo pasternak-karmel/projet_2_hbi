@@ -48,7 +48,7 @@ export function MainNav() {
     <div className="flex gap-4 items-center justify-between">
       <CustomLink href="/">
         <Button variant="ghost" className="p-0">
-          MARKETPLACE
+          MARKETPLACE Logo
         </Button>
       </CustomLink>
 
@@ -100,12 +100,27 @@ export function MainNav() {
             <DropdownMenuContent className="w-56" align="end">
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {session.user?.name}
-                  </p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {session.user?.email}
-                  </p>
+                  <div className="flex gap-2">
+                    <div>
+                      <Avatar className="w-8 h-8">
+                        <AvatarImage
+                          src={
+                            session.user?.image ??
+                            "https://source.boringavatars.com/marble/120"
+                          }
+                          alt={session.user?.name ?? ""}
+                        />
+                      </Avatar>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium leading-none">
+                        {session.user?.name}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {session.user?.email}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuItem onClick={() => signOut()}>
