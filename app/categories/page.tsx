@@ -4,32 +4,38 @@ import { categoriesItems } from "@/types";
 
 export default function Categories() {
   return (
-    <div>
-     <div className="px-4 overflow-x-scroll scrollbar-hide">
-      <div className="flex gap-4 md:gap-8">
-        {categoriesItems.map((item) => (
-          <Link
-            href={`/list?cat=${item.id}`}
-            className="flex-shrink-0 w-full sm:w-1/2 lg:w-1/4 xl:w-1/6"
-            key={item.id}
-          >
-            <div className="relative bg-slate-100 w-full h-96">
+    <div className="mt-12 flex gap-x-8 gap-y-16 justify-between flex-wrap">
+      {/* {res.items.map((product: products.Product) => ( */}
+      {categoriesItems.map((item) => (
+        <Link
+          href={"/" + item.id}
+          className="w-full flex flex-col gap-4 sm:w-[45%] lg:w-[22%]"
+          key={item.id}
+        >
+          <div className="relative w-full h-80">
+            <Image
+              src={item.image || "/product.png"}
+              alt=""
+              fill
+              sizes="25vw"
+              className="absolute object-cover rounded-md z-10 hover:opacity-0 transition-opacity easy duration-500"
+            />
+            {item.image && (
               <Image
-                src={item.image || "cat.png"}
+              // src={product.media?.items[1]?.image?.url || "/product.png"}
+              src={item.image || "/product.png"}
                 alt=""
                 fill
-                sizes="20vw"
-                className="object-cover"
+                sizes="25vw"
+                className="absolute object-cover rounded-md"
               />
-            </div>
-            <h1 className="mt-8 font-light text-xl tracking-wide">
-              {item.name}
-            </h1>
-          </Link>
-        ))}
-      </div>
-    </div>
-
+            )}
+          </div>
+          <button className="rounded-2xl ring-1 ring-lama text-lama  py-2 px-4 text-xs hover:bg-black hover:text-white text-center items-center">
+            {item.name} 
+          </button>
+        </Link>
+      ))}
     </div>
   );
 }

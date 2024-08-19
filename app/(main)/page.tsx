@@ -3,6 +3,8 @@ import Hero from "@/app/_components/hero";
 import Categories from "@/app/_components/categories";
 import Collection from "@/app/_components/collection";
 import ProductList from "@/components/ProductList";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -20,6 +22,14 @@ export default function Home() {
           </div>
       </div>
       <div className="mt-24 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64">
+      <div className="flex justify-between">
+         <h1 className="text-2xl">Achats par Categories</h1>
+         <Link href="/categories">
+           <Button variant="link" className="text-muted-foreground">
+             Tout Montrer
+           </Button>
+         </Link>
+       </div>
       <Categories />
       </div>
       <Collection />

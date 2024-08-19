@@ -48,7 +48,7 @@ export function MainNav() {
     <div className="flex gap-4 items-center justify-between">
       <CustomLink href="/">
         <Button variant="ghost" className="p-0">
-          MARKETPLACE Logo
+          MARKETPLACE
         </Button>
       </CustomLink>
 
