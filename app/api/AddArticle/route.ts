@@ -15,6 +15,7 @@ export async function POST(req: Request) {
     const values = await req.json();
     const { nom, description, usage, categories, image } = values;
     let prix;
+    let quantite;
 
     try {
       prix = parseInt(values.prix, 10);
@@ -31,7 +32,21 @@ export async function POST(req: Request) {
       );
     }
 
-    // const userId = "66ba12bc2ac1d22de85c617b";
+    try {
+      quantite = parseInt(values.quantite, 10);
+      if (isNaN(quantite)) {
+        throw new Error("La quantite doit être un nombre valide");
+      }
+    } catch (error) {
+      throw new Error("La quantité doit être un nombre");
+    }
+    if (quantite < 1) {
+      return NextResponse.json(
+        { succes: false, message: "Le quantite ne peut être inférieur a 1" },
+        { status: 400 }
+      );
+    }
+
     const userId = session.user.id;
 
     const isExist = await prisma.article.findFirst({
@@ -51,6 +66,7 @@ export async function POST(req: Request) {
         description,
         usage,
         prix,
+        quantite,
         userId,
         image,
         categories: {

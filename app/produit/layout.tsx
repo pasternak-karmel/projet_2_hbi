@@ -8,12 +8,24 @@ import { SidebarNav } from "@/components/sidebar-nav";
 
 const sidebarNavItems = [
   {
-    title: "Ajouter",
+    title: "Mettre un produit en vente",
     href: "/produit",
   },
   {
-    title: "Mes produits",
+    title: "Mes produits publiés",
     href: "/produit/vosproduits",
+  },
+  {
+    title: "Mes produits vendus",
+    href: "/produit/",
+  },
+  {
+    title: "Mes achats",
+    href: "/produit/",
+  },
+  {
+    title: "Mon profil",
+    href: "/produit/",
   },
 ];
 

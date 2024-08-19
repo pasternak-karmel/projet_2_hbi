@@ -10,7 +10,7 @@ interface ArticleCardProps {
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   return (
-    <Link href={`/articles/${article.id}`}>
+    <Link href={`http://localhost:3000/produit/vosproduits/${article.id}`}>
       <div
         className={cn(
           "group relative overflow-hidden rounded-lg shadow-md bg-white",

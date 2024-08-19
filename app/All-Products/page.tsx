@@ -29,7 +29,7 @@ export default function AllProduct() {
     <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-12">
       <Filter />
       <Separator className="my-4 w-full" />
-      <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div className="mt-12 flex flex-wrap gap-x-8 gap-y-16 justify-center">
         {data.articles.map((product: Article) => (
           <Produit key={product.id} product={product} />
         ))}

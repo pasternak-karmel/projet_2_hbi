@@ -26,7 +26,9 @@ const ArticlePage: React.FC = () => {
 
   return (
     <div className="container mx-auto p-8">
-      <h1 className="text-4xl font-extrabold text-center mb-10">Mes articles en vente</h1>
+      <h1 className="text-4xl font-extrabold text-center mb-10">
+        Mes articles en vente
+      </h1>
       {data && data.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {data.map((article: Article) => (
@@ -35,7 +37,7 @@ const ArticlePage: React.FC = () => {
         </div>
       ) : (
         <p className="text-center text-lg text-muted-foreground">
-          Vous n'avez pas d'article en vente.
+          Vous n'avez pas d'article en vente. Commencer par publier un produit
         </p>
       )}
     </div>

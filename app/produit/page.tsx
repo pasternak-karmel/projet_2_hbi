@@ -1,4 +1,5 @@
 "use client";
+// import * as React from "react";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -37,9 +38,35 @@ const formSchema = z.object({
     .min(2, { message: "Le nom doit contenir au moins 2 caractères" })
     .max(50, { message: "Le nom ne peut pas dépasser 50 caractères" }),
   prix: z.string(),
+  quantite: z.string(),
   usage: z.boolean().default(false).optional(),
   description: z.string().optional(),
-  categories: z.enum(["habit", "ustensible", "autres"]),
+  categories: z.enum([
+    "outils",
+    "meubles",
+    "jardin",
+    "Electroménager",
+    "pour la maison",
+    "jeux videos",
+    "livre films et musique",
+    "bijoux et accessoires",
+    "sac et bagages",
+    "vetements et chaussures pour hommes",
+    "vetements et chaussures pour femmes",
+    "jouer et jeux",
+    " puericulture et enfants",
+    "sante et beaute",
+    "telephones mobiles",
+    "electroniques et ordinateurs",
+    "sports et activites exterieures",
+    "instruments de musique",
+    "artisanat d'art",
+    "antiquites et objects de collection",
+    "pieces automobiles",
+    "velos",
+    "vide-grenier",
+    "divers",
+  ]),
   image: z.string().optional(),
 });
 
@@ -60,7 +87,7 @@ export default function AddProduit() {
       nom: "",
       description: "",
       usage: false,
-      prix: "",
+      quantite: "",
     },
   });
 
@@ -98,16 +125,12 @@ export default function AddProduit() {
         // await edgestore.myPublicImages.confirmUpload({
         //   url: urls?.url,
         // });
-
         toast("Article ajouté avec succès", {
           description: result.message,
           action: { label: "Fermer", onClick: () => console.log("Undo") },
         });
         form.reset();
       } else {
-        // await edgestore.myPublicImages.delete({
-        //   url: "",
-        // });
         toast.error("Erreur lors de l'ajout de l'article", {
           description: result.message,
           action: { label: "Fermer", onClick: () => console.log("Undo") },
@@ -175,6 +198,28 @@ export default function AddProduit() {
             />
             <FormField
               control={form.control}
+              name="quantite"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Quantité disponible</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Le nombre que vous souhaitez mettre en sell"
+                      {...field}
+                      className="border-gray-300 focus:border-gray-500 focus:ring-gray-500 rounded-lg"
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    C'est la quantité disponible que vous souhaitez mettre en
+                    vente
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="usage"
               render={({ field }) => (
                 <FormItem className="flex items-center justify-between rounded-lg border p-4 bg-gray-100">
@@ -210,10 +255,86 @@ export default function AddProduit() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectLabel>Catégories</SelectLabel>
-                          <SelectItem value="habit">Habits</SelectItem>
-                          <SelectItem value="ustensible">Ustensiles</SelectItem>
-                          <SelectItem value="autres">Autres</SelectItem>
+                          <SelectLabel>Maison et Jardin</SelectLabel>
+                          <SelectItem value="outils">Outils</SelectItem>
+                          <SelectItem value="meubles">Meubles</SelectItem>
+                          <SelectItem value="jardin">Jardin</SelectItem>
+                          <SelectItem value="electroménager">
+                            Electroménager
+                          </SelectItem>
+                          <SelectItem value="Pour la maison">
+                            Pour la maison
+                          </SelectItem>
+                        </SelectGroup>
+                        <SelectGroup>
+                          <SelectLabel>Divertissement</SelectLabel>
+                          <SelectItem value="Jeu video">Jeu video</SelectItem>
+                          <SelectItem value="livre films et musique">
+                            livre films et musique
+                          </SelectItem>
+                        </SelectGroup>
+                        <SelectGroup>
+                          <SelectLabel>Vêtement et accésoires</SelectLabel>
+                          <SelectItem value="sacs et bagagues">
+                            sacs et bagagues
+                          </SelectItem>
+                          <SelectItem value="vetement et chaussures pour hommes">
+                            vetement et chaussures pour hommes
+                          </SelectItem>
+                          <SelectItem value="vetement et chaussures pour femmes">
+                            vetement et chaussures pour femmes
+                          </SelectItem>
+                          <SelectItem value="bijoux et accessoires">
+                            bijoux et accessoires
+                          </SelectItem>
+                        </SelectGroup>
+                        <SelectGroup>
+                          <SelectLabel>Famille</SelectLabel>
+                          <SelectItem value="sante et beaute">
+                            sante et beaute
+                          </SelectItem>
+                          <SelectItem value="vetement et chaussures pour hommes">
+                            produit pour animaux
+                          </SelectItem>
+                          <SelectItem value="puericulture et enfants">
+                            puericulture et enfants
+                          </SelectItem>
+                          <SelectItem value="jouets et jeux">
+                            jouets et jeux
+                          </SelectItem>
+                        </SelectGroup>
+                        <SelectGroup>
+                          <SelectLabel>électronique</SelectLabel>
+                          <SelectItem value="electronique et ordinateurs">
+                            electronique et ordinateurs
+                          </SelectItem>
+                          <SelectItem value="telephones mobiles">
+                            telephones mobiles
+                          </SelectItem>
+                        </SelectGroup>
+                        <SelectGroup>
+                          <SelectLabel>Loisirs</SelectLabel>
+                          <SelectItem value="velos">velos</SelectItem>
+                          <SelectItem value="artisanat d'art">
+                            artisanat d'art
+                          </SelectItem>
+                          <SelectItem value="sport et activites exterieures">
+                            sport et activites exterieures
+                          </SelectItem>
+                          <SelectItem value="piece auto">piece auto</SelectItem>
+                          <SelectItem value="instrument de musique">
+                            instrument de musique
+                          </SelectItem>
+                          <SelectItem value="antiquites et objects de collection">
+                            antiquites et objects de collection
+                          </SelectItem>
+                        </SelectGroup>
+                        <SelectGroup>
+                          <SelectLabel>Petites annonces</SelectLabel>
+                          <SelectItem value="vide-grenier">
+                            vide-grenier
+                          </SelectItem>
+                          <SelectItem value="divers">divers</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
