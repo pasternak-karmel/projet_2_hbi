@@ -35,7 +35,7 @@ export default function Produit({ product }: ProduitProps) {
         </div>
         <div className="flex justify-between items-center">
           <span className="font-medium text-lg">{product.nom}</span>
-          <span className="font-semibold text-xl">${product.prix}</span>
+          <span className="font-semibold text-xl">{product.prix} XOF</span>
         </div>
         <div className="flex justify-between">
           <button className="rounded-full border border-black text-black w-max py-2 px-6 text-xs transition-colors duration-300 hover:bg-black hover:text-white">

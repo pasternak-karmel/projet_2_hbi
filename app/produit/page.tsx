@@ -37,8 +37,8 @@ const formSchema = z.object({
     .string()
     .min(2, { message: "Le nom doit contenir au moins 2 caractères" })
     .max(50, { message: "Le nom ne peut pas dépasser 50 caractères" }),
-  prix: z.string(),
-  quantite: z.string(),
+  prix: z.coerce.number().min(0, "Price must be greater than or equal to 0"),
+  quantite: z.coerce.number().min(1, "Quantity be greater than or equal to 0"),
   usage: z.boolean().default(false).optional(),
   description: z.string().optional(),
   categories: z.enum([
@@ -54,7 +54,7 @@ const formSchema = z.object({
     "vetements et chaussures pour hommes",
     "vetements et chaussures pour femmes",
     "jouer et jeux",
-    " puericulture et enfants",
+    "puericulture et enfants",
     "sante et beaute",
     "telephones mobiles",
     "electroniques et ordinateurs",
@@ -87,7 +87,8 @@ export default function AddProduit() {
       nom: "",
       description: "",
       usage: false,
-      quantite: "",
+      quantite: 1,
+      prix: 0,
     },
   });
 
@@ -162,6 +163,7 @@ export default function AddProduit() {
                   <FormLabel>Nom</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={loading}
                       placeholder="Le nom de votre article"
                       {...field}
                       className="border-gray-300 focus:border-gray-500 focus:ring-gray-500 rounded-lg"
@@ -183,6 +185,7 @@ export default function AddProduit() {
                   <FormLabel>Prix en XOF</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={loading}
                       type="number"
                       placeholder="Le prix de votre article"
                       {...field}
@@ -204,6 +207,7 @@ export default function AddProduit() {
                   <FormLabel>Quantité disponible</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={loading}
                       type="number"
                       placeholder="Le nombre que vous souhaitez mettre en sell"
                       {...field}
@@ -231,6 +235,7 @@ export default function AddProduit() {
                   </div>
                   <FormControl>
                     <Switch
+                      disabled={loading}
                       checked={field.value}
                       onCheckedChange={field.onChange}
                       className="transition-colors duration-200"
@@ -247,6 +252,7 @@ export default function AddProduit() {
                   <FormLabel>Catégorie</FormLabel>
                   <FormControl>
                     <Select
+                      disabled={loading}
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
@@ -354,7 +360,8 @@ export default function AddProduit() {
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Entrez une description"
+                      disabled={loading}
+                      placeholder="Mon habit n'a jamais été porter pas quelqu'un "
                       {...field}
                       className="border-gray-300 focus:border-gray-500 focus:ring-gray-500 rounded-lg"
                     />

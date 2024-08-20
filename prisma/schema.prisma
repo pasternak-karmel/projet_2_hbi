@@ -22,7 +22,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   adresse       String?
-  numTel        Int
+  numTel        Int?
   // Optional for WebAuthn support
   Authenticator Authenticator[]
  
@@ -101,7 +101,7 @@ model Article{
   categories       Categories      @relation(fields: [categoriesId], references: [id])
   categoriesId     String
   quantite         Int
-  isDisponible     Boolean  @default(true)
+  idDeleted        Boolean  @default(false)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }

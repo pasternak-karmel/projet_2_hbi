@@ -37,7 +37,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
 
           <div className="flex items-center justify-between mt-4">
             <div className="text-lg font-bold text-blue-600">
-              ${article.prix.toFixed(2)}
+              {article.prix.toFixed(2)} XOF
             </div>
 
             <span

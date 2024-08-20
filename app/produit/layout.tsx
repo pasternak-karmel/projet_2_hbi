@@ -12,7 +12,7 @@ const sidebarNavItems = [
     href: "/produit",
   },
   {
-    title: "Mes produits publiés",
+    title: "Mes produits en vente",
     href: "/produit/vosproduits",
   },
   {
@@ -21,11 +21,11 @@ const sidebarNavItems = [
   },
   {
     title: "Mes achats",
-    href: "/produit/",
+    href: "/produit/mesAchats",
   },
   {
     title: "Mon profil",
-    href: "/produit/",
+    href: "/produit/profil",
   },
 ];
 

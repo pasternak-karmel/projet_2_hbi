@@ -34,7 +34,7 @@ const Categories = () => {
       {/* {res.items.map((product: products.Product) => ( */}
       {categoriesItems.map((category) => (
         <Link
-          href={"/" + category.id}
+          href={"/categories" + category.id}
           className="w-full flex flex-col gap-4 sm:w-[45%] lg:w-[22%]"
           key={category.id}
         >

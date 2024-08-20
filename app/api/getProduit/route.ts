@@ -32,6 +32,7 @@ export async function GET(request: Request) {
   } else {
     try {
       const articles = await prisma.article.findMany({
+        where: { idDeleted: false },
         include: {
           categories: true,
         },
