@@ -49,16 +49,16 @@ export async function POST(req: Request) {
 
     const userId = session.user.id;
 
-    const isExist = await prisma.article.findFirst({
-      where: { userId, nom },
-    });
+    // const isExist = await prisma.article.findFirst({
+    //   where: { userId, nom },
+    // });
 
-    if (isExist) {
-      return NextResponse.json(
-        { succes: false, message: "Article déjà existant" },
-        { status: 400 }
-      );
-    }
+    // if (isExist) {
+    //   return NextResponse.json(
+    //     { succes: false, message: "Article déjà existant" },
+    //     { status: 400 }
+    //   );
+    // }
 
     const articles = await prisma.article.create({
       data: {

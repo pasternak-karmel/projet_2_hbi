@@ -1,17 +1,23 @@
-import { auth } from "@/auth";
-// import { authOptions } from "app/api/auth/[...nextauth]/route";
+import { prisma } from "@/utils/prisma";
+import { NextResponse } from "next/server";
 
-export const GET = auth((req) => {
-  console.log("Auth Check:", req.auth);
-  if (req.auth) {
-    return new Response(JSON.stringify({ data: req.auth.user }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+export async function GET(req: Request){
+  const values= await req.json();
+  const {userId} = values;
+
+try {
+  const berenger = await prisma.user.findFirst({
+    where: {id: userId}
+  })
+
+  if (!berenger){
+    return NextResponse.json({error: "utilisateur non trouvé"}, {status: 400})
+
   }
 
-  return new Response(JSON.stringify({ message: "Not authenticated" }), {
-    status: 401,
-    headers: { "Content-Type": "application/json" },
-  });
-});
+  return NextResponse.json({user: berenger})
+} catch (error) {
+  return NextResponse.json({error: "utilisateur non trouvé"}, {status: 500})
+}
+
+}

@@ -61,6 +61,7 @@ const Categories = () => {
             <span className="font-medium">{category.nom}</span>
             <span className="font-semibold">${category.prix}</span>
           </div> */}
+
           {/* {product.additionalInfoSections && (
             <div
               className="text-sm text-gray-500"

@@ -4,7 +4,10 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const categories = await prisma.categories.findMany({
-      take: 6,
+      take: 4,
+      include: {
+        articles: true, // Inclure les articles liés à chaque catégorie
+      },
     });
 
     return NextResponse.json({ categories });

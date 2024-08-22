@@ -25,6 +25,7 @@ import { Input } from "./ui/input";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
+import SearchBar from "./SearchBar";
 
 const CartModal = dynamic(() => import("./CartModal"), { ssr: false });
 
@@ -73,13 +74,7 @@ export function MainNav() {
         </NavigationMenuList>
       </NavigationMenu>
 
-      <Input
-        type="search"
-        name="search"
-        placeholder="Entrez pour recherchez un élément"
-        className="w-[300px]"
-        onChange={handleFilterChange}
-      />
+      <SearchBar />
 
       {session ? (
         <div className="flex gap-2 items-center">
@@ -144,7 +139,7 @@ export function MainNav() {
         onClick={() => setIsCartOpen((prev) => !prev)}
       >
         <Image src="/cart.png" alt="" width={22} height={22} />
-        <div className="absolute -top-4 -right-4 w-6 h-6 bg-blue-400 rounded-full text-white text-sm flex items-center justify-center">
+        <div className="absolute -top-4 -right-4 w-6 h-6 bg-red-400 rounded-full text-white text-sm flex items-center justify-center">
           {counter}
         </div>
       </div>

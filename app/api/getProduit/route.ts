@@ -44,6 +44,7 @@ export async function GET(request: Request) {
         prix: article.prix,
         image: article.image,
         categories: article.categories,
+        userid: article.userId
       }));
 
       return NextResponse.json({ articles: plainArticles }, { status: 200 });

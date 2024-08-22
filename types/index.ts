@@ -24,6 +24,19 @@ export interface ProduitProps {
   image: string;
   categories: string;
 }
+export interface ArticleProps {
+  id: string;
+  nom: string;
+  image: string;
+  prix: number;
+}
+
+export interface CategoriesProp {
+  id: string;
+  nom: string;
+  articles: ArticleProps[];
+}
+
 
 export const categoriesItems: CategoriesProps[] = [
   {
