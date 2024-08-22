@@ -19,9 +19,9 @@ export default function Categories() {
 
   return (
     <div className="flex flex-col  w-full">
-       <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-12">
+       <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-12 ">
           {data.categories.map((category: CategoriesProp) => (
-            <div key={category.id} className="flex-none w-full bg-white rounded-lg  text-center">
+            <div key={category.id} className="flex-none w-full bg-white rounded-lg  text-center text-sm ">
               <h2 className="text-lg font-bold py-4  text-left ">{category.nom}</h2>
               <div className="flex gap-6 mt-12  flex-wrap gap-x-8 gap-y-16 ">
                 {category.articles.map((item) => (
@@ -30,17 +30,20 @@ export default function Categories() {
                     key={item.id}
                     className="block"
                   >
-                    <div className="relative w-80 h-80 mb-4">
+                    <div className="relative w-80 h-80 mb-4 ">
                       <Image
                         src={item.image || "/product.png"}
                         alt={item.nom || "Image de produit"}
                         fill
                         sizes="(max-width: 640px) 100vw, 25vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-205"
+                        className="absolute object-cover rounded-lg  to-black shadow-lg transition-transform duration-500 group-hover:scale-105 sm:w-[45%] lg:w-[22%]"
                       />
                     </div>
-                    <button className="mt-4 rounded-2xl ring-1 ring-lama text-lama py-2 px-4 text-xs hover:bg-black hover:text-white text-center">
-                      {item.nom} - ${item.prix}
+                    <button className="mt-4 rounded-2xl ring-1 ring-lama text-lama py-2 px-4 text-xs hover:bg-black hover:text-white text-left">
+                      Acheter
+                    </button>
+                    <button className="py-2 px-4 text-bold  text-right w-64">
+                      {item.nom}  {item.prix} XOF
                     </button>
                   </Link>
                 ))}
