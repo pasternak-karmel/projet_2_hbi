@@ -71,7 +71,8 @@ export default function Produit({ params }: { params: { id: string } }) {
       return response.json();
     },
     onSuccess: () => {
-      router.push(`/All-Products/${params.id}`);
+      // router.push(`/produit/vosproduits/${params.id}`);
+      router.push("/produit/vosproduits");
     },
   });
 

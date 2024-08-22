@@ -3,6 +3,7 @@
 // import { useCartStore } from "@/hooks/useCartStore";
 // import { useWixClient } from "@/hooks/useWixClient";
 import { useState } from "react";
+import { useKKiaPay } from "kkiapay-react";
 
 const Add = ({
   productId,
@@ -27,9 +28,42 @@ const Add = ({
     }
   };
 
+  const { openKkiapayWidget, addKkiapayListener, removeKkiapayListener } =
+    useKKiaPay();
+
   // const wixClient = useWixClient();
 
   // const { addItem, isLoading } = useCartStore();
+  function calculate(productId: string, quantity: number) {
+    return 2;
+  }
+
+  function open(productId: string, quantity: number) {
+    openKkiapayWidget({
+      amount: 2000,
+      api_key: "ab8b46b1445154123220ba80c5cca4181860647a",
+      // sandbox: true,
+      email: "randomgail@gmail.com",
+      phone: "97000000",
+    });
+  }
+  function successHandler(response: any) {
+    console.log(response);
+  }
+
+  function failureHandler(error: any) {
+    console.log(error);
+  }
+
+  // useEffect(() => {
+  //   addKkiapayListener("success", successHandler);
+  //   addKkiapayListener("failed", failureHandler);
+
+  //   return () => {
+  //     removeKkiapayListener("success", successHandler);
+  //     removeKkiapayListener("failed", failureHandler);
+  //   };
+  // }, [addKkiapayListener, removeKkiapayListener]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -40,7 +74,7 @@ const Add = ({
             <button
               className="cursor-pointer text-xl disabled:cursor-not-allowed disabled:opacity-20"
               onClick={() => handleQuantity("d")}
-              disabled={quantity===1}
+              disabled={quantity === 1}
             >
               -
             </button>
@@ -48,7 +82,7 @@ const Add = ({
             <button
               className="cursor-pointer text-xl disabled:cursor-not-allowed disabled:opacity-20"
               onClick={() => handleQuantity("i")}
-              disabled={quantity===stockNumber}
+              disabled={quantity === stockNumber}
             >
               +
             </button>
@@ -66,6 +100,7 @@ const Add = ({
         <button
           // onClick={() => addItem(wixClient, productId, variantId, quantity)}
           // disabled={isLoading}
+          onClick={() => calculate(productId, quantity)}
           className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
         >
           Add to Cart

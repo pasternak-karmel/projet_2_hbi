@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import AccessDenied from "@/components/access-denied";
 import { useSession } from "next-auth/react";
@@ -24,6 +24,7 @@ export default function ProductSpecificPage({
 }: {
   params: { id: string };
 }) {
+  
   const { data: session } = useSession();
   if (!session) return <AccessDenied />;
 
@@ -58,6 +59,8 @@ export default function ProductSpecificPage({
     );
   }
 
+
+  
   return (
     <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64 relative flex flex-col lg:flex-row gap-16">
       {/* IMG */}
@@ -119,6 +122,7 @@ export default function ProductSpecificPage({
           />
         )}
         <div className="h-[2px] bg-gray-100" />
+        {/* <button >click me</button> */}
         {/* {product.additionalInfoSections?.map((section: any) => ( */}
         <div className="text-sm" key={product.nom}>
           <h4 className="font-medium mb-4">{product.nom}</h4>

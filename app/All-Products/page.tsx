@@ -30,7 +30,7 @@ export default function AllProduct() {
       <Filter />
       <Separator className="my-4 w-full" />
       <div className="mt-12 flex flex-wrap gap-x-8 gap-y-16 justify-center">
-        {data.articles.map((product: Article) => (
+        {data.articles.map((product: any) => (
           <Produit key={product.id} product={product} />
         ))}
       </div>

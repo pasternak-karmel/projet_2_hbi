@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/utils/prisma";
+import { error } from "console";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -11,6 +12,21 @@ export async function POST(req: Request) {
       { status: 401 }
     );
   }
+  const userId = session.user.id;
+
+  try {
+    const isRempli = await prisma.user.findFirst({
+      where: { id: userId },
+    });
+
+    if (isRempli?.numTel === null || isRempli?.adresse === null) {
+      return NextResponse.json(
+        { error: "Veuillez remplir votre profil avant de pourvoir continuer" },
+        { status: 400 }
+      );
+    }
+  } catch (error) {}
+
   try {
     const values = await req.json();
     const { nom, description, usage, categories, image } = values;
@@ -49,6 +65,9 @@ export async function POST(req: Request) {
 
     const userId = session.user.id;
 
+    // const isExist = await prisma.article.findFirst({
+    //   where: { userId, nom },
+    // });
     // const isExist = await prisma.article.findFirst({
     //   where: { userId, nom },
     // });

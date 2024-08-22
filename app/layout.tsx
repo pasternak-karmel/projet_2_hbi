@@ -32,6 +32,7 @@ export default function RootLayout({
               </main>
             </div>
             <Toaster />
+            {/* <script src="https://cdn.fedapay.com/checkout.js?v=1.1.2"></script> */}
           </body>
         </html>
         {/* {process.env.NODE_ENV === "development" && <ReactQueryDevtools />} */}
