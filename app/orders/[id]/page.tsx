@@ -1,22 +1,32 @@
-// import { wixClientServer } from "@/lib/wixClientServer";
-import { useSession } from "next-auth/react";
+"use client";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
 
-const OrderPage = async ({ params }: { params: { id: string } }) => {
-  const id = params.id;
+import Loader from "@/components/Loader";
 
-  // const { data: session } = useSession();
-
-  // const wixClient = await wixClientServer();
-
-  let order;
-  try {
-    // order = await wixClient.orders.getOrder(id);
-  } catch (err) {
-    return notFound();
+const fetchOrder = async (id: string) => {
+  const res = await fetch(`/api/order/${id}`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch order");
   }
+  return res.json();
+};
+
+const OrderPage = ({ params }: { params: { id: string } }) => {
+  const { id } = params;
+
+  const {
+    isLoading,
+    error,
+    data: order,
+  } = useQuery({
+    queryKey: ["order", id],
+    queryFn: () => fetchOrder(id),
+  });
+
+  if (isLoading) return <Loader />;
+  if (error) return <div>Error loading order details</div>;
 
   return (
     <div className="flex flex-col pt-5 items-center justify-center ">
@@ -25,32 +35,33 @@ const OrderPage = async ({ params }: { params: { id: string } }) => {
         <div className="mt-12 flex flex-col gap-6">
           <div className="">
             <span className="font-medium">Order Id: </span>
-            <span>{id}</span>
+            <span>{order.id}</span>
           </div>
           <div className="">
             <span className="font-medium">Receiver Name: </span>
-            <span>Contact Détails</span>
+            <span>{order.User?.name || "N/A"}</span>
           </div>
           <div className="">
             <span className="font-medium">Receiver Email: </span>
-            {/* <span>{session?.user?.email}</span> */}
-            <span>karmelavenon@gmail.com</span>
+            <span>{order.User?.email || "N/A"}</span>
           </div>
           <div className="">
             <span className="font-medium">Price: </span>
-            <span>15000 XOF</span>
+            <span>{order.totalAmount} XOF</span>
           </div>
           <div className="">
             <span className="font-medium">Payment Status: </span>
-            <span>Payé</span>
+            <span>{order.status}</span>
           </div>
           <div className="">
             <span className="font-medium">Order Status: </span>
-            <span>En cours de traitement</span>
+            <span>
+              {order.status === "payed" ? "En cours de traitement" : "Pending"}
+            </span>
           </div>
           <div className="">
             <span className="font-medium">Delivery Address: </span>
-            <span>Cotonou C/54120 chez moi</span>
+            <span>{order.User?.adresse || "N/A"}</span>
           </div>
         </div>
       </div>
@@ -58,7 +69,7 @@ const OrderPage = async ({ params }: { params: { id: string } }) => {
         Have a problem? Contact us
       </Link>
       <Link href="/" className="underline mt-6">
-        Go back to home
+        Retourner a l'acceuil
       </Link>
     </div>
   );

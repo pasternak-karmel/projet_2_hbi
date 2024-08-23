@@ -25,7 +25,15 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-  } catch (error) {}
+  } catch (error) {
+    return NextResponse.json(
+      {
+        succes: false,
+        message: "Veuillez completer profil avant de continuer",
+      },
+      { status: 400 }
+    );
+  }
 
   try {
     const values = await req.json();

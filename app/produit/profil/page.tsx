@@ -38,6 +38,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useSession } from "next-auth/react";
+import { useMutation } from "@tanstack/react-query";
 
 const languages = [
   { label: "English", value: "en" },
@@ -52,7 +53,7 @@ const languages = [
 ] as const;
 
 const accountFormSchema = z.object({
-  name: z
+  adresse: z
     .string()
     .min(2, {
       message: "Name must be at least 2 characters.",
@@ -60,20 +61,21 @@ const accountFormSchema = z.object({
     .max(30, {
       message: "Name must not be longer than 30 characters.",
     }),
-  dob: z.date({
-    required_error: "A date of birth is required.",
-  }),
-  language: z.string({
-    required_error: "Please select a language.",
-  }),
-  type: z.enum(["all", "mentions", "none"], {
-    required_error: "You need to select a notification type.",
-  }),
+  num: z.coerce.number().min(0, "number must be greater than or equal to 0"),
+  // dob: z.date({
+  //   required_error: "A date of birth is required.",
+  // }),
+  // language: z.string({
+  //   required_error: "Please select a language.",
+  // }),
+  // type: z.enum(["all", "mentions", "none"], {
+  //   required_error: "You need to select a notification type.",
+  // }),
   mobile: z.boolean().default(false).optional(),
-  communication_emails: z.boolean().default(false).optional(),
-  social_emails: z.boolean().default(false).optional(),
-  marketing_emails: z.boolean().default(false).optional(),
-  security_emails: z.boolean(),
+  // communication_emails: z.boolean().default(false).optional(),
+  // social_emails: z.boolean().default(false).optional(),
+  // marketing_emails: z.boolean().default(false).optional(),
+  // security_emails: z.boolean().default(true).optional(),
 });
 
 type AccountFormValues = z.infer<typeof accountFormSchema>;
@@ -91,23 +93,44 @@ export default function AccountForm() {
     defaultValues,
   });
 
+  const mutation = useMutation({
+    mutationFn: async (updatedData: any) => {
+      const response = await fetch(`/api/updateUser/${session?.user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update product");
+      }
+
+      return response.json();
+    },
+    onSuccess: () => {
+      // router.push(`/produit/vosproduits/${params.id}`);
+      // router.push("/produit/vosproduits");
+      console.log("succes");
+    },
+  });
+
   function onSubmit(data: AccountFormValues) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-    console.log(data);
+    // toast({
+    //   title: "You submitted the following values:",
+    //   description: (
+    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+    //     </pre>
+    //   ),
+    // });
+    // console.log(data);
+    mutation.mutate(data);
   }
 
   return (
     <div className="">
-      Nom: {session?.user.name}
-      {/* Nom: {session?.user.cart} */}
-      Email: {session?.user.email}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -115,12 +138,12 @@ export default function AccountForm() {
         >
           <FormField
             control={form.control}
-            name="name"
+            name="adresse"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Adresse</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your name" {...field} />
+                  <Input placeholder="Your adresse" {...field} />
                 </FormControl>
                 <FormDescription>
                   This is the name that will be displayed on your profile and in
@@ -131,6 +154,23 @@ export default function AccountForm() {
             )}
           />
           <FormField
+            control={form.control}
+            name="num"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Numéro de téléphone</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="Your num" {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is the num that will be displayed on your profile and in
+                  num.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* <FormField
             control={form.control}
             name="dob"
             render={({ field }) => (
@@ -361,7 +401,7 @@ export default function AccountForm() {
                       <Switch
                         checked={field.value}
                         onCheckedChange={field.onChange}
-                        disabled
+                        // disabled
                         aria-readonly
                       />
                     </FormControl>
@@ -369,7 +409,7 @@ export default function AccountForm() {
                 )}
               />
             </div>
-          </div>
+          </div> */}
           <FormField
             control={form.control}
             name="mobile"
@@ -393,7 +433,9 @@ export default function AccountForm() {
               </FormItem>
             )}
           />
-          <Button type="submit">Update account</Button>
+          <Button type="submit" disabled={mutation.isPending}>
+            {mutation.isPending ? "Updating..." : "Save changes"}
+          </Button>
         </form>
       </Form>
     </div>

@@ -117,7 +117,7 @@ export default function ProductSpecificPage({
           <Add
             stockNumber={product.quantite}
             productId={product.id!}
-            variantId="00000000-0000-0000-0000-000000000000"
+            // variantId="00000000-0000-0000-0000-000000000000"
             // stockNumber={product.stock?.quantity || 0}
           />
         )}

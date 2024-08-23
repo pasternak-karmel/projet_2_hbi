@@ -17,7 +17,7 @@ const sidebarNavItems = [
   },
   {
     title: "Mes produits vendus",
-    href: "/produit/",
+    href: "/produit/vendus",
   },
   {
     title: "Mes achats",
