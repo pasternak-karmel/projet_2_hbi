@@ -2,8 +2,8 @@ import { MainNav } from "./main-nav";
 import React from "react";
 export default function Header() {
   return (
-    <header className="sticky flex justify-center border-b">
-      <div className="flex items-center justify-between w-full h-16 max-w-3xl px-4 mx-auto sm:px-6">
+    <header className="w-full lg:w-4/5 lg:max-w-[1105px]">
+      <div>
         <MainNav />
       </div>
     </header>
