@@ -13,8 +13,8 @@ export default function Home() {
       <div className="mt-24 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64">
         <h1 className="text-2xl">Produits en vedette </h1>
         <ProductList
-            categoryId="dfdfvd"
-            limit={4}
+            // categoryId="dfdfvd"
+            // limit={4}
           />
           <div className="mb-8">
 
@@ -40,7 +40,12 @@ export default function Home() {
               </Button>
             </Link>
           </div>
-           <Categories />
+
+          <ProductList />
+
+          <div className="mb-8">
+
+          </div>
        </div>
       <Collection />
     </main>
