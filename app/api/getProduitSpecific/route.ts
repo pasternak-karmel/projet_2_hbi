@@ -17,7 +17,13 @@ export async function GET(request: Request) {
 
   try {
     const articles = await prisma.article.findMany({
-      where: { userId, idDeleted: false },
+      where: {
+        userId,
+        idDeleted: false,
+        quantite: {
+          gt: 0,
+        },
+      },
       include: {
         categories: true,
       },

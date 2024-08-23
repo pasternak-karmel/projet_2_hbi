@@ -32,7 +32,12 @@ export async function GET(request: Request) {
   } else {
     try {
       const articles = await prisma.article.findMany({
-        where: { idDeleted: false },
+        where: {
+          idDeleted: false,
+          quantite: {
+            gt: 0,
+          },
+        },
         include: {
           categories: true,
         },

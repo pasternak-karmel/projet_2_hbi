@@ -1,23 +1,17 @@
 "use client";
-
-// import { useCartStore } from "@/hooks/useCartStore";
-// import { useWixClient } from "@/hooks/useWixClient";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useKKiaPay } from "kkiapay-react";
+import { useMutation } from "@tanstack/react-query";
 
 const Add = ({
   productId,
-  variantId,
   stockNumber,
 }: {
   productId: string;
-  variantId: string;
   stockNumber: number;
 }) => {
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
-
-  // // TEMPORARY
-  // const stock = 4;
 
   const handleQuantity = (type: "i" | "d") => {
     if (type === "d" && quantity > 1) {
@@ -28,42 +22,32 @@ const Add = ({
     }
   };
 
-  const { openKkiapayWidget, addKkiapayListener, removeKkiapayListener } =
-    useKKiaPay();
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch(
+        `/api/order?id=${productId}&quantite=${quantity}`,
+        {
+          method: "POST",
+        }
+      );
 
-  // const wixClient = useWixClient();
+      if (!response.ok) {
+        throw new Error("Failed to complete the order");
+      }
 
-  // const { addItem, isLoading } = useCartStore();
-  function calculate(productId: string, quantity: number) {
-    return 2;
-  }
+      return response.json();
+    },
+    onSuccess: (data) => {
+      router.push(`/All-Products/${productId}/success?orderId=${data.id}`);
+    },
+    onError: (error) => {
+      console.error("Error completing the order:", error);
+    },
+  });
 
-  function open(productId: string, quantity: number) {
-    openKkiapayWidget({
-      amount: 2000,
-      api_key: "ab8b46b1445154123220ba80c5cca4181860647a",
-      // sandbox: true,
-      email: "randomgail@gmail.com",
-      phone: "97000000",
-    });
-  }
-  function successHandler(response: any) {
-    console.log(response);
-  }
-
-  function failureHandler(error: any) {
-    console.log(error);
-  }
-
-  // useEffect(() => {
-  //   addKkiapayListener("success", successHandler);
-  //   addKkiapayListener("failed", failureHandler);
-
-  //   return () => {
-  //     removeKkiapayListener("success", successHandler);
-  //     removeKkiapayListener("failed", failureHandler);
-  //   };
-  // }, [addKkiapayListener, removeKkiapayListener]);
+  const handleSubmit = () => {
+    mutation.mutate();
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -93,17 +77,17 @@ const Add = ({
             <div className="text-xs">
               Only <span className="text-orange-500">{stockNumber} items</span>{" "}
               left!
-              <br /> {"Don't"} miss it
+              <br />
+              Don't miss it
             </div>
           )}
         </div>
         <button
-          // onClick={() => addItem(wixClient, productId, variantId, quantity)}
-          // disabled={isLoading}
-          onClick={() => calculate(productId, quantity)}
+          disabled={mutation.isPending}
+          onClick={handleSubmit}
           className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
         >
-          Add to Cart
+          {mutation.isPending ? "Paiement en cours..." : "Payer maintenant"}
         </button>
       </div>
     </div>
@@ -111,3 +95,44 @@ const Add = ({
 };
 
 export default Add;
+
+{
+  /* <Link
+          href={`/All-Products/${productId}/success?orderId=${productId}`}
+          passHref
+        >
+          <Button className="w-full py-3 bg-black text-white font-semibold rounded-md hover:bg-gray-800 transition duration-300">
+            Buy Now
+          </Button>
+        </Link> */
+}
+
+// const { openKkiapayWidget, addKkiapayListener, removeKkiapayListener } =
+//   useKKiaPay();
+
+// function open(productId: string, quantity: number) {
+//   openKkiapayWidget({
+//     amount: 2000,
+//     api_key: "ab8b46b1445154123220ba80c5cca4181860647a",
+//     // sandbox: true,
+//     email: "randomgail@gmail.com",
+//     phone: "97000000",
+//   });
+// }
+// function successHandler(response: any) {
+//   console.log(response);
+// }
+
+// function failureHandler(error: any) {
+//   console.log(error);
+// }
+
+// useEffect(() => {
+//   addKkiapayListener("success", successHandler);
+//   addKkiapayListener("failed", failureHandler);
+
+//   return () => {
+//     removeKkiapayListener("success", successHandler);
+//     removeKkiapayListener("failed", failureHandler);
+//   };
+// }, [addKkiapayListener, removeKkiapayListener]);

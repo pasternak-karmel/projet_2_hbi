@@ -31,3 +31,6 @@ export default function SuccessPage() {
     </div>
   );
 }
+// http://localhost:3000/All-Products/563e20c7-268d-4578-a3b8-82b680400650/success?orderId=ba85d2ff-6e83-42b1-b51a-d30d3f3439ba
+
+// http://localhost:3000/orders/ba85d2ff-6e83-42b1-b51a-d30d3f3439ba

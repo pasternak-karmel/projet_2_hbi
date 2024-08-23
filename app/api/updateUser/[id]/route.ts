@@ -16,15 +16,11 @@ export async function PUT(
 
     // console.log(data);
 
-    const updatedProduct = await prisma.article.update({
+    const updatedProduct = await prisma.user.update({
       where: { id: id },
       data: {
-        nom: data.nom,
-        prix: data.prix,
-        usage: data.usage,
-        quantite: data.quantite,
-        description: data.description,
-        idDeleted: data.delete,
+        numTel: data.num,
+        adresse: data.adresse,
       },
     });
 
