@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { useKKiaPay } from "kkiapay-react";
 
 const Add = ({
   productId,
@@ -10,8 +11,19 @@ const Add = ({
   productId: string;
   stockNumber: number;
 }) => {
+  const { openKkiapayWidget, addKkiapayListener } = useKKiaPay();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
+
+  function open() {
+    openKkiapayWidget({
+      amount: 4000,
+      api_key: "245fd7ddb2f2fc9acf1416b4796b24a40809ca0d",
+      // sandbox: true,
+      email: "randomgail@gmail.com",
+      phone: "97000000",
+    });
+  }
 
   const handleQuantity = (type: "i" | "d") => {
     if (type === "d" && quantity > 1) {
@@ -85,6 +97,7 @@ const Add = ({
         <button
           disabled={mutation.isPending}
           onClick={handleSubmit}
+          // onClick={() => open()}
           className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
         >
           {mutation.isPending ? "Paiement en cours..." : "Payer maintenant"}

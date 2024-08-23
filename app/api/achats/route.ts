@@ -14,10 +14,14 @@ export async function GET(req: Request) {
   try {
     const orders = await prisma.order.findMany({
       where: { userId },
+      // orderBy: "desc",
     });
 
     if (!orders || orders.length === 0) {
-      return NextResponse.json({ error: "No purchases found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "No purchases found" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(orders, { status: 200 });

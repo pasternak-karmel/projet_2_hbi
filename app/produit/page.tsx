@@ -311,7 +311,7 @@ export default function AddProduit() {
                         </SelectGroup>
                         <SelectGroup>
                           <SelectLabel>électronique</SelectLabel>
-                          <SelectItem value="electronique et ordinateurs">
+                          <SelectItem value="electroniques et ordinateurs">
                             electronique et ordinateurs
                           </SelectItem>
                           <SelectItem value="telephones mobiles">
@@ -324,11 +324,11 @@ export default function AddProduit() {
                           <SelectItem value="artisanat d'art">
                             artisanat d'art
                           </SelectItem>
-                          <SelectItem value="sport et activites exterieures">
+                          <SelectItem value="sports et activites exterieures">
                             sport et activites exterieures
                           </SelectItem>
-                          <SelectItem value="piece auto">piece auto</SelectItem>
-                          <SelectItem value="instrument de musique">
+                          <SelectItem value="pieces automobiles">pieces automobiles</SelectItem>
+                          <SelectItem value="instruments de musique">
                             instrument de musique
                           </SelectItem>
                           <SelectItem value="antiquites et objects de collection">
