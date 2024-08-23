@@ -265,7 +265,7 @@ export default function AddProduit() {
                           <SelectItem value="outils">Outils</SelectItem>
                           <SelectItem value="meubles">Meubles</SelectItem>
                           <SelectItem value="jardin">Jardin</SelectItem>
-                          <SelectItem value="electroménager">
+                          <SelectItem value="Electroménager">
                             Electroménager
                           </SelectItem>
                           <SelectItem value="Pour la maison">
@@ -274,20 +274,20 @@ export default function AddProduit() {
                         </SelectGroup>
                         <SelectGroup>
                           <SelectLabel>Divertissement</SelectLabel>
-                          <SelectItem value="Jeu video">Jeu video</SelectItem>
+                          <SelectItem value="jeux videos">Jeu video</SelectItem>
                           <SelectItem value="livre films et musique">
                             livre films et musique
                           </SelectItem>
                         </SelectGroup>
                         <SelectGroup>
                           <SelectLabel>Vêtement et accésoires</SelectLabel>
-                          <SelectItem value="sacs et bagagues">
+                          <SelectItem value="sac et bagages">
                             sacs et bagagues
                           </SelectItem>
-                          <SelectItem value="vetement et chaussures pour hommes">
+                          <SelectItem value="vetements et chaussures pour hommes">
                             vetement et chaussures pour hommes
                           </SelectItem>
-                          <SelectItem value="vetement et chaussures pour femmes">
+                          <SelectItem value="vetements et chaussures pour femmes">
                             vetement et chaussures pour femmes
                           </SelectItem>
                           <SelectItem value="bijoux et accessoires">
@@ -305,7 +305,7 @@ export default function AddProduit() {
                           <SelectItem value="puericulture et enfants">
                             puericulture et enfants
                           </SelectItem>
-                          <SelectItem value="jouets et jeux">
+                          <SelectItem value="jouer et jeux">
                             jouets et jeux
                           </SelectItem>
                         </SelectGroup>

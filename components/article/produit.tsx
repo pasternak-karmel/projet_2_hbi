@@ -48,7 +48,7 @@ export default function Produit({ product }: ProduitProps) {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50 rounded-lg"></div>
         <span className="absolute bottom-4 left-4 text-white text-sm font-medium z-20">
-          <div className="flex-wrap ">
+          <div className="flex text-center ">
             <Avatar className="w-8 h-8">
               <AvatarImage
                 src={
