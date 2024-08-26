@@ -58,6 +58,7 @@ export default {
       token.name = existingUser.name;
       token.email = existingUser.email;
       token.role = existingUser.role;
+      token.id = existingUser.id;
       return token;
     },
     async session({ session, token }) {
@@ -67,6 +68,8 @@ export default {
       if (token.role && session.user) {
         session.user.role = token.role as UserRole;
       }
+      // session.user.id = token.id as string;
+      session.user.id = token.id ? (token.id as string) : "";
       return session;
     },
   },

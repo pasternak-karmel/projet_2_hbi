@@ -31,7 +31,8 @@ export default async function RootLayout({
       <ReactQueryProviders>
         <html lang="en">
           <body className={inter.className}>
-            <div className="flex flex-col w-full h-full min-h-screen  ">
+            {/* <div className="flex flex-col w-full h-full min-h-screen  "> */}
+            <div className="">
               <Header session={session} role={user} />
               <main className="flex flex-col">
                 <EdgeStoreProvider>{children}</EdgeStoreProvider>

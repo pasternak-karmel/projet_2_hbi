@@ -5,3 +5,9 @@ export const useCurrentRole = () => {
 
   return session.data?.user?.role;
 };
+
+// export async function useCurrentRole() {
+//   const session = useSession();
+
+//   return session.data?.user?.role;
+// }

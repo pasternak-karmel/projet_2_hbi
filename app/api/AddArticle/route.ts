@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import { prisma } from "@/utils/prisma";
-import { error } from "console";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -13,27 +12,29 @@ export async function POST(req: Request) {
     );
   }
   const userId = session.user.id;
+  console.log(userId);
+  console.log(session.user.name);
 
-  try {
-    const isRempli = await prisma.user.findFirst({
-      where: { id: userId },
-    });
+  // try {
+  //   const isRempli = await prisma.user.findFirst({
+  //     where: { id: userId },
+  //   });
 
-    if (isRempli?.numTel === null || isRempli?.adresse === null) {
-      return NextResponse.json(
-        { error: "Veuillez remplir votre profil avant de pourvoir continuer" },
-        { status: 400 }
-      );
-    }
-  } catch (error) {
-    return NextResponse.json(
-      {
-        succes: false,
-        message: "Veuillez completer profil avant de continuer",
-      },
-      { status: 400 }
-    );
-  }
+  //   if (isRempli?.numTel === null || isRempli?.adresse === null) {
+  //     return NextResponse.json(
+  //       { error: "Veuillez remplir votre profil avant de pourvoir continuer" },
+  //       { status: 400 }
+  //     );
+  //   }
+  // } catch (error) {
+  //   return NextResponse.json(
+  //     {
+  //       succes: false,
+  //       message: "Veuillez completer profil avant de continuer",
+  //     },
+  //     { status: 400 }
+  //   );
+  // }
 
   try {
     const values = await req.json();
@@ -70,22 +71,6 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
-    const userId = session.user.id;
-
-    // const isExist = await prisma.article.findFirst({
-    //   where: { userId, nom },
-    // });
-    // const isExist = await prisma.article.findFirst({
-    //   where: { userId, nom },
-    // });
-
-    // if (isExist) {
-    //   return NextResponse.json(
-    //     { succes: false, message: "Article déjà existant" },
-    //     { status: 400 }
-    //   );
-    // }
 
     const articles = await prisma.article.create({
       data: {
