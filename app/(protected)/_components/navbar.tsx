@@ -186,10 +186,18 @@ export const Navbar = () => {
                           Settings
                         </Link>
                       </li>
+                        <li className="w-full mt-auto pt-4 items-center justify-center">
+                          <UserButton />
+                        </li>
                     </ul>
                   </div>
                 )}
+
               </div>
+              
+            </div>
+            <div className="hidden md:block">
+              <UserButton />
             </div>
           </div>
         </div>
