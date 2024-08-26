@@ -34,32 +34,32 @@ const AdminPage = () => {
   }
 
   return (
-    <Card className="w-[600px]">
-      <CardHeader>
+    <Card className="text-center justify-center w-full max-w-4xl mx-auto  border-none">
+      <CardHeader className="w-full">
         <p className="text-2xl font-semibold text-center">
           🔑 Admin
         </p>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4  items-center ">
         <RoleGate allowedRole={UserRole.ADMIN}>
           <FormSuccess
             message="You are allowed to see this content!"
           />
         </RoleGate>
-        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md">
-          <p className="text-sm font-medium">
+        <div className="flex flex-col sm:flex-row items-center justify-between rounded-lg border p-3 shadow-md w-full">
+          <p className="text-sm font-medium w-full sm:w-auto mb-2 sm:mb-0 text-center sm:text-left">
             Admin-only API Route
           </p>
-          <Button onClick={onApiRouteClick}>
+          <Button className="w-full sm:w-auto" onClick={onApiRouteClick}>
             Click to test
           </Button>
         </div>
 
-        <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md">
-          <p className="text-sm font-medium">
+        <div className="flex flex-col sm:flex-row items-center justify-between rounded-lg border p-3 shadow-md w-full">
+          <p className="text-sm font-medium w-full sm:w-auto mb-2 sm:mb-0 text-center sm:text-left">
             Admin-only Server Action
           </p>
-          <Button onClick={onServerActionClick}>
+          <Button className="w-full sm:w-auto" onClick={onServerActionClick}>
             Click to test
           </Button>
         </div>

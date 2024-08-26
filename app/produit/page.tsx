@@ -215,7 +215,7 @@ export default function AddProduit() {
                     />
                   </FormControl>
                   <FormDescription>
-                    C'est la quantité disponible que vous souhaitez mettre en
+                    C&apos;est la quantité disponible que vous souhaitez mettre en
                     vente
                   </FormDescription>
                   <FormMessage />
@@ -322,7 +322,7 @@ export default function AddProduit() {
                           <SelectLabel>Loisirs</SelectLabel>
                           <SelectItem value="velos">velos</SelectItem>
                           <SelectItem value="artisanat d'art">
-                            artisanat d'art
+                            artisanat d&apos;art
                           </SelectItem>
                           <SelectItem value="sports et activites exterieures">
                             sport et activites exterieures

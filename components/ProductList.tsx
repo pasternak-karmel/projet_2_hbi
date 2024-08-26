@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "@/components/Loader";
+import { Avatar, AvatarImage } from "./ui/avatar";
 
 const PRODUCT_PER_PAGE = 4;
 
@@ -54,8 +55,22 @@ export default function ProductList({
                 sizes="25vw"
                 className="absolute object-cover rounded-md"
               />
+              
             )}
           </div>
+          <span className="absolute bottom-4 left-4 text-white text-sm font-medium z-20">
+          <div className="flex text-center ">
+            <Avatar className="w-8 h-8">
+              <AvatarImage
+                src={
+                  data.image ?? "https://source.boringavatars.com/marble/120"
+                }
+                alt={data.image ?? ""}
+              />
+            </Avatar>
+            {data ? data.name : "Vendeur inconnue"}
+          </div>
+        </span>
           <div className="flex justify-between">
             <span className="font-medium">{product.nom}</span>
             <span className="font-semibold">{product.prix} XOF</span>

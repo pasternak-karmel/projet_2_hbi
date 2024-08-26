@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export const UserInfo = ({ user }: { user: any }) => {
   return (
-    <Card className="w-[600px] shadow-md">
+    <Card className="text-center justify-center w-full max-w-4xl mx-auto  border-none">
       <CardHeader>
         <p className="text-2xl font-semibold text-center">
           💻 Server component

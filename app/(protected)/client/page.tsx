@@ -11,7 +11,7 @@ const ClientPage = () => {
     //   label="📱 Client component"
     //   user={user}
     // />
-    <div>
+    <div className="text-center justify-center w-full max-w-4xl mx-auto  border-none">
       Client page
     </div>
    );

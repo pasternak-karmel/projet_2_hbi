@@ -75,7 +75,7 @@ const SettingsPage = () => {
   }
 
   return ( 
-    <Card className="w-[600px]">
+    <Card className="text-center justify-center w-full max-w-4xl mx-auto  border-none">
       <CardHeader>
         <p className="text-2xl font-semibold text-center">
           ⚙️ Settings
@@ -221,6 +221,7 @@ const SettingsPage = () => {
             <Button
               disabled={isPending}
               type="submit"
+              className="w-full sm:w-auto"
             >
               Save
             </Button>
