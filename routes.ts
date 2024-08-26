@@ -5,12 +5,12 @@
  */
 export const publicRoutes: string[] = [
   "/",
-  "All-Products",
-  "All-Products/*",
-  "categories",
-  "categories/*",
-  "produit",
-  "produit/*",
+  "/All-Products",
+  "/All-Products/*",
+  "/categories",
+  "/categories/*",
+  "/produit",
+  "/produit/*",
   "/auth/new-verification",
 ];
 
@@ -35,7 +35,7 @@ export const agentRoutes: string[] = ["/agent/*"];
  * @type {string}
  */
 export const apiAuthPrefix: string = "/api/auth";
-export const apiPrefix: string = "/api/auth";
+export const apiPrefix: string = "/api";
 
 /**
  * The default redirect path after logging in

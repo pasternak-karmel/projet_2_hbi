@@ -1,11 +1,10 @@
 "use client";
 import { Session } from "next-auth";
 
-import { Navbar } from "@/app/(protected)/_components/navbar";
 
-import React, { useState, useMemo } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import React from "react";
+import { usePathname } from "next/navigation";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import CustomLink from "./custom-link";
@@ -25,7 +24,6 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import dynamic from "next/dynamic";
 import SearchBar from "./SearchBar";
 import Menu from "./Menu";
 import { LoginButton } from "./auth/login-button";
