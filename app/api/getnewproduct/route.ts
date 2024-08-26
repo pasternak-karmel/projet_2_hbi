@@ -3,13 +3,13 @@ import { prisma } from "@/utils/prisma";
 import { auth } from "@/auth";
 
 export async function GET(request: Request) {
-  const session = await auth();
+  // const session = await auth();
 
-  if (!session || !session.user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  // if (!session || !session.user) {
+  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // }
 
-  const userId = session.user.id;
+  // const userId = session.user.id;
 
   try {
     const allArticles = await prisma.article.findMany({
@@ -32,7 +32,6 @@ export async function GET(request: Request) {
     // Mélanger les articles de manière aléatoire
     const shuffledArticles = allArticles.sort(() => 0.5 - Math.random());
 
-    // Sélectionner un maximum de 4 articles
     const featuredArticles = shuffledArticles.slice(0, 4);
 
     return NextResponse.json({ articles: featuredArticles }, { status: 200 });

@@ -34,7 +34,8 @@ const Categories = () => {
       {/* {res.items.map((product: products.Product) => ( */}
       {categoriesItems.map((category) => (
         <Link
-          href={"/categories/" + category.id}
+          // href={"/categories/" + category.id}
+          href={"/categories"}
           className="w-full flex flex-col gap-4 sm:w-[45%] lg:w-[22%]"
           key={category.id}
         >
@@ -48,8 +49,8 @@ const Categories = () => {
             />
             {category.image && (
               <Image
-              // src={product.media?.items[1]?.image?.url || "/product.png"}
-              src={category.image || "/product.png"}
+                // src={product.media?.items[1]?.image?.url || "/product.png"}
+                src={category.image || "/product.png"}
                 alt=""
                 fill
                 sizes="25vw"
@@ -75,12 +76,17 @@ const Categories = () => {
             ></div>
           )} */}
           <button className="rounded-2xl ring-1 ring-lama text-lama  py-2 px-4 text-xs hover:bg-black hover:text-white text-center items-center">
-            {category.name} 
+            {category.name}
           </button>
         </Link>
       ))}
     </div>
-
   );
 };
 export default Categories;
+
+
+
+
+
+//acheteur: 
