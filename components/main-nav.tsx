@@ -142,7 +142,7 @@ export function MainNav({ session }: MainNavProps) {
             ) : (
               <LoginButton asChild>
                 <Button variant="secondary" size="lg">
-                  Inscription/Connexion
+                  Login
                 </Button>
               </LoginButton>
             )}

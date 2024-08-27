@@ -1,3 +1,4 @@
+import Footer from "./Footer";
 import { Navbar } from "./_components/navbar";
 
 interface ProtectedLayoutProps {
@@ -6,10 +7,14 @@ interface ProtectedLayoutProps {
 
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   return ( 
-    <div className=" items-center justify-center">
-      {/* <Navbar /> */}
-      {children}
-    </div>
+    <div>
+      <div className=" items-center justify-center">
+        
+        {/* <Navbar /> */}
+        {children}
+      </div>
+      <Footer/> 
+    </div>  
   );
 };
 
