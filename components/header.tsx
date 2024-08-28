@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Session } from "next-auth";
 import { MainNav } from "./main-nav";
 import { Navbar } from "@/app/(protected)/_components/navbar";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface HeaderProps {
   session: Session | null;
@@ -12,6 +12,19 @@ interface HeaderProps {
 
 export default function Header({ session, role }: HeaderProps) {
   const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (session) {
+      if (role === "ADMIN" && pathname !== "/admin") {
+        router.push("/admin");
+      } else if (role === "AGENT" && pathname !== "/agent") {
+        router.push("/agent/dashboard");
+      } else if (!role && pathname !== "/") {
+        router.push("/");
+      }
+    }
+  }, [session, role, pathname, router]);
 
   // useEffect(() => {
   //   if (session) {

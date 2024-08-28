@@ -1,4 +1,4 @@
-import { prisma } from "@/utils/prisma";
+import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -8,7 +8,7 @@ export async function GET(
   const { id } = params;
 
   try {
-    const order = await prisma.order.findUnique({
+    const order = await db.order.findUnique({
       where: { id },
       include: {
         User: true,
