@@ -7,7 +7,7 @@ export const accepte_article = async (articleIds: string[]) => {
 
   const result = await db.article.updateMany({
     where: { id: { in: articleIds } },
-    data: { status: "ACCEPTE" },
+    data: { status: "ACCEPTE", agentId: "66cefe6c3f91b7963ef0f2b6" },
   });
 
   if (result.count > 0) {

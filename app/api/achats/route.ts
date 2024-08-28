@@ -14,7 +14,9 @@ export async function GET(req: Request) {
   try {
     const orders = await prisma.order.findMany({
       where: { userId },
-      // orderBy: "desc",
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     if (!orders || orders.length === 0) {

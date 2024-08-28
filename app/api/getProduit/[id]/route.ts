@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/utils/prisma";
+import { db } from "@/lib/db";
 
 export async function GET(
   request: Request,
@@ -8,7 +8,7 @@ export async function GET(
   const { id } = params;
 
   try {
-    const article = await prisma.article.findUnique({
+    const article = await db.article.findUnique({
       where: { id },
       include: {
         categories: true,

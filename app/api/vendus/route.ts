@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { prisma } from "@/utils/prisma";
+import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   const userId = session.user.id;
 
   try {
-    const articles = await prisma.article.findMany({
+    const articles = await db.article.findMany({
       where: { userId },
     });
 
@@ -23,7 +23,7 @@ export async function GET(req: Request) {
       );
     }
 
-    const orders = await prisma.order.findMany();
+    const orders = await db.order.findMany();
 
     const soldArticles = articles.map((article) => {
       let totalSold = 0;

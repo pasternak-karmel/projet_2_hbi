@@ -13,17 +13,17 @@ interface HeaderProps {
 export default function Header({ session, role }: HeaderProps) {
   const router = useRouter();
 
-  useEffect(() => {
-    if (session) {
-      if (role === "ADMIN") {
-        router.push("/admin");
-      } else if (role === "AGENT") {
-        router.push("/agent");
-      } else {
-        router.push("/");
-      }
-    }
-  }, [session, role, router]);
+  // useEffect(() => {
+  //   if (session) {
+  //     if (role === "ADMIN") {
+  //       router.push("/admin");
+  //     } else if (role === "AGENT") {
+  //       router.push("/agent");
+  //     } else {
+  //       router.push("/");
+  //     }
+  //   }
+  // }, [session, role, router]);
 
   if (role === "ADMIN" || role === "AGENT") {
     return <Navbar />;

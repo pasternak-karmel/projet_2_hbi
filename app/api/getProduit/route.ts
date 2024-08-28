@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/utils/prisma";
+import { db } from "@/lib/db";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -7,7 +7,7 @@ export async function GET(request: Request) {
 
   if (id) {
     try {
-      const article = await prisma.article.findUnique({
+      const article = await db.article.findUnique({
         where: { id },
         include: {
           categories: true,
@@ -31,9 +31,10 @@ export async function GET(request: Request) {
     }
   } else {
     try {
-      const articles = await prisma.article.findMany({
+      const articles = await db.article.findMany({
         where: {
-          idDeleted: false,
+          status: "ACCEPTE",
+          isDeleted: false,
           quantite: {
             gt: 0,
           },

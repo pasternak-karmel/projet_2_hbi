@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { prisma } from "@/utils/prisma";
+import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   const userId = session.user.id;
 
   try {
-    const isRempli = await prisma.user.findFirst({
+    const isRempli = await db.user.findFirst({
       where: { id: userId },
     });
 
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const article = await prisma.article.findUnique({
+    const article = await db.article.findUnique({
       where: { id: productId },
     });
 
@@ -59,14 +59,14 @@ export async function POST(req: Request) {
       );
     }
 
-    await prisma.article.update({
+    await db.article.update({
       where: { id: productId },
       data: { quantite: article.quantite - quantite },
     });
 
     const totalAmount = article.prix * quantite;
 
-    const order = await prisma.order.create({
+    const order = await db.order.create({
       data: {
         userId,
         totalAmount,

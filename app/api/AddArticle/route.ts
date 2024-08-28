@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
-import { prisma } from "@/utils/prisma";
 import { NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import { CreateProduct } from "@/lib/mail";
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -12,31 +13,22 @@ export async function POST(req: Request) {
     );
   }
   const userId = session.user.id;
-  console.log(userId);
-  console.log(session.user.name);
-
-  // try {
-  //   const isRempli = await prisma.user.findFirst({
-  //     where: { id: userId },
-  //   });
-
-  //   if (isRempli?.numTel === null || isRempli?.adresse === null) {
-  //     return NextResponse.json(
-  //       { error: "Veuillez remplir votre profil avant de pourvoir continuer" },
-  //       { status: 400 }
-  //     );
-  //   }
-  // } catch (error) {
-  //   return NextResponse.json(
-  //     {
-  //       succes: false,
-  //       message: "Veuillez completer profil avant de continuer",
-  //     },
-  //     { status: 400 }
-  //   );
-  // }
 
   try {
+    const userProfile = await db.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!userProfile?.numTel || !userProfile?.adresse) {
+      return NextResponse.json(
+        {
+          succes: false,
+          message: "Veuillez remplir votre profil avant de pourvoir continuer",
+        },
+        { status: 400 }
+      );
+    }
+
     const values = await req.json();
     const { nom, description, usage, categories, image } = values;
     let prix;
@@ -50,9 +42,10 @@ export async function POST(req: Request) {
     } catch (error) {
       throw new Error("Le prix doit être un nombre");
     }
+
     if (prix < 0) {
       return NextResponse.json(
-        { succes: false, message: "Le prix ne peut être inférieur a 0 XOF" },
+        { succes: false, message: "Le prix ne peut être inférieur à 0 XOF" },
         { status: 400 }
       );
     }
@@ -60,19 +53,32 @@ export async function POST(req: Request) {
     try {
       quantite = parseInt(values.quantite, 10);
       if (isNaN(quantite)) {
-        throw new Error("La quantite doit être un nombre valide");
+        throw new Error("La quantité doit être un nombre valide");
       }
     } catch (error) {
       throw new Error("La quantité doit être un nombre");
     }
+
     if (quantite < 1) {
       return NextResponse.json(
-        { succes: false, message: "Le quantite ne peut être inférieur a 1" },
+        { succes: false, message: "La quantité ne peut être inférieure à 1" },
         { status: 400 }
       );
     }
 
-    const articles = await prisma.article.create({
+    const getCategories = await db.categories.findFirst({
+      where: {
+        nom: categories,
+      },
+    });
+
+    const createdCategories =
+      getCategories ||
+      (await db.categories.create({
+        data: { nom: categories },
+      }));
+
+    const article = await db.article.create({
       data: {
         nom,
         description,
@@ -81,21 +87,19 @@ export async function POST(req: Request) {
         quantite,
         userId,
         image,
-        categories: {
-          connectOrCreate: {
-            where: { nom: categories },
-            create: { nom: categories },
-          },
-        },
+        categoriesId: createdCategories.id,
       },
     });
 
-    if (!articles) {
+    if (!article) {
+      console.log("here article not created");
       return NextResponse.json(
         { succes: false, message: "Erreur lors de l'ajout de l'article" },
         { status: 400 }
       );
     }
+
+    await CreateProduct(session.user.email, nom);
 
     return NextResponse.json(
       { succes: true, message: `L'article ${nom} a été mis en vente` },

@@ -1,21 +1,13 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/utils/prisma";
-import { auth } from "@/auth";
+import { db } from "@/lib/db";
 
 export async function GET(request: Request) {
-  // const session = await auth();
-
-  // if (!session || !session.user) {
-  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  // }
-
-  // const userId = session.user.id;
-
+ 
   try {
-    const allArticles = await prisma.article.findMany({
+    const allArticles = await db.article.findMany({
       where: {
-        // userId,
-        idDeleted: false, 
+        status: "ACCEPTE",
+        isDeleted: false,
       },
       include: {
         categories: true,
@@ -29,7 +21,6 @@ export async function GET(request: Request) {
       );
     }
 
-    // Mélanger les articles de manière aléatoire
     const shuffledArticles = allArticles.sort(() => 0.5 - Math.random());
 
     const featuredArticles = shuffledArticles.slice(0, 4);

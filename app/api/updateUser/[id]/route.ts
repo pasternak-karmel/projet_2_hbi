@@ -1,5 +1,5 @@
+import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
-import { prisma } from "@/utils/prisma";
 
 export async function PUT(
   req: Request,
@@ -16,7 +16,7 @@ export async function PUT(
 
     // console.log(data);
 
-    const updatedProduct = await prisma.user.update({
+    const updatedProduct = await db.user.update({
       where: { id: id },
       data: {
         numTel: data.num,

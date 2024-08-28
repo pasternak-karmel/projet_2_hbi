@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/utils/prisma";
 import { auth } from "@/auth";
+import { db } from "@/lib/db";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
-  //a use après pour récuperer en fonction de la disponibilité
   const id = searchParams.get("id");
   const session = await auth();
 
@@ -16,8 +15,8 @@ export async function GET(request: Request) {
   const userId = session.user.id;
 
   try {
-    const articles = await prisma.article.findMany({
-      where: { userId, idDeleted: false },
+    const articles = await db.article.findMany({
+      where: { userId, isDeleted: false },
       include: {
         categories: true,
       },

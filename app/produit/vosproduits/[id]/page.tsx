@@ -28,6 +28,7 @@ import { Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { MessageriesButton } from "@/components/messageries/messageries";
 
 const FormSchema = z.object({
   nom: z.string(),
@@ -38,7 +39,6 @@ const FormSchema = z.object({
     .min(0, "Quantity must be greater than or equal to 0"),
   description: z.string(),
   delete: z.boolean().default(false).optional(),
-  // delete: z.boolean().optional(),
 });
 
 export default function Produit({ params }: { params: { id: string } }) {
@@ -88,7 +88,7 @@ export default function Produit({ params }: { params: { id: string } }) {
         usage: product.usage,
         quantite: product.quantite,
         description: product.description,
-        delete: product.idDeleted,
+        delete: product.isDeleted,
       });
     }
   }, [product, form]);
@@ -109,7 +109,7 @@ export default function Produit({ params }: { params: { id: string } }) {
   function onSubmit(data: z.infer<typeof FormSchema>) {
     mutation.mutate({
       ...data,
-      idDeleted: data.delete,
+      isDeleted: data.delete,
       categoriesId: product?.categoriesId,
     });
   }
@@ -118,8 +118,8 @@ export default function Produit({ params }: { params: { id: string } }) {
     <div className="flex flex-col items-center justify-center mt-10 px-4">
       <Tabs defaultValue="edit" className="w-full max-w-4xl">
         <TabsList className="grid grid-cols-2 gap-2">
-          <TabsTrigger value="edit">Edit</TabsTrigger>
-          <TabsTrigger value="update">Update</TabsTrigger>
+          <TabsTrigger value="edit">Modification</TabsTrigger>
+          <TabsTrigger value="discussion">Discussion avec l'agent</TabsTrigger>
         </TabsList>
         <TabsContent value="edit" className="mt-4">
           <Card className="shadow-lg rounded-xl">
@@ -269,19 +269,26 @@ export default function Produit({ params }: { params: { id: string } }) {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value="update" className="mt-4">
+        <TabsContent value="discussion" className="mt-4">
           <Card className="shadow-lg rounded-xl">
             <CardHeader className="bg-gradient-to-r from-gray-700 to-gray-900 text-white rounded-t-xl">
               <CardTitle className="text-2xl font-bold">
-                Update Product
+                Discussion avec l'agent carmel
               </CardTitle>
               <CardDescription className="text-sm">
-                Be sure before making any updates.
+                Discutez de vos préocupation avec l'agent en toute simplicité
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 p-6">
-              <p>Update specific product details here.</p>
-              {/* Additional fields or actions for updates */}
+              {product.agentId !== null && (
+                <MessageriesButton asChild produit={product.id}>
+                  <Button> discuter avec l'agent </Button>
+                </MessageriesButton>
+              )}
+
+              {product.agentId === null && (
+                <p>Vous n'avez pas encore d'agent assigné pour cet article</p>
+              )}
             </CardContent>
           </Card>
         </TabsContent>

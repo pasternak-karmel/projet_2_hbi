@@ -83,18 +83,6 @@ export default function ArticlesSpecifiquePage({
         <h1 className="text-4xl font-medium">{product.nom}</h1>
         <p className="text-gray-500">{product.description}</p>
         <div className="h-[2px] bg-gray-100" />
-        {/* {product.prix === product.price?.discountedPrice ? (
-          <h2 className="font-medium text-2xl">${product.price?.price}</h2>
-        ) : (
-          <div className="flex items-center gap-4">
-            <h3 className="text-xl text-gray-500 line-through">
-              ${product.price?.price}
-            </h3>
-            <h2 className="font-medium text-2xl">
-              ${product.price?.discountedPrice}
-            </h2>
-          </div>
-        )} */}
         <h2 className="font-medium text-2xl">{product.prix} XOF</h2>
         <p className="mt-2 text-gray-500">
           Condition:{" "}
@@ -132,7 +120,7 @@ export default function ArticlesSpecifiquePage({
         {/* REVIEWS */}
         <h1 className="text-2xl">User Reviews</h1>
         <Suspense fallback="Loading...">
-          {/* <Reviews productId={product.id!} /> */}
+          <Button>Attribuer à</Button>
         </Suspense>
       </div>
     </div>

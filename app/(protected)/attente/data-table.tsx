@@ -63,24 +63,19 @@ export function DataTable<TData, TValue>({
   });
 
   const handleAcceptArticles = async () => {
-    // const selectedArticleIds = Object.values(
-    //   table.getSelectedRowModel().rowsById
-    // ).map((item) => item.original.id);
-
     const selectedArticleIds = Object.values(
       table.getSelectedRowModel().rowsById
     ).map((item) => (item.original as Article).id);
-    console.log(selectedArticleIds);
 
-    // if (selectedArticleIds.length > 0) {
-    //   const result = await accepte_article(selectedArticleIds);
+    if (selectedArticleIds.length > 0) {
+      const result = await accepte_article(selectedArticleIds);
 
-    //   if (result.success) {
-    //     console.log(result.success);
-    //   } else {
-    //     console.error(result.error);
-    //   }
-    // }
+      if (result.success) {
+        console.log(result.success);
+      } else {
+        console.error(result.error);
+      }
+    }
   };
 
   return (
@@ -167,7 +162,7 @@ export function DataTable<TData, TValue>({
           Next
         </Button>
         <Button
-          disabled={table.getFilteredRowModel().rows.length === 0}
+          disabled={table.getFilteredSelectedRowModel().rows.length === 0}
           onClick={handleAcceptArticles}
         >
           Accepter les articles sélectionnés

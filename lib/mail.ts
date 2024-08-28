@@ -34,3 +34,30 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`,
   });
 };
+
+export const CreateProduct = async (email: string, nom: string) => {
+  await resend.emails.send({
+    from: "Acme <onboarding@resend.dev>",
+    to: email,
+    subject: "Création de votre produit sur Project HBI",
+    html: `<p>Votre produit ${nom} a été mis en examen. vous reçevrez un mail lorsqu'il sera confirmé. Merci</p>`,
+  });
+};
+
+export const AttribueProduct = async (email: string, nom: string) => {
+  await resend.emails.send({
+    from: "Acme <onboarding@resend.dev>",
+    to: email,
+    subject: "Création de votre produit sur Project HBI",
+    html: `<p>Votre produit ${nom} a été mis en examen. vous reçevrez un mail lorsqu'il sera confirmé. Merci</p>`,
+  });
+};
+
+//acheter un produit
+//collis livrer par l'agent
+
+//accepter produit on envoie deux mails, un a celui qui a publié le produit et le second a l'agent
+// supprimer le produit
+//confier un agent au porduit
+
+// agent confirmation de reception de colis

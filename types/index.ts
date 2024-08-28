@@ -13,6 +13,7 @@ export interface Article {
   usage: Boolean;
   image: string;
   categoriesId: String;
+  status: String;
 }
 
 export interface ProduitProps {
@@ -36,7 +37,6 @@ export interface CategoriesProp {
   nom: string;
   articles: ArticleProps[];
 }
-
 
 export const categoriesItems: CategoriesProps[] = [
   {
