@@ -11,8 +11,8 @@ import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 
 export default function ProductPage({ params }: { params: { id: string } }) {
-  const { data: session } = useSession();
-  if (!session) return <AccessDenied />;
+  // const { data: session } = useSession();
+  // if (!session) return <AccessDenied />;
 
   const {
     isLoading,
@@ -28,7 +28,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   if (error) return <div>Error: {error.message}</div>;
   return (
     <div className="container mx-auto p-8">
-      {/* Header Section */}
       <div className="relative w-full h-96 bg-gray-100 rounded-lg shadow-lg">
         <Image
           src={product.image}
@@ -52,12 +51,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           </span>
         </div>
 
-        {/* Edit Buttons */}
         <div className="absolute top-4 right-4 space-y-2">
           <Link href={`/edit/${product.id}`}>
-            {/* <a className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700"> */}
               Edit Product
-            {/* </a> */}
           </Link>
           <button className="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700">
             Delete Product
@@ -68,7 +64,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         </div>
       </div>
 
-      {/* Tabs Section */}
       <Tabs defaultValue="account" className="mt-8 w-[700px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -78,7 +73,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
 
-        {/* Overview Tab */}
         <TabsContent value="overview">
           <div className="mt-4">
             <h2 className="text-xl font-bold mb-2">Product Overview</h2>
@@ -86,7 +80,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           </div>
         </TabsContent>
 
-        {/* Pricing Tab */}
         <TabsContent value="pricing">
           <div className="mt-4">
             <h2 className="text-xl font-bold mb-2">Pricing</h2>
@@ -99,13 +92,11 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           </div>
         </TabsContent>
 
-        {/* Inventory Tab */}
         <TabsContent value="inventory">
           <div className="mt-4">
             <h2 className="text-xl font-bold mb-2">Inventory</h2>
             <p>
               Stock:
-              {/* {product.stock} */}
             </p>
             <input
               type="number"
@@ -115,21 +106,17 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           </div>
         </TabsContent>
 
-        {/* Images Tab */}
         <TabsContent value="images">
           <div className="mt-4">
             <h2 className="text-xl font-bold mb-2">Images</h2>
             <p>Manage product images here.</p>
-            {/* Add your image upload and management components here */}
           </div>
         </TabsContent>
 
-        {/* Settings Tab */}
         <TabsContent value="settings">
           <div className="mt-4">
             <h2 className="text-xl font-bold mb-2">Settings</h2>
             <p>Manage product visibility and SEO settings here.</p>
-            {/* Add your settings components here */}
           </div>
         </TabsContent>
       </Tabs>

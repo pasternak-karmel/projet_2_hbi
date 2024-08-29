@@ -1,5 +1,4 @@
 "use client";
-// import * as React from "react";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -79,8 +78,6 @@ export default function AddProduit() {
     thumbnailUrl: string | null;
   } | null>(null);
   const { edgestore } = useEdgeStore();
-  const { data: session } = useSession();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -92,17 +89,21 @@ export default function AddProduit() {
     },
   });
 
-  if (!session) return <AccessDenied />;
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setLoading(true);
     try {
+      if (!file) {
+        return toast.error("Erreur!!!", {
+          description: "Veillez sélectionnez une image",
+          action: { label: "Fermer", onClick: () => console.log("Undo") },
+        });
+      }
       if (file) {
         const res = await edgestore.myPublicImages.upload({
           file,
-          // options: {
-          //   temporary: true,
-          // },
+          options: {
+            temporary: true,
+          },
           input: { type: "post" },
           onProgressChange: (progress) => setProgress(progress),
         });
@@ -110,7 +111,6 @@ export default function AddProduit() {
         values.image = res.url;
       }
 
-      // react query later
       const response = await fetch("/api/AddArticle", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -123,15 +123,22 @@ export default function AddProduit() {
       const result = await response.json();
       if (result.status === 401) return <AccessDenied />;
       if (result.succes) {
-        // await edgestore.myPublicImages.confirmUpload({
-        //   url: urls?.url,
-        // });
+        if (urls?.url) {
+          await edgestore.myPublicImages.confirmUpload({
+            url: urls.url,
+          });
+        }
         toast("Article ajouté avec succès", {
           description: result.message,
           action: { label: "Fermer", onClick: () => console.log("Undo") },
         });
         form.reset();
+        setFile(undefined);
+        setUrls(null);
       } else {
+        if (urls) {
+          await edgestore.myPublicImages.delete(urls);
+        }
         toast.error("Erreur lors de l'ajout de l'article", {
           description: result.message,
           action: { label: "Fermer", onClick: () => console.log("Undo") },
@@ -139,7 +146,7 @@ export default function AddProduit() {
       }
     } catch (error) {
       toast.error("Une erreur s'est produite", {
-        description: "Error submitting form",
+        description: "Veuillez réessayer plus tard",
         action: { label: "Fermer", onClick: () => console.log("Undo") },
       });
     } finally {
@@ -215,8 +222,8 @@ export default function AddProduit() {
                     />
                   </FormControl>
                   <FormDescription>
-                    C&apos;est la quantité disponible que vous souhaitez mettre en
-                    vente
+                    C&apos;est la quantité disponible que vous souhaitez mettre
+                    en vente
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -327,7 +334,9 @@ export default function AddProduit() {
                           <SelectItem value="sports et activites exterieures">
                             sport et activites exterieures
                           </SelectItem>
-                          <SelectItem value="pieces automobiles">pieces automobiles</SelectItem>
+                          <SelectItem value="pieces automobiles">
+                            pieces automobiles
+                          </SelectItem>
                           <SelectItem value="instruments de musique">
                             instrument de musique
                           </SelectItem>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import SessionWrapper from "@/components/sessionWrapper";
 import Header from "@/components/header";
 
 import { Toaster } from "@/components/ui/sonner";
@@ -31,7 +30,6 @@ export default async function RootLayout({
       <ReactQueryProviders>
         <html lang="en">
           <body className={inter.className}>
-            {/* <div className="flex flex-col w-full h-full min-h-screen  "> */}
             <div className="">
               <Header session={session} role={user} />
               <main className="flex flex-col">

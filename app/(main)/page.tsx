@@ -16,13 +16,8 @@ const font = Poppins({
 });
 
 export default async function Home() {
-  // const user = await currentRole();
-
   return (
-    <main
-      className={cn("flex flex-col", font.className)}
-      // "flex flex-col "
-    >
+    <main className={cn("flex flex-col", font.className)}>
       <Hero />
       <div className="mt-24 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64">
         <h1 className="text-2xl">Produits en vedette </h1>
@@ -56,26 +51,5 @@ export default async function Home() {
       </div>
       <Collection />
     </main>
-
-    // <main className="flex h-full flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800">
-    //   <div className="space-y-6 text-center">
-    //     <h1
-    //       className={cn(
-    //         "text-6xl font-semibold text-white drop-shadow-md",
-    //         font.className
-    //       )}
-    //     >
-    //       🔐 Auth
-    //     </h1>
-    //     <p className="text-white text-lg">A simple authentication service</p>
-    //     <div>
-    //       <LoginButton asChild>
-    //         <Button variant="secondary" size="lg">
-    //           Sign in
-    //         </Button>
-    //       </LoginButton>
-    //     </div>
-    //   </div>
-    // </main>
   );
 }

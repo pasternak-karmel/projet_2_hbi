@@ -4,6 +4,7 @@ import { Session } from "next-auth";
 import { MainNav } from "./main-nav";
 import { Navbar } from "@/app/(protected)/_components/navbar";
 import { usePathname, useRouter } from "next/navigation";
+import { NavbarAgent } from "@/app/(agent)/_components/agent-navbar";
 
 interface HeaderProps {
   session: Session | null;
@@ -14,17 +15,17 @@ export default function Header({ session, role }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    if (session) {
-      if (role === "ADMIN" && pathname !== "/admin") {
-        router.push("/admin");
-      } else if (role === "AGENT" && pathname !== "/agent") {
-        router.push("/agent/dashboard");
-      } else if (!role && pathname !== "/") {
-        router.push("/");
-      }
-    }
-  }, [session, role, pathname, router]);
+  // useEffect(() => {
+  //   if (session) {
+  //     if (role === "ADMIN" && pathname !== "/admin") {
+  //       router.push("/admin");
+  //     } else if (role === "AGENT" && pathname !== "/agent") {
+  //       router.push("/agent/dashboard");
+  //     } else if (!role && pathname !== "/") {
+  //       router.push("/");
+  //     }
+  //   }
+  // }, [session, role, pathname, router]);
 
   // useEffect(() => {
   //   if (session) {
@@ -38,8 +39,12 @@ export default function Header({ session, role }: HeaderProps) {
   //   }
   // }, [session, role, router]);
 
-  if (role === "ADMIN" || role === "AGENT") {
+  if (role === "ADMIN") {
     return <Navbar />;
+  }
+  
+  if (role === "AGENT") {
+    return <NavbarAgent />;
   }
 
   return (

@@ -6,7 +6,7 @@ import Loader from "@/components/Loader";
 const fetchPurchases = async () => {
   const res = await fetch(`/api/achats`);
   if (!res.ok) {
-    throw new Error("Failed to fetch purchases");
+    throw new Error("Erreur lors de la récupération de vos achats");
   }
   return res.json();
 };
@@ -25,7 +25,9 @@ export default function UserPurchases() {
 
   if (error)
     return (
-      <div className="text-red-500 text-center">Error loading purchases</div>
+      <div className="text-red-500 text-center">
+        Une erreur est subvenue lors de la récupération de vos achats
+      </div>
     );
 
   return (
@@ -67,7 +69,8 @@ export default function UserPurchases() {
         </div>
       ) : (
         <div className="text-center text-gray-500">
-          Vous n'avez pas encore effectué d'achats.
+          Vous n'avez pas encore effectué d'achats. Allez-y et choisissez votre
+          prochain coup de coeur
         </div>
       )}
     </div>
