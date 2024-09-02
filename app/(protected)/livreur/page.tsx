@@ -1,4 +1,5 @@
 "use client"
+import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 
 type Livreur = {
@@ -67,6 +68,7 @@ export default function LivreurPage() {
     const [search, setSearch] = useState<string>('');
     const [showChat, setShowChat] = useState<boolean>(false);
     const [selectedLivreur, setSelectedLivreur] = useState<Livreur | null>(null);
+    // const router = useRouter();
 
   useEffect(() => {
     const result = mockLivreurs.filter((livreur) =>
@@ -92,12 +94,22 @@ export default function LivreurPage() {
     const handleChatClose = () => {
         setShowChat(false);
     };
+    // const handleGoBack = () => {
+    //     router.back();
+    //   };
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Gestion des Livreurs</h1>
       
       <div className="mb-4 w-full flex items-center justify-between">
+      <button
+        onClick={() => window.history.back()}
+        className="text-teal-600 font-semibold underline mb-4"
+      >
+        Retour
+      </button>
+      {/* <button onClick={handleGoBack} className="p-2 bg-gray-300 text-black rounded">Retour</button> */}
                 <input
                     type="text"
                     placeholder="Rechercher un livreur..."

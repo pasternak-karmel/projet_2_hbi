@@ -1,7 +1,5 @@
-"use client"
 import Footer from "./Footer";
-import Agent from "./agent/page";
-import Navbar from "./agent_components/agent-navbar";
+import Navbar from "./_components/navbar";
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -14,9 +12,8 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         
         <Navbar />
         {children}
-        {/* <Agent /> */}
-        <Footer/> 
       </div>
+      <Footer/> 
     </div>  
   );
 };

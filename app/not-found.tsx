@@ -20,11 +20,11 @@ export default function Custom404() {
         <p className="text-xl text-gray-600 mb-8">
           Sorry, the page you are looking for does not exist.
         </p>
-        <Link href="/" className="px-6 py-3 text-lg font-semibold rounded-md shadow-md hover:bg-black hover:text-white transition duration-300 ease-in-out justify-center">
+        {/* <Link href="/" className="px-6 py-3 text-lg font-semibold rounded-md shadow-md hover:bg-black hover:text-white transition duration-300 ease-in-out justify-center">
 
             Go back to Home
           
-        </Link>
+        </Link> */}
       </div>
     </div>
   );
