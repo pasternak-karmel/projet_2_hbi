@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -8,20 +8,18 @@ import { Avatar, AvatarImage } from "./ui/avatar";
 
 const PRODUCT_PER_PAGE = 4;
 
-export default function ProductList({
-  // categoryId,
-  // limit = PRODUCT_PER_PAGE,
-  // searchParams,
-}: {
+export default function ProductList({}: // categoryId,
+// limit = PRODUCT_PER_PAGE,
+// searchParams,
+{
   // categoryId: string;
   // limit?: number;
   // searchParams?: any;
 }) {
   const { isLoading, error, data } = useQuery({
     queryKey: ["Acceuilproduit"],
-    queryFn: () =>
-      fetch(`/api/getnewproduct`).then((res) => res.json()),
-      // fetch(`/api/getnewproduct?categoryId=${categoryId}&limit=${limit}`).then((res) => res.json()),
+    queryFn: () => fetch(`/api/getnewproduct`).then((res) => res.json()),
+    // fetch(`/api/getnewproduct?categoryId=${categoryId}&limit=${limit}`).then((res) => res.json()),
   });
 
   if (isLoading) return <Loader />;
@@ -32,7 +30,7 @@ export default function ProductList({
   }
 
   return (
-    <div className="mt-12 flex gap-x-8 gap-y-16 justify-between flex-wrap">
+    <div className="mt-12 flex gap-x-8 gap-y-16 justify-start flex-wrap">
       {data.articles.map((product: any) => (
         <Link
           href={"/All-Products/" + product.id}
@@ -55,22 +53,21 @@ export default function ProductList({
                 sizes="25vw"
                 className="absolute object-cover rounded-md"
               />
-              
             )}
           </div>
           <span className="absolute bottom-4 left-4 text-white text-sm font-medium z-20">
-          <div className="flex text-center ">
-            <Avatar className="w-8 h-8">
-              <AvatarImage
-                src={
-                  data.image ?? "https://source.boringavatars.com/marble/120"
-                }
-                alt={data.image ?? ""}
-              />
-            </Avatar>
-            {data ? data.name : "Vendeur inconnue"}
-          </div>
-        </span>
+            <div className="flex text-center ">
+              <Avatar className="w-8 h-8">
+                <AvatarImage
+                  src={
+                    data.image ?? "https://source.boringavatars.com/marble/120"
+                  }
+                  alt={data.image ?? ""}
+                />
+              </Avatar>
+              {data ? data.name : "Vendeur inconnue"}
+            </div>
+          </span>
           <div className="flex justify-between">
             <span className="font-medium">{product.nom}</span>
             <span className="font-semibold">{product.prix} XOF</span>

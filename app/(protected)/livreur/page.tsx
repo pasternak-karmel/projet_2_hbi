@@ -50,14 +50,13 @@ const mockLivreurs: Livreur[] = [
   },
   {
     id: 3,
-    name: 'Avenon karmel',
+    name: 'Sommin Berenger',
     profilePicture: './Jean_Dupont.jpg',
     isAvailable: true,
     currentLocation: '20 Rue de Lille, Calavi',
     estimatedArrival: '25 min',
     assignments: ['Commande #002'],
   },
-  // Add more livreurs as needed
 ];
 
 export default function LivreurPage() {
@@ -147,7 +146,6 @@ export default function LivreurPage() {
           </div>
         ))}
 
-         {/* Popup de discussion */}
          {showChat && selectedLivreur && (
                 <div className="fixed bottom-0 right-0 p-4 w-full sm:w-80 bg-white shadow-lg rounded-lg">
                     <div className="flex items-center justify-between mb-2">
@@ -155,7 +153,6 @@ export default function LivreurPage() {
                         <button onClick={handleChatClose} className="text-red-600">Fermer</button>
                     </div>
                     <div className="h-64 overflow-y-scroll p-2 border rounded-lg">
-                        {/* Messages ici */}
                     </div>
                     <div className="flex items-center mt-2">
                         <input

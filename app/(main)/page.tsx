@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 
 import { Poppins } from "next/font/google";
 
-import { currentRole } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
 const font = Poppins({

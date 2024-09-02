@@ -1,10 +1,11 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../Loader";
 import { Avatar, AvatarImage } from "../ui/avatar";
+import { useCurrentRole } from "@/hooks/use-current-role";
+import { Button } from "../ui/button";
 
 interface ProduitProps {
   product: {
@@ -17,6 +18,7 @@ interface ProduitProps {
 }
 
 export default function Produit({ product }: ProduitProps) {
+  const role = useCurrentRole();
   const { isLoading, error, data } = useQuery({
     queryKey: ["getProduitVendor", product.userId],
     queryFn: () =>
@@ -66,9 +68,12 @@ export default function Produit({ product }: ProduitProps) {
         <span className="font-semibold text-xl">{product.prix} XOF</span>
       </div>
       <div className="flex justify-between">
-        <button className="rounded-full border border-black text-black w-max py-2 px-6 text-xs transition-colors duration-300 hover:bg-black hover:text-white">
-          Ajouter au panier
-        </button>
+        {role === "ADMIN" && <Button variant="link">Voir le produit</Button>}
+        {role !== "ADMIN" && (
+          <button className="rounded-full border border-black text-black w-max py-2 px-6 text-xs transition-colors duration-300 hover:bg-black hover:text-white">
+            Ajouter au panier
+          </button>
+        )}
       </div>
     </Link>
   );

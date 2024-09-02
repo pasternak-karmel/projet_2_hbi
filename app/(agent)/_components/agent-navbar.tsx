@@ -63,37 +63,45 @@ export const NavbarAgent = () => {
                 </li>
                 <li>
                   <Link
-                    className={pathname === "/client" ? active : inActive}
-                    href="/client"
-                  >
-                    Client
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    className={pathname === "/attente" ? active : inActive}
-                    href="/attente"
-                  >
-                    Articles en attente
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    className={pathname === "/admin" ? active : inActive}
-                    href="/admin"
-                  >
-                    Admin
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
                     className={pathname === "/settings" ? active : inActive}
                     href="/settings"
                   >
-                    Settings
+                    Profil
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    className={pathname === "/livraison" ? active : inActive}
+                    href="/livraison"
+                  >
+                    Livraison
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    className={pathname === "/map" ? active : inActive}
+                    href="/map"
+                  >
+                    Map
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    className={pathname === "/notifications" ? active : inActive}
+                    href="/notifications"
+                  >
+                    Notifications
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={pathname === "/report" ? active : inActive}
+                    href="/report"
+                  >
+                    Report
                   </Link>
                 </li>
               </ul>

@@ -28,7 +28,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
   const confirmLink = `${domain}/auth/new-verification?token=${token}`;
 
   await resend.emails.send({
-    from: "karmelavenon@gmail.com",
+    from: "Acme <onboarding@resend.dev>",
     to: email,
     subject: "Confirm your email",
     html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`,
@@ -44,12 +44,22 @@ export const CreateProduct = async (email: string, nom: string) => {
   });
 };
 
-export const AttribueProduct = async (email: string, nom: string) => {
+export const AttribueProduct = async (
+  emailAgent: string,
+  emailUser: string,
+  nomArticle: string
+) => {
   await resend.emails.send({
     from: "Acme <onboarding@resend.dev>",
-    to: email,
+    to: emailAgent,
+    subject: "Un produit vous êtes assigné",
+    html: `<p>Le produit ${nomArticle} Vous a été assigné. Veuillez prendre contact avec le vendeur dans la section mes livraisons. Merci</p>`,
+  });
+  await resend.emails.send({
+    from: "Acme <onboarding@resend.dev>",
+    to: emailUser,
     subject: "Création de votre produit sur Project HBI",
-    html: `<p>Votre produit ${nom} a été mis en examen. vous reçevrez un mail lorsqu'il sera confirmé. Merci</p>`,
+    html: `<p>Votre produit ${nomArticle} a été accepté. Un agent vous contactera pour prendre les dispositions avec vous. Merci</p>`,
   });
 };
 

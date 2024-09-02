@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/utils/prisma";
 import { auth } from "@/auth";
+import { db } from "@/lib/db";
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const product = await prisma.article.findFirst({
+    const product = await db.article.findFirst({
       where: { id: id },
       include: {
         categories: true,

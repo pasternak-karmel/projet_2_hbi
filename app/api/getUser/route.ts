@@ -1,4 +1,4 @@
-import { prisma } from "@/utils/prisma";
+import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -13,7 +13,7 @@ export async function GET(req: Request) {
   }
 
   try {
-    const user = await prisma.user.findFirst({
+    const user = await db.user.findFirst({
       where: { id: userId },
     });
 

@@ -57,18 +57,18 @@ export const Navbar = () => {
               <ul className="flex items-center gap-3 text-lg border-none">
                 <li>
                   <Link
-                    className={pathname === "/server" ? active : inActive}
-                    href="/server"
+                    className={pathname === "/product" ? active : inActive}
+                    href="/product"
                   >
-                    Serveur
+                    Product Management
                   </Link>
                 </li>
                 <li>
                   <Link
-                    className={pathname === "/client" ? active : inActive}
-                    href="/client"
+                    className={pathname === "/orderAdmin" ? active : inActive}
+                    href="/orderAdmin"
                   >
-                    Client
+                    Order Management
                   </Link>
                 </li>
 
@@ -96,6 +96,16 @@ export const Navbar = () => {
                     href="/settings"
                   >
                     Settings
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={
+                      pathname === "/notifications" ? active : inActive
+                    }
+                    href="/notifications"
+                  >
+                    Notifications
                   </Link>
                 </li>
               </ul>

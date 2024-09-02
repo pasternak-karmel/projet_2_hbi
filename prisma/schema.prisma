@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  // previewFeatures = ["nativeTypes"]
 }
 
 datasource db {
@@ -46,6 +45,8 @@ model User {
 
   sentMessages     Message[]  @relation("SentMessages")
   receivedMessages Message[]  @relation("ReceivedMessages")
+  notifications    Notification[]
+  logadmin         AdminAgentLog[]  @relation("AdminAgentLog")
 }
 
 model Account {
@@ -118,6 +119,7 @@ model Article {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   agentId          String?  
+  Message          Message[] @relation("MessageId")
 
   User             User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -144,6 +146,7 @@ model Order {
 
 model Message {
   id           String   @id @default(uuid()) @map("_id")
+  articleId    String   
   senderId     String   @db.ObjectId
   receiverId   String   @db.ObjectId
   content      String
@@ -152,15 +155,25 @@ model Message {
 
   sender       User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
   receiver     User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  article     Article     @relation("MessageId", fields: [articleId], references: [id], onDelete: Cascade)
 }
 
-// New model to track actions or logs performed by Admins and Agents
-// model AdminAgentLog {
-//   id          String   @id @default(uuid()) @map("_id")
-//   userId      String   @db.ObjectId
-//   action      String
-//   targetId    String? 
-//   createdAt   DateTime @default(now())
+model Notification {
+  id          String   @id @default(uuid()) @map("_id")
+  userId      String   @db.ObjectId
+  message     String
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 
-//   User        User     @relation(fields: [userId], references: [id])
-// }
+model AdminAgentLog {
+  id          String   @id @default(uuid()) @map("_id")
+  userId      String   @db.ObjectId
+  action      String
+  targetId    String? 
+  createdAt   DateTime @default(now())
+
+  User        User     @relation("AdminAgentLog", fields: [userId], references: [id], onDelete: Cascade)
+}

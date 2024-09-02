@@ -3,6 +3,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useKKiaPay } from "kkiapay-react";
+import { useCurrentRole } from "@/hooks/use-current-role";
+import { Button } from "./ui/button";
 
 const Add = ({
   productId,
@@ -11,6 +13,8 @@ const Add = ({
   productId: string;
   stockNumber: number;
 }) => {
+  const role = useCurrentRole();
+
   const { openKkiapayWidget, addKkiapayListener } = useKKiaPay();
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
@@ -94,58 +98,25 @@ const Add = ({
             </div>
           )}
         </div>
-        <button
-          disabled={mutation.isPending}
-          onClick={handleSubmit}
-          // onClick={() => open()}
-          className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
-        >
-          {mutation.isPending ? "Paiement en cours..." : "Payer maintenant"}
-        </button>
+        {role !== "ADMIN" ? (
+          <button
+            disabled={mutation.isPending}
+            onClick={handleSubmit}
+            className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
+          >
+            {mutation.isPending ? "Paiement en cours..." : "Payer maintenant"}
+          </button>
+        ) : (
+          <Button
+            className="disabled:cursor-not-allowed"
+            disabled={role === "ADMIN"}
+          >
+            Vous pouvez pas payer
+          </Button>
+        )}
       </div>
     </div>
   );
 };
 
 export default Add;
-
-{
-  /* <Link
-          href={`/All-Products/${productId}/success?orderId=${productId}`}
-          passHref
-        >
-          <Button className="w-full py-3 bg-black text-white font-semibold rounded-md hover:bg-gray-800 transition duration-300">
-            Buy Now
-          </Button>
-        </Link> */
-}
-
-// const { openKkiapayWidget, addKkiapayListener, removeKkiapayListener } =
-//   useKKiaPay();
-
-// function open(productId: string, quantity: number) {
-//   openKkiapayWidget({
-//     amount: 2000,
-//     api_key: "ab8b46b1445154123220ba80c5cca4181860647a",
-//     // sandbox: true,
-//     email: "randomgail@gmail.com",
-//     phone: "97000000",
-//   });
-// }
-// function successHandler(response: any) {
-//   console.log(response);
-// }
-
-// function failureHandler(error: any) {
-//   console.log(error);
-// }
-
-// useEffect(() => {
-//   addKkiapayListener("success", successHandler);
-//   addKkiapayListener("failed", failureHandler);
-
-//   return () => {
-//     removeKkiapayListener("success", successHandler);
-//     removeKkiapayListener("failed", failureHandler);
-//   };
-// }, [addKkiapayListener, removeKkiapayListener]);

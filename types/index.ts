@@ -14,6 +14,8 @@ export interface Article {
   image: string;
   categoriesId: String;
   status: String;
+  agentId: String;
+  quantite: number;
 }
 
 export interface ProduitProps {
@@ -24,6 +26,7 @@ export interface ProduitProps {
   prix: number;
   image: string;
   categories: string;
+  
 }
 export interface ArticleProps {
   id: string;
