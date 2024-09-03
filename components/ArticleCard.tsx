@@ -21,7 +21,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
     >
       <div className="relative w-full h-48">
         <Image
-          src={article.image}
+          src={article.image?.[0]}
           alt={article.nom}
           fill
           objectFit="cover"
@@ -72,7 +72,3 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
 };
 
 export default ArticleCard;
-
-// Agent en contact
-//bouton ecrire
-//supprimer

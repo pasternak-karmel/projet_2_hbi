@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useEdgeStore } from "@/lib/edgestore";
-import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,8 +27,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import AccessDenied from "@/components/access-denied";
-import { SingleImageDropzone } from "@/components/single-image-dropzone";
+import {
+  MultiImageDropzone,
+  type FileState,
+} from "@/components/multi-image-dropzone";
 
 const formSchema = z.object({
   nom: z
@@ -66,17 +67,15 @@ const formSchema = z.object({
     "vide-grenier",
     "divers",
   ]),
-  image: z.string().optional(),
+  image: z.array(z.string()).optional(),
 });
 
 export default function AddProduit() {
-  const [file, setFile] = useState<File>();
-  const [progress, setProgress] = useState(0);
+  const [fileStates, setFileStates] = useState<FileState[]>([]);
+  const [urls, setUrls] = useState<
+    { url: string; thumbnailUrl: string | null }[]
+  >([]);
   const [loading, setLoading] = useState(false);
-  const [urls, setUrls] = useState<{
-    url: string;
-    thumbnailUrl: string | null;
-  } | null>(null);
   const { edgestore } = useEdgeStore();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -86,30 +85,54 @@ export default function AddProduit() {
       usage: false,
       quantite: 1,
       prix: 0,
+      image: [],
     },
   });
+
+  function updateFileProgress(key: string, progress: FileState["progress"]) {
+    setFileStates((fileStates) => {
+      const newFileStates = structuredClone(fileStates);
+      const fileState = newFileStates.find(
+        (fileState) => fileState.key === key
+      );
+      if (fileState) {
+        fileState.progress = progress;
+      }
+      return newFileStates;
+    });
+  }
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setLoading(true);
     try {
-      if (!file) {
+      if (fileStates.length === 0) {
         return toast.error("Erreur!!!", {
-          description: "Veillez sélectionnez une image",
+          description: "Veuillez sélectionner au moins une image",
           action: { label: "Fermer", onClick: () => console.log("Undo") },
         });
       }
-      if (file) {
-        const res = await edgestore.myPublicImages.upload({
-          file,
-          options: {
-            temporary: true,
-          },
-          input: { type: "post" },
-          onProgressChange: (progress) => setProgress(progress),
-        });
-        setUrls({ url: res.url, thumbnailUrl: res.thumbnailUrl });
-        values.image = res.url;
-      }
+
+      const imageUrls = await Promise.all(
+        fileStates.map(async (fileState) => {
+          try {
+            const res = await edgestore.myArrowImages.upload({
+              file: fileState.file,
+              input: { type: "post" },
+              onProgressChange: async (progress) => {
+                // updateFileProgress(progress, "COMPLETE");
+              },
+            });
+            return res.url;
+          } catch (err) {
+            toast.error(`Erreur lors de l'upload de l'image`, {
+              description: `Image: ${fileState.key} - Erreur lors de l'upload`,
+            });
+            return null;
+          }
+        })
+      );
+
+      values.image = imageUrls.filter((url): url is string => url !== null);
 
       const response = await fetch("/api/AddArticle", {
         method: "POST",
@@ -121,24 +144,15 @@ export default function AddProduit() {
         throw new Error(`HTTP error! status: ${response.status}`);
 
       const result = await response.json();
-      if (result.status === 401) return <AccessDenied />;
       if (result.succes) {
-        if (urls?.url) {
-          await edgestore.myPublicImages.confirmUpload({
-            url: urls.url,
-          });
-        }
         toast("Article ajouté avec succès", {
           description: result.message,
           action: { label: "Fermer", onClick: () => console.log("Undo") },
         });
         form.reset();
-        setFile(undefined);
-        setUrls(null);
+        setFileStates([]);
+        setUrls([]);
       } else {
-        if (urls) {
-          await edgestore.myPublicImages.delete(urls);
-        }
         toast.error("Erreur lors de l'ajout de l'article", {
           description: result.message,
           action: { label: "Fermer", onClick: () => console.log("Undo") },
@@ -385,13 +399,18 @@ export default function AddProduit() {
               <FormLabel className="text-lg font-medium text-gray-800">
                 Ajouter une image de votre article
               </FormLabel>
-              <SingleImageDropzone
-                width={200}
-                height={200}
-                value={file}
-                dropzoneOptions={{ maxSize: 1024 * 1024 * 1 }}
-                onChange={(file) => setFile(file)}
-                className="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-gray-500 transition-colors"
+
+              <MultiImageDropzone
+                value={fileStates}
+                dropzoneOptions={{
+                  maxFiles: 6,
+                }}
+                onChange={(files) => {
+                  setFileStates(files);
+                }}
+                onFilesAdded={async (addedFiles) => {
+                  setFileStates([...fileStates, ...addedFiles]);
+                }}
               />
             </div>
             <Button
@@ -407,3 +426,40 @@ export default function AddProduit() {
     </div>
   );
 }
+
+{
+  /* <SingleImageDropzone
+                width={200}
+                height={200}
+                value={file}
+                dropzoneOptions={{ maxSize: 1024 * 1024 * 1 }}
+                onChange={(file) => setFile(file)}
+                className="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-gray-500 transition-colors"
+              /> */
+}
+
+// await Promise.all(
+//   addedFiles.map(async (addedFileState) => {
+//     try {
+//       const res = await edgestore.myArrowImages.upload({
+//         file: addedFileState.file,
+//         input: { type: "post" },
+//         onProgressChange: async (progress) => {
+//           updateFileProgress(addedFileState.key, progress);
+//           if (progress === 100) {
+//             await new Promise((resolve) =>
+//               setTimeout(resolve, 1000)
+//             );
+//             updateFileProgress(
+//               addedFileState.key,
+//               "COMPLETE"
+//             );
+//           }
+//         },
+//       });
+//       console.log(res);
+//     } catch (err) {
+//       updateFileProgress(addedFileState.key, "ERROR");
+//     }
+//   })
+// );

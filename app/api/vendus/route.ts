@@ -6,7 +6,10 @@ export async function GET(req: Request) {
   const session = await auth();
 
   if (!session?.user) {
-    return NextResponse.json({});
+    return NextResponse.json(
+      { error: "pas d'article trouvé pour vous" },
+      { status: 403 }
+    );
   }
 
   const userId = session.user.id;

@@ -13,7 +13,7 @@ interface ProduitProps {
     nom: string;
     prix: number;
     userId: string;
-    image: string | null;
+    image: string[] | null;
   };
 }
 
@@ -42,7 +42,7 @@ export default function Produit({ product }: ProduitProps) {
     >
       <div className="relative w-full h-80 overflow-hidden rounded-lg shadow-lg transition-transform duration-500 group-hover:scale-105">
         <Image
-          src={product.image || "/product.png"}
+          src={product.image?.[0] || "/product.png"}
           alt={product.nom}
           fill
           sizes="25vw"

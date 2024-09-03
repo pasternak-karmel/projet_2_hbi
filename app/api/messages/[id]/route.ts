@@ -95,7 +95,6 @@ export async function POST(req: NextRequest) {
   try {
     const role = await currentRole();
     const senderId = await currentUserId();
-    // console.log(senderId);
 
     if (role !== UserRole.AGENT && role !== UserRole.USER) {
       return NextResponse.json(

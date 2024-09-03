@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { initEdgeStore } from "@edgestore/server";
 import {
   CreateContextOptions,
@@ -10,10 +11,11 @@ type Context = {
   userRole: "admin" | "user";
 };
 
-function createContext({ req }: CreateContextOptions): Context {
-  // get the session from your auth provider
-  // const session = getSession(req);
+async function createContext({ req }: CreateContextOptions): Promise<Context> {
+  // const session = await auth();
+  // if (!session) return "";  
   return {
+    // userId: session?.user.id,
     userId: "1234",
     userRole: "user",
   };
@@ -25,6 +27,16 @@ const edgeStoreRouter = es.router({
   myPublicImages: es
     .imageBucket({
       maxSize: 1024 * 1024 * 10, // 1MB
+    })
+    .input(
+      z.object({
+        type: z.enum(["post", "profile"]),
+      })
+    )
+    .path(({ input }) => [{ type: input.type }]),
+  myArrowImages: es
+    .imageBucket({
+      maxSize: 1024 * 1024 * 100, // 10MB
     })
     .input(
       z.object({

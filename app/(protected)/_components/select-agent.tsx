@@ -67,8 +67,7 @@ const SelectAgent = ({ article }: { article: string }) => {
   }, []);
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const articleId = "f05e18a8-a3cc-4f0d-a8d7-0ea5c84cbe0a";
-    await article_accepte(articleId, data.agentId);
+    await article_accepte(article, data.agentId);
   }
 
   if (loading) {

@@ -39,8 +39,9 @@ export default function MultiImageDropzoneUsage() {
           await Promise.all(
             addedFiles.map(async (addedFileState) => {
               try {
-                const res = await edgestore.myPublicImages.upload({
+                const res = await edgestore.myArrowImages.upload({
                   file: addedFileState.file,
+                  input: { type: "post" },
                   onProgressChange: async (progress) => {
                     updateFileProgress(addedFileState.key, progress);
                     if (progress === 100) {

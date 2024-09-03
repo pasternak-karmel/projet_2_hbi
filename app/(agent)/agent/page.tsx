@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'; // Importez le hook useRouter
+import { useRouter } from 'next/navigation';
 
 const LivreurDashboard = () => {
-  const router = useRouter(); // Initialisez le hook useRouter
+  const router = useRouter();
   const [tasks, setTasks] = useState([
     { id: 1, name: 'Livraison à 10 rue des Fleurs', timeLeft: '30 minutes', status: 'En cours' },
     { id: 2, name: 'Livraison à 25 avenue des Champs', timeLeft: '1 heure', status: 'En attente' },
@@ -35,7 +35,7 @@ const LivreurDashboard = () => {
 
   const handleQRCodeScan = (taskId: number) => {
     sessionStorage.setItem('scannedTaskId', taskId.toString());
-    router.push(`/scan/scan?taskId=${taskId}`); // Redirigez vers la page de scan avec l'ID de la tâche
+    router.push(`/scan/scan?taskId=${taskId}`);
   };
 
   return (
@@ -84,3 +84,4 @@ const LivreurDashboard = () => {
 };
 
 export default LivreurDashboard;
+

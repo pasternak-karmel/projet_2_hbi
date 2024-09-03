@@ -43,7 +43,7 @@ export default function ArticleVendus() {
               className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition-shadow transform hover:-translate-y-1"
             >
               <img
-                src={article.image}
+                src={article.image?.[0]}
                 alt={article.nom}
                 className="w-full h-48 object-cover"
               />

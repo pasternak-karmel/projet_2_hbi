@@ -32,7 +32,7 @@ export default function Categories() {
                   >
                     <div className="relative w-80 h-80 mb-4 ">
                       <Image
-                        src={item.image || "/product.png"}
+                        src={item.image?.[0] || "/product.png"}
                         alt={item.nom || "Image de produit"}
                         fill
                         sizes="(max-width: 640px) 100vw, 25vw"

@@ -11,7 +11,7 @@ export interface Article {
   description: string;
   prix: number;
   usage: Boolean;
-  image: string;
+  image: string[];
   categoriesId: String;
   status: String;
   agentId: String;
@@ -26,15 +26,13 @@ export interface ProduitProps {
   prix: number;
   image: string;
   categories: string;
-  
 }
 export interface ArticleProps {
   id: string;
   nom: string;
-  image: string;
+  image: string[];
   prix: number;
 }
-
 export interface CategoriesProp {
   id: string;
   nom: string;

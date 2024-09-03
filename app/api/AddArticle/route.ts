@@ -19,15 +19,15 @@ export async function POST(req: Request) {
       where: { id: userId },
     });
 
-    if (!userProfile?.numTel || !userProfile?.adresse) {
-      return NextResponse.json(
-        {
-          succes: false,
-          message: "Veuillez remplir votre profil avant de pourvoir continuer",
-        },
-        { status: 400 }
-      );
-    }
+    // if (!userProfile?.numTel || !userProfile?.adresse) {
+    //   return NextResponse.json(
+    //     {
+    //       succes: false,
+    //       message: "Veuillez remplir votre profil avant de pourvoir continuer",
+    //     },
+    //     { status: 400 }
+    //   );
+    // }
 
     const values = await req.json();
     const { nom, description, usage, categories, image } = values;

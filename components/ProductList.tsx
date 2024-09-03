@@ -39,7 +39,7 @@ export default function ProductList({}: // categoryId,
         >
           <div className="relative w-full h-80">
             <Image
-              src={product.image || "/product.png"}
+              src={product.image?.[0] || "/product.png"}
               alt={product.nom}
               fill
               sizes="25vw"
@@ -47,7 +47,7 @@ export default function ProductList({}: // categoryId,
             />
             {product.image && (
               <Image
-                src={product.image || "/product.png"}
+                src={product.image?.[0] || "/product.png"}
                 alt={product.nom}
                 fill
                 sizes="25vw"
