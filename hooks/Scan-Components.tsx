@@ -3,7 +3,11 @@ import React, { useState, useEffect } from "react";
 import { QrReader } from "react-qr-reader";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const QRScannerPage = () => {
+interface Scanner {
+    produitId : string;
+}
+
+const QRScannerPage = ({produitId} : Scanner) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const taskId = searchParams.get('taskId');
@@ -14,9 +18,10 @@ const QRScannerPage = () => {
   const handleScan = (result: string | null) => {
     if (result) {
       setScanResult(result);
-      sessionStorage.setItem('scannedTaskId', taskId || '');
-      alert("QR Code scanné avec succès !");
-      router.push('/agent');
+    //   sessionStorage.setItem('scannedTaskId', taskId || '');
+    //   alert("QR Code scanné avec succès !");
+    //   router.push('/agent');
+    console.log(result)
     }
   };
 

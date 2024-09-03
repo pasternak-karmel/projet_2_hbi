@@ -37,14 +37,14 @@ export default function NavbarAgent() {
           </div>
 
           <div className="hidden md:flex space-x-8 items-center">
-            <Link href="/tasks" className="text-gray-700 hover:text-teal-600">
+            {/* <Link href="/agent" className="text-gray-700 hover:text-teal-600">
               Tâches
-            </Link>
-            <Link href="/report" className="text-gray-700 hover:text-teal-600">
-              Reporter Livraison
-            </Link>
+            </Link> */}
             <Link href="/scan" className="text-gray-700 hover:text-teal-600">
               Scanner QR Code
+            </Link>
+            <Link href="/historique" className="text-gray-700 hover:text-teal-600">
+              Historiques
             </Link>
             <Link href="/contact-admin" className="text-gray-700 hover:text-teal-600">
               Contacter Admin
