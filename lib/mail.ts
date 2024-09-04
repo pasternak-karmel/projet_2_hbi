@@ -1,8 +1,12 @@
 import { Resend } from "resend";
+import { useQRCode } from "next-qrcode";
+// import fs from "fs";
+// import QrCode from "./qrCode";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const domain = process.env.NEXT_PUBLIC_APP_URL;
+// const { Image } = useQRCode();
 
 export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
   await resend.emails.send({
@@ -55,11 +59,18 @@ export const AttribueProduct = async (
     subject: "Un produit vous êtes assigné",
     html: `<p>Le produit ${nomArticle} Vous a été assigné. Veuillez prendre contact avec le vendeur dans la section mes livraisons. Merci</p>`,
   });
+  // const myImage = QrCode();
   await resend.emails.send({
     from: "Acme <onboarding@resend.dev>",
     to: emailUser,
     subject: "Création de votre produit sur Project HBI",
     html: `<p>Votre produit ${nomArticle} a été accepté. Un agent vous contactera pour prendre les dispositions avec vous. Merci</p>`,
+    // attachments: [
+    //   {
+    //     filename: "qrcode.png",
+    //     content: myImage,
+    //   },
+    // ],
   });
 };
 

@@ -1,4 +1,3 @@
-import Header from "@/components/header";
 import { SidebarNav } from "@/components/sidebar-nav";
 
 // export const metadata: Metadata = {

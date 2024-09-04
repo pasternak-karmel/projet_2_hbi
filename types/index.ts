@@ -16,6 +16,11 @@ export interface Article {
   status: String;
   agentId: String;
   quantite: number;
+  soldQuantity: number;
+  remainingQuantity: number;
+  nomUser: string;
+  adresse: string;
+  contact: string;
 }
 
 export interface ProduitProps {

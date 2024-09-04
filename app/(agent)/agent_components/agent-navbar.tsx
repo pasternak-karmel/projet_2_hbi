@@ -32,7 +32,7 @@ export default function NavbarAgent() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/agent" className="text-2xl font-bold text-teal-600">
-              Board
+              Livreur
             </Link>
           </div>
 
@@ -40,13 +40,22 @@ export default function NavbarAgent() {
             {/* <Link href="/agent" className="text-gray-700 hover:text-teal-600">
               Tâches
             </Link> */}
-            <Link href="/scan" className="text-gray-700 hover:text-teal-600">
-              Scanner QR Code
+            <Link href="/boite" className="text-gray-700 hover:text-teal-600">
+              Ma boite
             </Link>
-            <Link href="/historique" className="text-gray-700 hover:text-teal-600">
+            <Link href="/agent" className="text-gray-700 hover:text-teal-600">
+              Livraison disponible
+            </Link>
+            <Link
+              href="/historique"
+              className="text-gray-700 hover:text-teal-600"
+            >
               Historiques
             </Link>
-            <Link href="/contact-admin" className="text-gray-700 hover:text-teal-600">
+            <Link
+              href="/contact-admin"
+              className="text-gray-700 hover:text-teal-600"
+            >
               Contacter Admin
             </Link>
             <UserButton />

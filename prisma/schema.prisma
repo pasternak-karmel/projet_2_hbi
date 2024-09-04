@@ -116,6 +116,7 @@ model Article {
   quantite         Int
   status           ArticleStatus @default(ATTENTE)
   isDeleted        Boolean  @default(false)
+  isRecu           Boolean  @default(false)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   agentId          String?  
@@ -177,3 +178,5 @@ model AdminAgentLog {
 
   User        User     @relation("AdminAgentLog", fields: [userId], references: [id], onDelete: Cascade)
 }
+
+//Tout les agents voient les livraisons a faire et chacun sélectionne ce qu'il veut récupérer
