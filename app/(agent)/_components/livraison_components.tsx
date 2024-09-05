@@ -56,12 +56,12 @@ export default function Livraison_components({ produit }: LivraisonProps) {
           href={`/agent/${produit.id}`}
           className="flex-1 bg-indigo-600 text-white text-center px-4 py-2 rounded-lg hover:bg-indigo-900 transition text-sm"
         > */}
-          <button
+          {/* <button
             className="flex-1 bg-indigo-600 text-white text-center px-4 py-2 rounded-lg hover:bg-indigo-900 transition text-sm"
             onClick={() => handleViewDetails(produit.id)}
           >
             Détails
-          </button>
+          </button> */}
         {/* </Link> */}
         {pathname === "/boite" && (
           <button

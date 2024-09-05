@@ -26,11 +26,6 @@ export default function LivreurDashboard() {
           ))}
         </div>
         <div className="mt-8 text-center">
-          <button
-            className="bg-yellow-500 text-white px-6 py-3 rounded-lg ring-2 ring-yellow-400 hover:bg-yellow-600 hover:text-black transition"
-          >
-            Signaler un problème / Maladie
-          </button>
         </div>
       </div>
     </main>
