@@ -51,7 +51,12 @@ export async function POST(req: Request) {
     if (!article) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
-
+    if (article?.id === userId) {
+      return NextResponse.json(
+        { error: "Tu ne peux pas encore payer ton propore produit" },
+        { status: 400 }
+      );
+    }
     if (article.quantite < quantite) {
       return NextResponse.json(
         { error: "Pas assez de stock " },

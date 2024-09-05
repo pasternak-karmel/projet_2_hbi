@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { QrReader } from "react-qr-reader";
 import { useRouter, useSearchParams } from "next/navigation";
 import { scan_produit } from "@/actions/scan_qr";
-import axios from "axios";
 
 interface Scanner {
   produitId: string;
@@ -12,7 +11,6 @@ interface Scanner {
 const QRScannerPage = ({ produitId }: Scanner) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const taskId = searchParams.get("taskId");
 
   const [scanResult, setScanResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -21,10 +19,16 @@ const QRScannerPage = ({ produitId }: Scanner) => {
   const handleScan = async (result: string | null) => {
     if (result && isScanning) {
       setScanResult(result);
-      setIsScanning(false); // Désactiver le scanner après le scan
+      setIsScanning(false);
       try {
-        await scan_produit(produitId, result);
-        router.push(`/confirmation?taskId=${taskId}`); // Redirection vers la page de confirmation
+        const scanResult = await scan_produit(produitId, result);
+        if (scanResult?.produitIsDisponible) {
+          router.push(
+            `/confirmation?result=${scanResult.produitIsDisponible.id}`
+          );
+        } else if (scanResult?.error) {
+          setError(scanResult.error);
+        }
       } catch (err) {
         setError("Erreur lors de la confirmation du produit.");
         console.error(err);
@@ -33,13 +37,15 @@ const QRScannerPage = ({ produitId }: Scanner) => {
   };
 
   const handleError = (err: any) => {
-    setError("Erreur lors de l'accès à la caméra. Veuillez vérifier les permissions.");
+    setError(
+      "Erreur lors de l'accès à la caméra. Veuillez vérifier les permissions."
+    );
     console.error(err);
   };
 
   const handleResetScan = () => {
     setError(null);
-    setIsScanning(true); // Réactiver le scanner pour un nouvel essai
+    setIsScanning(true);
   };
 
   return (
@@ -55,7 +61,7 @@ const QRScannerPage = ({ produitId }: Scanner) => {
                   if (error) handleError(error);
                 }}
                 constraints={{ facingMode: "environment" }}
-                className="w-full h-64 mb-4 rounded-lg mx-auto" // Bien centrer la caméra
+                className="w-full h-64 mb-4 rounded-lg mx-auto"
               />
               <div className="absolute top-0 left-0 right-0 bottom-0 border-4 border-transparent border-r-teal-500 border-l-teal-500 animate-pulse"></div>
             </>

@@ -3,21 +3,28 @@ import { db } from "@/lib/db";
 
 const decodeBase64 = (input: string) => {
   return atob(input);
+  // const decodedString = decodeBase64(userScan);
+  // if (decodedString !== produitId) return;
 };
 
 export const scan_produit = async (produitId: string, userScan: string) => {
-  // const decodedString = decodeBase64(userScan);
-  // if (decodedString !== produitId) return;
-
+  if (produitId !== userScan) {
+    return { error: "Vous n'avez pas scanné le bon produit." };
+  }
 
   const produitIsDisponible = await db.article.findFirst({
-    where: { id: produitId },
+    where: { id: userScan },
     include: {
       User: true,
     },
   });
-  if (!produitIsDisponible || produitIsDisponible.isDeleted === true) {
-    return { error: "produit non trouver ou deja supprimer " };
+
+  if (!produitIsDisponible) {
+    return { error: "Produit non trouvé." };
+  }
+
+  if (produitIsDisponible.isDeleted) {
+    return { error: "Produit supprimé." };
   }
 
   return { produitIsDisponible };

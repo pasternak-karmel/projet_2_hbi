@@ -6,7 +6,7 @@ import { Article } from "@prisma/client";
 
 export default function Boite() {
   const { isLoading, error, data } = useQuery({
-    queryKey: ["agent"],
+    queryKey: ["maBoite"],
     queryFn: () => fetch(`/api/getLivreur/moi`).then((res) => res.json()),
   });
 
