@@ -40,13 +40,13 @@ export function RadioGroupForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full flex justify-between">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-auto flex justify-between">
         <FormField
           control={form.control}
           name="type"
           render={({ field }) => (
             <FormItem className="flex content-center items-center justify-between">
-              <FormLabel className="font-extrabold">Confirmez...</FormLabel>
+              <FormLabel className="font-extrabold">Confirmez</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
