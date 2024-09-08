@@ -34,7 +34,7 @@ export default function Boite() {
             className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-full ring-4 ring-indigo-300 hover:bg-gradient-to-l hover:from-indigo-600 hover:to-blue-500 transition-all duration-300 shadow-lg transform hover:scale-105"
             onClick={() => router.push("/contact")} // Redirection vers la page contact
           >
-            Signaler un problème / Maladie
+            contactez l'admin
           </button>
         </div>
       </div>
