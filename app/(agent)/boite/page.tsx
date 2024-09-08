@@ -1,9 +1,9 @@
 "use client";
-import Loader from "@/components/Loader";
 import { useQuery } from "@tanstack/react-query";
 import Livraison_components from "../_components/livraison_components";
 import { Article } from "@prisma/client";
 import { useRouter } from "next/navigation"; // Importer le useRouter
+import LoaderState from "@/components/Loader";
 
 export default function Boite() {
   const router = useRouter(); // Initialiser useRouter
@@ -12,7 +12,7 @@ export default function Boite() {
     queryFn: () => fetch(`/api/getLivreur/moi`).then((res) => res.json()),
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoaderState />;
 
   if (error) return "An error has occurred: " + error.message;
 

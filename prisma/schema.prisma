@@ -19,6 +19,13 @@ enum UserRole {
   AGENT
 }
 
+enum OrderStatus {
+  payer
+  traitement
+  traiter
+  livrer
+}
+
 enum ArticleStatus {
   ATTENTE
   REFUS
@@ -138,12 +145,25 @@ model Order {
   userId      String   @db.ObjectId
   totalAmount Float
   items       Json
-  status      String   @default("pending")
+  status      OrderStatus
+  // status      String   @default("pending")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  // items       OrderItem[]
 
   User        User     @relation(fields: [userId], references: [id])
 }
+
+// model OrderItem {
+//   id        String  @id @default(uuid()) @map("_id")
+//   orderId   String
+//   productId String
+//   quantity  Int
+//   price     Float
+//   image     String
+//   nom       String
+//   Order     Order    @relation(fields: [orderId], references: [id])
+// }
 
 model Message {
   id           String   @id @default(uuid()) @map("_id")
@@ -178,5 +198,3 @@ model AdminAgentLog {
 
   User        User     @relation("AdminAgentLog", fields: [userId], references: [id], onDelete: Cascade)
 }
-
-//Tout les agents voient les livraisons a faire et chacun sélectionne ce qu'il veut récupérer

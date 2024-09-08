@@ -2,33 +2,21 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import Loader from "@/components/Loader";
 import { RadioGroupForm } from "../../_components/radio-agent";
+import LoaderState from "@/components/Loader";
 
 const ProductConfirmationPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["confirmationPage"],
-    queryFn: () => fetch(`/api/getProduit/${params.id}`).then((res) => res.json()),
+    queryFn: () =>
+      fetch(`/api/getProduit/${params.id}`).then((res) => res.json()),
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoaderState />;
 
   if (error) return "An error has occurred: " + error.message;
-
-  const handleConfirm = () => {
-    if (window.confirm("Êtes-vous sûr de vouloir valider ce produit ?")) {
-      router.push("/agent");
-    }
-  };
-
-  const handleReject = () => {
-    if (window.confirm("Êtes-vous sûr de vouloir rejeter ce produit ?")) {
-      router.push("/agent");
-    }
-  };
-
 
   return (
     <main className="min-h-screen p-6 bg-gray-50 pt-20">
@@ -52,34 +40,12 @@ const ProductConfirmationPage = ({ params }: { params: { id: string } }) => {
           {/* <p className="text-gray-600 mb-2">Identifiant du vendeur : {data.seller.id}</p>
           <p className="text-gray-600 mb-2">Lieu de résidence : {data.seller.address}</p>
           <p className="text-gray-600 mb-4">Contact : {data.seller.phone}</p> */}
-
-          {/* {isConfirmed ? (
-            <p className="text-green-600 text-lg">Produit confirmé !</p>
-          ) : (
-            <button
-              className="bg-teal-500 text-white px-6 py-3 rounded-lg ring-2 ring-teal-400 hover:bg-teal-600 hover:text-black transition"
-              onClick={handleSystemConfirmation}
-            >
-              Confirmer manuellement
-            </button>
-          )} */}
         </div>
-
-        {/* <div className="text-center space-x-4">
-          <button
-            onClick={handleReject}
-            className="bg-red-500 text-white px-6 py-3 rounded-lg ring-2 ring-red-400 hover:bg-red-600 transition"
-          >
-            Rejeter
-          </button>
-          <button
-            onClick={handleConfirm}
-            className="bg-green-500 text-white px-6 py-3 rounded-lg ring-2 ring-green-400 hover:bg-green-600 transition"
-          >
-            Valider
-          </button>
-        </div> */}
-        <RadioGroupForm />
+        {data.isRecu === true ? (
+          <div>Ce produit a été déja reçu</div>
+        ) : (
+          <RadioGroupForm produit={params.id} />
+        )}
       </div>
     </main>
   );

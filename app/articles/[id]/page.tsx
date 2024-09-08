@@ -6,25 +6,21 @@ import { cn } from "@/lib/utils";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Loader from "@/components/Loader";
-import AccessDenied from "@/components/access-denied";
-import { useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
+import { produit } from "@/actions/my_api";
+import LoaderState from "@/components/Loader";
 
 export default function ProductPage({ params }: { params: { id: string } }) {
-  // const { data: session } = useSession();
-  // if (!session) return <AccessDenied />;
-
   const {
     isLoading,
     error,
     data: product,
   } = useQuery({
-    queryKey: ["articlesSpecific", params.id],
-    queryFn: () =>
-      fetch(`/api/getProduit/${params.id}`).then((res) => res.json()),
+    queryKey: ["product", params.id],
+    queryFn: () => produit(params.id),
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoaderState />;
   if (error) return <div>Error: {error.message}</div>;
   return (
     <div className="container mx-auto p-8">
@@ -52,9 +48,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         </div>
 
         <div className="absolute top-4 right-4 space-y-2">
-          <Link href={`/edit/${product.id}`}>
-              Edit Product
-          </Link>
+          <Link href={`/edit/${product.id}`}>Edit Product</Link>
           <button className="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700">
             Delete Product
           </button>
@@ -95,9 +89,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         <TabsContent value="inventory">
           <div className="mt-4">
             <h2 className="text-xl font-bold mb-2">Inventory</h2>
-            <p>
-              Stock:
-            </p>
+            <p>Stock:</p>
             <input
               type="number"
               className="mt-2 p-2 border rounded-lg"

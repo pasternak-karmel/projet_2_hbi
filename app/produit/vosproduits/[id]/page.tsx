@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { MessageriesButton } from "@/components/messageries/messageries";
+import { produit } from "@/actions/my_api";
 
 const FormSchema = z.object({
   nom: z.string(),
@@ -50,8 +51,7 @@ export default function Produit({ params }: { params: { id: string } }) {
     data: product,
   } = useQuery({
     queryKey: ["votreProduit", params.id],
-    queryFn: () =>
-      fetch(`/api/getProduit/${params.id}`).then((res) => res.json()),
+    queryFn: () => produit(params.id),
   });
 
   const mutation = useMutation({

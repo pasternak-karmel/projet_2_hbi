@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function DemoPaymentMethod() {
+export default function PaymentMethod() {
   return (
     <div>
       <Card className="flex flex-col justify-center items-center w-[75%]">
@@ -85,7 +85,7 @@ export default function DemoPaymentMethod() {
           </RadioGroup>
           <div className="grid gap-2">
             <Label htmlFor="name">Name</Label>
-            <Input id="name" placeholder="First Last" />
+            <Input id="name" placeholder="Name on the card" />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="number">Card number</Label>
@@ -139,7 +139,7 @@ export default function DemoPaymentMethod() {
           </div>
         </CardContent>
         <CardFooter>
-          <Button className="w-full">Continue</Button>
+          <Button className="w-full">Proceder au paiement</Button>
         </CardFooter>
       </Card>
     </div>

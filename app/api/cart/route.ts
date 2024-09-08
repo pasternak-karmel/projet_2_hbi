@@ -2,15 +2,20 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 
+type CartRequestBody = {
+  productId: string;
+  quantity: number;
+};
+
 export async function POST(request: Request) {
   const session = await auth();
 
   if (!session || !session.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  // console.log(session.user.cart);
 
   const { productId, quantity } = await request.json();
-  const id = "c56c01dd-5141-411e-bf21-22ce52c0180f";
 
   if (!productId || quantity <= 0) {
     return NextResponse.json(
@@ -21,7 +26,7 @@ export async function POST(request: Request) {
 
   try {
     const product = await db.article.findFirst({
-      where: { id: id },
+      where: { id: productId },
       include: {
         categories: true,
       },
@@ -44,14 +49,33 @@ export async function POST(request: Request) {
         productId: product.id,
         nom: product.nom,
         prix: product.prix,
-        image: product.image,
+        image: product.image?.[0],
         quantity,
       });
     }
 
     session.user.cart = cart;
 
-    return NextResponse.json({ cart }, { status: 200 });
+    const updatedSession = {
+      ...session,
+      user: {
+        ...session.user,
+        cart,
+      },
+    };
+    if (!updatedSession) {
+      return NextResponse.json(
+        { error: "Session not updated" },
+        { status: 403 }
+      );
+    }
+    // console.log(updatedSession);
+    // console.log("Updated session:", JSON.stringify(session, null, 2));
+
+    return NextResponse.json(
+      { cart: updatedSession.user.cart },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error adding to cart:", error);
     return NextResponse.json(

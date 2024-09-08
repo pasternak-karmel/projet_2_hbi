@@ -26,9 +26,10 @@ import React, { Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "@/components/Loader";
 import ProductImages from "@/components/ProductImages";
-import CustomizeProducts from "@/components/CustomizeProducts";
 import Add from "@/components/Add";
 import SelectAgent from "../../_components/select-agent";
+import LoaderState from "@/components/Loader";
+import { produit } from "@/actions/my_api";
 
 // const FormSchema = z.object({
 //   email: z
@@ -49,11 +50,10 @@ export default function ArticlesSpecifiquePage({
     data: product,
   } = useQuery({
     queryKey: ["product", params.id],
-    queryFn: () =>
-      fetch(`/api/getProduit/${params.id}`).then((res) => res.json()),
+    queryFn: () => produit(params.id),
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoaderState />;
   if (error) return <div>Error: {error.message}</div>;
 
   if (!product) {
@@ -106,15 +106,7 @@ export default function ArticlesSpecifiquePage({
             : "Nouveau, jamais utilisé"}
         </p>
         <div className="h-[2px] bg-gray-100" />
-        {product.variants && product.productOptions ? (
-          <CustomizeProducts
-            productId={product._id!}
-            variants={product.variants}
-            productOptions={product.productOptions}
-          />
-        ) : (
-          <Add stockNumber={product.quantite} productId={product.id!} />
-        )}
+        <Add stockNumber={product.quantite} productId={product.id!} />
         <div className="h-[2px] bg-gray-100" />
         <div className="text-sm" key={product.nom}>
           <h4 className="font-medium mb-4">{product.nom}</h4>

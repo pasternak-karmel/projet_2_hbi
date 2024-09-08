@@ -116,11 +116,10 @@ export default function AddProduit() {
         fileStates.map(async (fileState) => {
           try {
             const res = await edgestore.myArrowImages.upload({
+              // options: { temporary: true },
               file: fileState.file,
               input: { type: "post" },
-              onProgressChange: async (progress) => {
-                // updateFileProgress(progress, "COMPLETE");
-              },
+              onProgressChange: async (progress) => {},
             });
             return res.url;
           } catch (err) {
@@ -145,6 +144,7 @@ export default function AddProduit() {
 
       const result = await response.json();
       if (result.succes) {
+        // edgestore.myArrowImages.confirmUpload();
         toast("Article ajouté avec succès", {
           description: result.message,
           action: { label: "Fermer", onClick: () => console.log("Undo") },
@@ -153,6 +153,8 @@ export default function AddProduit() {
         setFileStates([]);
         setUrls([]);
       } else {
+        // edgestore.myArrowImages.delete(urls);
+
         toast.error("Erreur lors de l'ajout de l'article", {
           description: result.message,
           action: { label: "Fermer", onClick: () => console.log("Undo") },
@@ -438,28 +440,127 @@ export default function AddProduit() {
               /> */
 }
 
-// await Promise.all(
-//   addedFiles.map(async (addedFileState) => {
+
+// export default function AddProduit() {
+//   const [fileStates, setFileStates] = useState<FileState[]>([]);
+//   const [urls, setUrls] = useState<
+//     { url: string; thumbnailUrl: string | null }[]
+//   >([]);
+//   const [loading, setLoading] = useState(false);
+//   const { edgestore } = useEdgeStore();
+// function updateFileProgress(key: string, progress: FileState["progress"]) {
+//     setFileStates((fileStates) => {
+//       const newFileStates = structuredClone(fileStates);
+//       const fileState = newFileStates.find(
+//         (fileState) => fileState.key === key
+//       );
+//       if (fileState) {
+//         fileState.progress = progress;
+//       }
+//       return newFileStates;
+//     });
+//   }
+
+//   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+//     setLoading(true);
 //     try {
-//       const res = await edgestore.myArrowImages.upload({
-//         file: addedFileState.file,
-//         input: { type: "post" },
-//         onProgressChange: async (progress) => {
-//           updateFileProgress(addedFileState.key, progress);
-//           if (progress === 100) {
-//             await new Promise((resolve) =>
-//               setTimeout(resolve, 1000)
-//             );
-//             updateFileProgress(
-//               addedFileState.key,
-//               "COMPLETE"
-//             );
+//       if (fileStates.length === 0) {
+//         return toast.error("Erreur!!!", {
+//           description: "Veuillez sélectionner au moins une image",
+//           action: { label: "Fermer", onClick: () => console.log("Undo") },
+//         });
+//       }
+
+//       const imageUrls = await Promise.all(
+//         fileStates.map(async (fileState) => {
+//           try {
+//             const res = await edgestore.myArrowImages.upload({
+//               options: { temporary: true },
+//               file: fileState.file,
+//               input: { type: "post" },
+//               onProgressChange: async (progress) => {},
+//             });
+//             return res.url;
+//           } catch (err) {
+//             toast.error(`Erreur lors de l'upload de l'image`, {
+//               description: `Image: ${fileState.key} - Erreur lors de l'upload`,
+//             });
+//             return null;
 //           }
-//         },
+//         })
+//       );
+
+//       values.image = imageUrls.filter((url): url is string => url !== null);
+
+//       const response = await fetch("/api/AddArticle", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(values),
 //       });
-//       console.log(res);
-//     } catch (err) {
-//       updateFileProgress(addedFileState.key, "ERROR");
+
+//       if (!response.ok)
+//         throw new Error(`HTTP error! status: ${response.status}`);
+
+//       const result = await response.json();
+//       if (result.succes) {
+//         edgestore.myArrowImages.confirmUpload();
+//         toast("Article ajouté avec succès", {
+//           description: result.message,
+//           action: { label: "Fermer", onClick: () => console.log("Undo") },
+//         });
+//         form.reset();
+//         setFileStates([]);
+//         setUrls([]);
+//       } else {
+//         edgestore.myArrowImages.delete(urls);
+
+//         toast.error("Erreur lors de l'ajout de l'article", {
+//           description: result.message,
+//           action: { label: "Fermer", onClick: () => console.log("Undo") },
+//         });
+//       }
+//     } catch (error) {
+//       toast.error("Une erreur s'est produite", {
+//         description: "Veuillez réessayer plus tard",
+//         action: { label: "Fermer", onClick: () => console.log("Undo") },
+//       });
+//     } finally {
+//       setLoading(false);
 //     }
-//   })
+//   };
+// return (
+// <div className="space-y-4">
+//               <FormLabel className="text-lg font-medium text-gray-800">
+//                 Ajouter les images de votre article
+//               </FormLabel>
+
+//               <MultiImageDropzone
+//                 value={fileStates}
+//                 dropzoneOptions={{
+//                   maxFiles: 6,
+//                 }}
+//                 onChange={(files) => {
+//                   setFileStates(files);
+//                 }}
+//                 onFilesAdded={async (addedFiles) => {
+//                   setFileStates([...fileStates, ...addedFiles]);
+//                 }}
+//               />
+//             </div>
+//             <Button
+//               type="submit"
+//               className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-all duration-200"
+//               disabled={loading}
+//             >
+//               {loading ? "Publication en cours..." : "Publier"}
+//             </Button>
 // );
+// }
+
+
+// my error is Type 'string | File' is not assignable to type 'File'.
+//   Type 'string' is not assignable to type 'File'.ts(2322)
+
+// also i want to confirm the upload when succes but remains urls as parameter 
+
+// also display the progress when uploading

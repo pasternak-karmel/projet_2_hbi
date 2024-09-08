@@ -15,6 +15,8 @@ import Loader from "@/components/Loader";
 import ProductImages from "@/components/ProductImages";
 import Add from "@/components/Add";
 import { useCurrentRole } from "@/hooks/use-current-role";
+import { produit } from "@/actions/my_api";
+import LoaderState from "@/components/Loader";
 
 export default function ProductSpecificPage({
   params,
@@ -29,11 +31,11 @@ export default function ProductSpecificPage({
     data: product,
   } = useQuery({
     queryKey: ["product", params.id],
-    queryFn: () =>
-      fetch(`/api/getProduit/${params.id}`).then((res) => res.json()),
+    queryFn: () => produit(params.id),
+    // fetch(`/api/getProduit/${params.id}`).then((res) => res.json()),
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoaderState />;
   if (error) return <div>Error: {error.message}</div>;
 
   if (!product) {

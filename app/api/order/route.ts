@@ -79,8 +79,13 @@ export async function POST(req: Request) {
           productId: article.id,
           quantity: quantite,
           price: article.prix,
+          nom: article.nom,
+          image: article.image?.[0],
         },
         status: "payed",
+      },
+      include: {
+        User: true,
       },
     });
 

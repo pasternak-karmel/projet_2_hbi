@@ -14,8 +14,6 @@ export async function PUT(
   try {
     const data = await req.json();
 
-    // console.log(data);
-
     const updatedProduct = await db.user.update({
       where: { id: id },
       data: {
@@ -27,7 +25,7 @@ export async function PUT(
     return NextResponse.json({ updatedProduct }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { message: "Error updating product", error },
+      { message: "Error updating user", error },
       { status: 500 }
     );
   }

@@ -7,8 +7,8 @@ import { Loader, Send } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import axios from "axios";
 import { useDebouncedCallback } from "use-debounce";
+import { Message } from "@/actions/my_api";
 
 interface Message {
   id: string;
@@ -35,13 +35,14 @@ export const MessageriesForm = ({ produit }: { produit: string }) => {
 
   const mutation = useMutation({
     mutationFn: async (newMessage: string) => {
-      const response = await fetch(`/api/messages/${produit}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ content: newMessage, articleId: produit }),
-      });
+      const response = await Message(newMessage, produit);
+      // fetch(`/api/messages/${produit}`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ content: newMessage, articleId: produit }),
+      // });
 
       if (!response.ok) {
         throw new Error("Failed to send message");

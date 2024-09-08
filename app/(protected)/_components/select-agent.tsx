@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { article_accepte } from "@/actions/accepte_article";
+import { FormError } from "@/components/form-error";
 
 type Agent = {
   id: string;
@@ -41,6 +42,7 @@ const SelectAgent = ({ article }: { article: string }) => {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [errorSetting, setErrorSetting] = useState("");
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -67,7 +69,11 @@ const SelectAgent = ({ article }: { article: string }) => {
   }, []);
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    await article_accepte(article, data.agentId);
+    // await article_accepte(article);
+    const result = await article_accepte(article);
+    if (result.success) {
+      setErrorSetting(result.success);
+    }
   }
 
   if (loading) {
@@ -107,6 +113,7 @@ const SelectAgent = ({ article }: { article: string }) => {
                 <Link href="/examples/forms">agent settings</Link>.
               </FormDescription>
               <FormMessage />
+              {errorSetting && <p>{errorSetting}</p>}
             </FormItem>
           )}
         />

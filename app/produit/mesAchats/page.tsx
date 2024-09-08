@@ -2,14 +2,8 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import Loader from "@/components/Loader";
-
-const fetchPurchases = async () => {
-  const res = await fetch(`/api/achats`);
-  if (!res.ok) {
-    throw new Error("Erreur lors de la récupération de vos achats");
-  }
-  return res.json();
-};
+import { fetchPurchases } from "@/actions/my_api";
+import LoaderState from "@/components/Loader";
 
 export default function UserPurchases() {
   const {
@@ -21,7 +15,7 @@ export default function UserPurchases() {
     queryFn: () => fetchPurchases(),
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoaderState />;
 
   if (error)
     return (
@@ -50,16 +44,6 @@ export default function UserPurchases() {
                   Total Amount:{" "}
                   <span className="font-medium">{order.totalAmount} XOF</span>
                 </p>
-                {/* <div className="text-gray-600 mb-2">
-                  Items:
-                  <ul className="list-disc ml-5">
-                    {JSON.parse(order.items).map((item: any, index: number) => (
-                      <li key={index}>
-                        {item.nom} - Quantity: {item.quantite}
-                      </li>
-                    ))}
-                  </ul>
-                </div> */}
                 <p className="text-gray-600">
                   Status: <span className="font-medium">{order.status}</span>
                 </p>

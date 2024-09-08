@@ -41,15 +41,20 @@ export default {
       const { pathname } = request.nextUrl;
       return true;
     },
+
     async jwt({ token, trigger, session, account }) {
-      if (trigger === "update") token.name = session.user.name;
+      if (trigger === "update") {
+        token.cart = session.user.cart;
+        token.name = session.user.name;
+      }
+
       if (account?.provider === "keycloak") {
         return { ...token, accessToken: account.access_token };
       }
+
       if (!token.sub) return token;
 
       const existingUser = await getUserById(token.sub);
-
       if (!existingUser) return token;
 
       const existingAccount = await getAccountByUserId(existingUser.id);
@@ -59,17 +64,25 @@ export default {
       token.email = existingUser.email;
       token.role = existingUser.role;
       token.id = existingUser.id;
+
+      if (session?.user?.cart) {
+        token.cart = session.user.cart;
+      }
       return token;
     },
+
     async session({ session, token }) {
       if (token?.accessToken) {
         session.accessToken = token.accessToken;
       }
+
       if (token.role && session.user) {
         session.user.role = token.role as UserRole;
       }
-      // session.user.id = token.id as string;
+
       session.user.id = token.id ? (token.id as string) : "";
+      session.user.cart = Array.isArray(token.cart) ? token.cart : [];
+
       return session;
     },
   },

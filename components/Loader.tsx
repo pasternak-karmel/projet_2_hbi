@@ -1,11 +1,11 @@
-import { LoaderIcon } from "lucide-react";
+import { Loader } from "lucide-react";
 import React from "react";
 
-export default function Loader() {
+export default function LoaderState() {
   return (
     <div className="min-h-screen w-full bg-white flex justify-center items-center ">
       <div className="" role="status">
-        <LoaderIcon className="text-primary-800 animate-spin" size={50} />
+        <Loader className="animate-spin text-gray-500" />
       </div>
     </div>
   );

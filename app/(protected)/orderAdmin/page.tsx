@@ -1,5 +1,6 @@
 "use client";
 import { adminGetOrder } from "@/actions/admin-get-order";
+import LoaderState from "@/components/Loader";
 import Loader from "@/components/Loader";
 import { useQuery } from "@tanstack/react-query";
 
@@ -13,7 +14,7 @@ export default function OrderAdmin() {
     queryFn: () => adminGetOrder(),
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoaderState />;
 
   if (error)
     return (

@@ -5,7 +5,6 @@ import { MainNav } from "./main-nav";
 import { Navbar } from "@/app/(protected)/_components/navbar";
 import { usePathname, useRouter } from "next/navigation";
 import NavbarAgent from "@/app/(agent)/agent_components/agent-navbar";
-// import { NavbarAgent } from "@/app/(agent)/agent_components/agent-navbar";
 
 interface HeaderProps {
   session: Session | null;
@@ -45,7 +44,6 @@ export default function Header({ session, role }: HeaderProps) {
   }
   
   if (role === "AGENT") {
-    // return <Navbar />;
     return <NavbarAgent />;
   }
 

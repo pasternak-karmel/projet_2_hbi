@@ -39,6 +39,9 @@ import Link from "next/link";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useSession } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
+import { updateUser } from "@/actions/my_api";
+import { ToastRessuable } from "@/function/notification-toast";
+import { error } from "console";
 
 const languages = [
   { label: "English", value: "en" },
@@ -62,29 +65,12 @@ const accountFormSchema = z.object({
       message: "Name must not be longer than 30 characters.",
     }),
   num: z.coerce.number().min(0, "number must be greater than or equal to 0"),
-  // dob: z.date({
-  //   required_error: "A date of birth is required.",
-  // }),
-  // language: z.string({
-  //   required_error: "Please select a language.",
-  // }),
-  // type: z.enum(["all", "mentions", "none"], {
-  //   required_error: "You need to select a notification type.",
-  // }),
   mobile: z.boolean().default(false).optional(),
-  // communication_emails: z.boolean().default(false).optional(),
-  // social_emails: z.boolean().default(false).optional(),
-  // marketing_emails: z.boolean().default(false).optional(),
-  // security_emails: z.boolean().default(true).optional(),
 });
 
 type AccountFormValues = z.infer<typeof accountFormSchema>;
 
-// This can come from your database or API.
-const defaultValues: Partial<AccountFormValues> = {
-  // name: "Your name",
-  // dob: new Date("2023-01-23"),
-};
+const defaultValues: Partial<AccountFormValues> = {};
 
 export default function AccountForm() {
   const { data: session } = useSession();
@@ -95,13 +81,17 @@ export default function AccountForm() {
 
   const mutation = useMutation({
     mutationFn: async (updatedData: any) => {
-      const response = await fetch(`/api/updateUser/${session?.user.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedData),
-      });
+      const response = await fetch(
+        `/api/updateUser/${session?.user.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedData),
+        }
+      );
+      // updateUser(updatedData);
 
       if (!response.ok) {
         throw new Error("Failed to update product");
@@ -110,22 +100,20 @@ export default function AccountForm() {
       return response.json();
     },
     onSuccess: () => {
-      // router.push(`/produit/vosproduits/${params.id}`);
-      // router.push("/produit/vosproduits");
-      console.log("succes");
+      ToastRessuable({
+        titre: "Success",
+        description: "Vos données ont été bien enregistrer",
+      });
+    },
+    onError: (error) => {
+      ToastRessuable({
+        titre: "Erreur",
+        description: error.message,
+      });
     },
   });
 
   function onSubmit(data: AccountFormValues) {
-    // toast({
-    //   title: "You submitted the following values:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
-    // console.log(data);
     mutation.mutate(data);
   }
 

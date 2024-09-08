@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import Loader from "@/components/Loader";
+import LoaderState from "@/components/Loader";
 import Livraison_components from "@/app/(agent)/_components/livraison_components";
 
 export default function LivreurDashboard() {
@@ -10,7 +10,7 @@ export default function LivreurDashboard() {
     queryFn: () => fetch("/api/getLivreur").then((res) => res.json()),
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoaderState />;
 
   if (error) return "An error has occurred: " + error.message;
 

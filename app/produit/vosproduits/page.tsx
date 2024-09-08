@@ -1,10 +1,9 @@
-// ArticlePage.tsx
 "use client";
 import React from "react";
 import ArticleCard from "@/components/ArticleCard";
 import { useQuery } from "@tanstack/react-query";
 import { Article } from "@/types";
-import Loader from "@/components/Loader";
+import LoaderState from "@/components/Loader";
 
 const ArticlePage: React.FC = () => {
   const { isLoading, error, data } = useQuery<Article[]>({
@@ -20,7 +19,7 @@ const ArticlePage: React.FC = () => {
         .then((data) => data.articles),
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoaderState />;
 
   if (error instanceof Error) return <div>Error: {error.message}</div>;
 

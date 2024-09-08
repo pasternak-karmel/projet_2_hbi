@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useKKiaPay } from "kkiapay-react";
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { Button } from "./ui/button";
+import { BuyArticle } from "@/actions/my_api";
 
 const Add = ({
   productId,
@@ -40,12 +41,10 @@ const Add = ({
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await fetch(
-        `/api/order?id=${productId}&quantite=${quantity}`,
-        {
-          method: "POST",
-        }
-      );
+      const response = await // BuyArticle(productId, quantity);
+      fetch(`/api/order?id=${productId}&quantite=${quantity}`, {
+        method: "POST",
+      });
 
       if (!response.ok) {
         throw new Error("Failed to complete the order");

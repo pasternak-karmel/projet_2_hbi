@@ -18,7 +18,6 @@ export async function GET(
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
-
     return NextResponse.json(order, { status: 200 });
   } catch (error) {
     console.error("Failed to fetch order:", error);

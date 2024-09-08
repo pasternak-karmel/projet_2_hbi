@@ -5,6 +5,7 @@ import { getUserById } from "@/data/user";
 import { db } from "@/lib/db";
 import { AttribueProduct } from "@/lib/mail";
 import { UserRole } from "@prisma/client";
+import { error } from "console";
 
 export const accepte_article = async (
   articleIds: string[],
@@ -15,7 +16,6 @@ export const accepte_article = async (
   const result = await db.article.updateMany({
     where: { id: { in: articleIds } },
     data: { status: "ACCEPTE", agentId },
-    // data: { status: "ACCEPTE", agentId: "66cefe6c3f91b7963ef0f2b6" },
   });
 
   if (result.count > 0) {
@@ -25,7 +25,7 @@ export const accepte_article = async (
   }
 };
 
-export const article_accepte = async (article: string) => {
+export const article_accepte = async (article: string, agentId?: string) => {
   const session = await auth();
   if (!session || !session.user || session.user.role !== UserRole.AGENT)
     return { error: "user non autorisé" };
@@ -71,7 +71,47 @@ export const article_accepte = async (article: string) => {
   }
 };
 
-//verif produit exist
-//suprimer u deja recuperer
+export const ConfirmRecuArticle = async (
+  produitId: string,
+  confirm: string
+) => {
+  let values;
 
-//verif
+  if (confirm === "yes") {
+    values = true;
+  } else if (confirm === "no") {
+    values = false;
+  } else return { error: "values received aren't conforme as expected " };
+
+  try {
+    const session = await auth();
+    if (!session || !session.user || session.user.role !== UserRole.AGENT)
+      return { error: "user non autorisé" };
+
+    const get = await db.article.findFirst({
+      where: { id: produitId, agentId: session.user.id },
+    });
+
+    if (!get)
+      return { error: "Ce produit n'est plus trouvé ou a été supprimer" };
+
+    if (get?.isRecu === values) {
+      return { error: `Ce produit a été deja marquer comme ${confirm}` };
+    } else {
+      if (values === false) {
+        await db.article.update({
+          where: { id: produitId, agentId: session.user.id },
+          data: { isRecu: values, status: "REFUS" },
+        });
+      } else {
+        await db.article.update({
+          where: { id: produitId, agentId: session.user.id },
+          data: { isRecu: values },
+        });
+      }
+    }
+    return { succes: true, message: "Produit marquer comme reçu avec succes" };
+  } catch (error) {
+    return { error: "Something went wrong" };
+  }
+};

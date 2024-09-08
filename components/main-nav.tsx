@@ -1,7 +1,6 @@
 "use client";
 import { Session } from "next-auth";
 
-
 import React from "react";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -29,6 +28,7 @@ import Menu from "./Menu";
 import { LoginButton } from "./auth/login-button";
 import { ExitIcon } from "@radix-ui/react-icons";
 import { FaUser } from "react-icons/fa";
+import { MyCart } from "./panier/cart-dialog";
 
 interface MainNavProps {
   session: Session | null;
@@ -172,6 +172,7 @@ export function MainNav({ session }: MainNavProps) {
                 )}
               </div>
             </div>
+            <MyCart />
           </div>
         </div>
       </div>

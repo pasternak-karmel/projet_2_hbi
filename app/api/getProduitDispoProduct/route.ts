@@ -3,9 +3,9 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+  // const { searchParams } = new URL(request.url);
 
-  const id = searchParams.get("id");
+  // const id = searchParams.get("id");
   const session = await auth();
 
   if (!session || !session.user) {

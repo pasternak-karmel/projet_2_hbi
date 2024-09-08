@@ -1,9 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { AgentLivraion } from "@/actions/get-agent-livraison";
-import Loader from "@/components/Loader";
 import * as React from "react";
+import LoaderState from "@/components/Loader";
 
 export default function Livraison() {
   const { isLoading, error, data } = useQuery({
@@ -11,7 +10,7 @@ export default function Livraison() {
     queryFn: () => fetch("/api/getLivraison").then((res) => res.json()),
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoaderState />;
 
   if (error) {
     return (

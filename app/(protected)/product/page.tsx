@@ -1,7 +1,6 @@
 "use client";
 import { AdminGetProduct } from "@/actions/admin-get-product";
 import Produit from "@/components/article/produit";
-import Loader from "@/components/Loader";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import * as React from "react";
@@ -17,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import LoaderState from "@/components/Loader";
 
 export default function ProductManagment({
   className,
@@ -46,7 +46,7 @@ export default function ProductManagment({
     });
   }, [date, queryClient]);
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoaderState />;
 
   if (error) {
     return (

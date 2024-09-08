@@ -20,7 +20,7 @@ export default async function Home() {
       <Hero />
       <div className="mt-24 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64">
         <h1 className="text-2xl">Produits en vedette </h1>
-        {/* <ProductList /> */}
+        <ProductList />
         <div className="mb-8"></div>
       </div>
       <div className="mt-24 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64">
@@ -44,7 +44,7 @@ export default async function Home() {
           </Link>
         </div>
 
-        {/* <ProductList /> */}
+        <ProductList />
 
         <div className="mb-8"></div>
       </div>

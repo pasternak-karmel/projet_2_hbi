@@ -1,9 +1,8 @@
 "use client";
-import Image from "next/image";
 
 import { article_accepte } from "@/actions/accepte_article";
-import Loader from "@/components/Loader";
 import { useQuery } from "@tanstack/react-query";
+import LoaderState from "@/components/Loader";
 
 export default function confirm({ params }: { params: { id: string } }) {
   const { isLoading, error, data } = useQuery({
@@ -12,7 +11,7 @@ export default function confirm({ params }: { params: { id: string } }) {
       fetch(`/api/getLivraison/${params.id}`).then((res) => res.json()),
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoaderState />;
 
   if (error) return "An error has occurred: " + error.message;
 
