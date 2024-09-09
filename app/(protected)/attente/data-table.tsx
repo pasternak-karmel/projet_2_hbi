@@ -67,15 +67,15 @@ export function DataTable<TData, TValue>({
       table.getSelectedRowModel().rowsById
     ).map((item) => (item.original as Article).id);
 
-    if (selectedArticleIds.length > 0) {
-      const result = await accepte_article(selectedArticleIds);
+    // if (selectedArticleIds.length > 0) {
+    //   const result = await accepte_article(selectedArticleIds)!;
 
-      if (result.success) {
-        console.log(result.success);
-      } else {
-        console.error(result.error);
-      }
-    }
+    //   if (result.success) {
+    //     console.log(result.success);
+    //   } else {
+    //     console.error(result.error);
+    //   }
+    // }
   };
 
   return (

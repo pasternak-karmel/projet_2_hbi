@@ -53,7 +53,7 @@ export default function UserPurchases() {
         </div>
       ) : (
         <div className="text-center text-gray-500">
-          Vous n'avez pas encore effectué d'achats. Allez-y et choisissez votre
+          Vous n&apos;avez pas encore effectué d&apos;achats. Allez-y et choisissez votre
           prochain coup de coeur
         </div>
       )}

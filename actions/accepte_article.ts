@@ -5,7 +5,6 @@ import { getUserById } from "@/data/user";
 import { db } from "@/lib/db";
 import { AttribueProduct } from "@/lib/mail";
 import { UserRole } from "@prisma/client";
-import { error } from "console";
 
 export const accepte_article = async (
   articleIds: string[],

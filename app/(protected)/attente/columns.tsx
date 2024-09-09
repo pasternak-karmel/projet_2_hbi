@@ -28,7 +28,7 @@ export type Article = {
   quantite: number;
 };
 
-export const columns: ColumnDef<Article>[] = [
+export const Columns: ColumnDef<Article>[] = [
   //id
   {
     id: "select",
@@ -112,7 +112,7 @@ export const columns: ColumnDef<Article>[] = [
             <DropdownMenuItem
               onClick={() => router.push(`/article/${articleId}`)}
             >
-              Consulter les infos de l'article
+              Consulter les infos de l&apos;article
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

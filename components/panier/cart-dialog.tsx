@@ -108,7 +108,7 @@ export function MyCart() {
                 <p className="text-indigo-600">{subtotal} XOF</p>
               </div>
               <p className="mt-0.5 text-sm text-gray-500">
-                Livraison et taxes calculés a l'étapes du paiement.
+                Livraison et taxes calculés a l&apos;étapes du paiement.
               </p>
               <div className="mt-6">
                 {pathname === "/payment-method" ? (

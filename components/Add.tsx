@@ -93,7 +93,7 @@ const Add = ({
               Only <span className="text-orange-500">{stockNumber} items</span>{" "}
               left!
               <br />
-              Don't miss it
+              Don&apos;t miss it
             </div>
           )}
         </div>

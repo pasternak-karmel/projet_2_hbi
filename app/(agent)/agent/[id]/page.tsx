@@ -4,7 +4,7 @@ import { article_accepte } from "@/actions/accepte_article";
 import { useQuery } from "@tanstack/react-query";
 import LoaderState from "@/components/Loader";
 
-export default function confirm({ params }: { params: { id: string } }) {
+export default function Confirm({ params }: { params: { id: string } }) {
   const { isLoading, error, data } = useQuery({
     queryKey: ["agent"],
     queryFn: () =>
@@ -60,8 +60,8 @@ export default function confirm({ params }: { params: { id: string } }) {
           {data.agentId !== null ? (
             <div>
               <p>
-                Opps le produit n'est plus disponible ou un autre livreur vient
-                de le réclamer
+                Opps le produit n&apos;est plus disponible ou un autre livreur
+                vient de le réclamer
               </p>
             </div>
           ) : (

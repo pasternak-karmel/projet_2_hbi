@@ -34,7 +34,7 @@ const ContactAdminPage = () => {
     <main className="min-h-screen p-6 bg-gradient-to-r from-blue-100 to-teal-100 pt-20">
       <div className="container mx-auto p-4">
         <h1 className="text-4xl font-bold mb-8 text-gray-800 text-center">
-          Contactez l'Admin
+          Contactez l&apos;Admin
         </h1>
 
         <div className="flex flex-col items-center">

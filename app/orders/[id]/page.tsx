@@ -46,7 +46,7 @@ const OrderPage = ({ params }: { params: { id: string } }) => {
             Merci pour votre achat
           </h1>
           <p className="text-sm text-gray-500 mt-2">
-            We appreciate your order, we're currently processing it. So hang
+            We appreciate your order, we&apos;re currently processing it. So hang
             tight and we&apos;ll send you confirmation very soon!
           </p>
 
@@ -56,37 +56,6 @@ const OrderPage = ({ params }: { params: { id: string } }) => {
               {order.trackingNumber || "Pas disponible"}
             </p>
           </div>
-
-          {/* Order items */}
-          {/* <ul className="mt-6 space-y-6">
-            {Array.isArray(order.items) ? (
-              order.items.map((item: any) => (
-                <li key={item.productId} className="flex py-6">
-                  <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                    <Image
-                      src={item.image}
-                      alt={item.nom}
-                      className="h-full w-full object-cover"
-                      width={96}
-                      height={96}
-                    />
-                  </div>
-                  <div className="ml-4 flex flex-1 flex-col">
-                    <div className="flex justify-between text-sm font-medium text-gray-900">
-                      <h3>{item.nom}</h3>
-                      <p className="ml-4">{item.price} XOF</p>
-                    </div>
-                    <p className="text-sm text-gray-500">
-                      Quantité: {item.quantity}
-                    </p>
-                  </div>
-                </li>
-              ))
-            ) : (
-              <p>Pas d'article trouver</p>
-            )}
-          </ul> */}
-
           <ul className="mt-6 space-y-6">
             <li key={order.items.productId} className="flex py-6">
               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">

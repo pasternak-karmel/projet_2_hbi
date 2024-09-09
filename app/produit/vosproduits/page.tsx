@@ -36,7 +36,8 @@ const ArticlePage: React.FC = () => {
         </div>
       ) : (
         <p className="text-center text-lg text-muted-foreground">
-          Vous n'avez pas d'article en vente. Commencer par publier un produit
+          Vous n&apos;avez pas d&apos;article en vente. Commencer par publier un
+          produit
         </p>
       )}
     </div>

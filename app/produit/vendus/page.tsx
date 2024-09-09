@@ -66,7 +66,7 @@ export default function ArticleVendus() {
                   </span>
                 </p>
                 {article.remainingQuantity === 0 && (
-                  <p>Votre article n'est plus disponible sur le marché</p>
+                  <p>Votre article n&apos;est plus disponible sur le marché</p>
                 )}
               </div>
             </div>
@@ -74,7 +74,7 @@ export default function ArticleVendus() {
         </div>
       ) : (
         <div className="text-center text-gray-500">
-          Pas d'article vendu pour vous. Priez Dieu vous allez vendre
+          Pas d&apos;article vendu pour vous. Priez Dieu vous allez vendre
         </div>
       )}
     </div>

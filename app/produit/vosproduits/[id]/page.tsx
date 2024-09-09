@@ -119,7 +119,9 @@ export default function Produit({ params }: { params: { id: string } }) {
       <Tabs defaultValue="edit" className="w-full max-w-4xl">
         <TabsList className="grid grid-cols-2 gap-2">
           <TabsTrigger value="edit">Modification</TabsTrigger>
-          <TabsTrigger value="discussion">Discussion avec l'agent</TabsTrigger>
+          <TabsTrigger value="discussion">
+            Discussion avec l&apos;agent
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="edit" className="mt-4">
           <Card className="shadow-lg rounded-xl">
@@ -230,11 +232,12 @@ export default function Produit({ params }: { params: { id: string } }) {
                     render={({ field }) => (
                       <FormItem className="flex items-center justify-between rounded-lg border p-4 bg-red-700">
                         <div className="text-white">
-                          <FormLabel>Suprimer l'article</FormLabel>
+                          <FormLabel>Suprimer l&apos;article</FormLabel>
                           <FormDescription className="text-white text-foreground">
                             Cochez si vous souhaitez supprimer votre article
                             <p>
-                              Attention vous pourrez plus récupérer l'article{" "}
+                              Attention vous pourrez plus récupérer
+                              &apos;article{" "}
                               <span className="font-bold underline">
                                 {product.nom}
                               </span>
@@ -273,21 +276,25 @@ export default function Produit({ params }: { params: { id: string } }) {
           <Card className="shadow-lg rounded-xl">
             <CardHeader className="bg-gradient-to-r from-gray-700 to-gray-900 text-white rounded-t-xl">
               <CardTitle className="text-2xl font-bold">
-                Discussion avec l'agent carmel
+                Discussion avec l&apos;agent carmel
               </CardTitle>
               <CardDescription className="text-sm">
-                Discutez de vos préocupation avec l'agent en toute simplicité
+                Discutez de vos préocupation avec l&apos;agent en toute
+                simplicité
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 p-6">
               {product.agentId !== null && (
                 <MessageriesButton asChild produit={product.id}>
-                  <Button> discuter avec l'agent </Button>
+                  <Button> discuter avec l&apos;agent </Button>
                 </MessageriesButton>
               )}
 
               {product.agentId === null && (
-                <p>Vous n'avez pas encore d'agent assigné pour cet article</p>
+                <p>
+                  Vous n&apos;avez pas encore d&apos;agent assigné pour cet
+                  article
+                </p>
               )}
             </CardContent>
           </Card>

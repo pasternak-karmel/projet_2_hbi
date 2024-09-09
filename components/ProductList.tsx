@@ -3,17 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import Loader from "@/components/Loader";
 import { Avatar, AvatarImage } from "./ui/avatar";
-import { CreateCart } from "@/actions/actions";
-import { toast } from "sonner";
-import { useSession } from "next-auth/react";
-import { ToastRessuable } from "@/function/notification-toast";
 import { useAddToCart } from "@/function/ajouter-panier";
 import { useState } from "react";
 import LoaderState from "@/components/Loader";
-
-const PRODUCT_PER_PAGE = 4;
 
 export default function ProductList({}: // categoryId,
 // limit = PRODUCT_PER_PAGE,
@@ -33,7 +26,7 @@ export default function ProductList({}: // categoryId,
   });
 
   if (isLoading) return <LoaderState />;
-  if (error) return <div>Une erreur s'est produite: {error.message}</div>;
+  if (error) return <div>Une erreur s&apos;est produite: {error.message}</div>;
 
   if (data.articles.length === 0) {
     return <div>Aucun produit disponible pour le moment.</div>;

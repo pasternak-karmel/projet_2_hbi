@@ -96,7 +96,7 @@ export function RadioGroupForm({ produit }: radioInform) {
                       <RadioGroupItem value="no" />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      Le produit n'est pas conforme
+                      Le produit n&apos;est pas conforme
                     </FormLabel>
                   </FormItem>
                 </RadioGroup>

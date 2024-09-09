@@ -22,7 +22,7 @@ export default function LivreurDashboard() {
         </h1>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {data.articles.map((produit: any) => (
-            <Livraison_components produit={produit} />
+            <Livraison_components key={produit.id} produit={produit} />
           ))}
         </div>
         <div className="mt-8 text-center">
