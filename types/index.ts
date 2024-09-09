@@ -1,3 +1,11 @@
+export interface UserTypes {
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+  adresse: string;
+  numTel: number;
+}
 export interface CategoriesProps {
   id: any;
   name: string;

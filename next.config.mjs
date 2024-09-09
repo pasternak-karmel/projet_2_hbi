@@ -1,12 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // experimental: {
+  //   trustHost: true,
+  // },
   images: {
     remotePatterns: [
       {
         hostname: "files.edgestore.dev",
       },
       {
-        // protocol: "https",
         hostname: "images.pexels.com",
       },
     ],

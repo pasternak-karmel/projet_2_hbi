@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -23,13 +24,19 @@ export default function Navbar() {
               <a className="text-gray-700 hover:text-teal-600">Tâches</a>
             </Link>
             <Link href="/report">
-              <a className="text-gray-700 hover:text-teal-600">Reporter Livraison</a>
+              <a className="text-gray-700 hover:text-teal-600">
+                Reporter Livraison
+              </a>
             </Link>
             <Link href="/scan">
-              <a className="text-gray-700 hover:text-teal-600">Scanner QR Code</a>
+              <a className="text-gray-700 hover:text-teal-600">
+                Scanner QR Code
+              </a>
             </Link>
             <Link href="/contact-admin">
-              <a className="text-gray-700 hover:text-teal-600">Contacter Admin</a>
+              <a className="text-gray-700 hover:text-teal-600">
+                Contacter Admin
+              </a>
             </Link>
           </div>
 

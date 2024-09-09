@@ -74,6 +74,15 @@ export const AttribueProduct = async (
   });
 };
 
+export const CreateLivreur = async (email: string, password: string) => {
+  await resend.emails.send({
+    from: "Acme <onboarding@resend.dev>",
+    to: email,
+    subject: "Academy TechSeed",
+    html: `<p>Vous avez été assigné comme livreur par l'administrateur.<br> Voici vos informations de connexion:<br>Email: ${email}<br>Mot de passe: ${password}</p>`,
+  });
+};
+
 //acheter un produit
 //collis livrer par l'agent
 

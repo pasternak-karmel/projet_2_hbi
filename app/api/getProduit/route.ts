@@ -2,6 +2,18 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
 export async function GET(request: Request) {
+  const origin = request.headers.get("origin");
+
+  // Allow requests from both localhost and the tunnel domain
+  const allowedOrigins = [
+    "http://localhost:3000",
+    "https://vtmd5csx-3000.uks1.devtunnels.ms",
+  ];
+
+  if (!allowedOrigins.includes(origin || "")) {
+    return NextResponse.json({ error: "Origin not allowed" }, { status: 403 });
+  }
+
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
   const page = parseInt(searchParams.get("page") || "1");

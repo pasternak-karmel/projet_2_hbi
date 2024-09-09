@@ -70,10 +70,11 @@ export const RegisterSchema = z.object({
   }),
 });
 
-export const IncomeSchemas = z.object({
-  devise: z.optional(z.string()),
-  type: z.boolean(),
-  usage: z.boolean(),
-  name: z.string(),
-  amount: z.number(),
+export const CreateLivreurSchema = z.object({
+  name: z.string().min(3, {
+    message: "Nom is required",
+  }),
+  email: z.string().email({
+    message: "Email is required",
+  }),
 });

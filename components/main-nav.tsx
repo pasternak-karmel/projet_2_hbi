@@ -1,8 +1,12 @@
 "use client";
 import { Session } from "next-auth";
 
-import React from "react";
-import { usePathname } from "next/navigation";
+import { useMedia } from "react-use";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+
+import React, { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -24,7 +28,6 @@ import {
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import SearchBar from "./SearchBar";
-import Menu from "./Menu";
 import { LoginButton } from "./auth/login-button";
 import { ExitIcon } from "@radix-ui/react-icons";
 import { FaUser } from "react-icons/fa";
@@ -34,12 +37,75 @@ interface MainNavProps {
   session: Session | null;
 }
 
+const routes = [
+  {
+    href: "/",
+    label: "Acceuil",
+  },
+  {
+    href: "/categories",
+    label: "categories",
+  },
+  {
+    href: "/Produits",
+    label: "All-Products",
+  },
+  {
+    href: "/produit",
+    label: "Publier un produit",
+  },
+  {
+    href: "/auth/login",
+    label: "Se connecter",
+  },
+  //https://vtmd5csx-3000.uks1.devtunnels.ms/
+];
+
 export function MainNav({ session }: MainNavProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const isMobile = useMedia("(max-width: 1024px)", false);
+
+  const onClick = (href: string) => {
+    router.push(href);
+    setIsOpen(false);
+  };
+
+  if (isMobile) {
+    return (
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetTrigger>
+          <Button
+            variant="outline"
+            size="sm"
+            className="font-normal bg-white/10 hover:bg-white/20 hover:text-white border-none focus-visible:ring-offset-0 focus-visible:ring-transparent outline-none text-white focus:bg-white/30 transition"
+          >
+            <Menu className="size-8 text-black" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="px-2">
+          <nav className="flex flex-col gap-y-2 pt-6">
+            {routes.map((route) => (
+              <Button
+                variant={route.href === pathname ? "secondary" : "ghost"}
+                key={route.href}
+                onClick={() => onClick(route.href)}
+                className="w-full justify-start"
+              >
+                {route.label}
+              </Button>
+            ))}
+          </nav>
+        </SheetContent>
+      </Sheet>
+    );
+  }
 
   return (
     <>
       <div className="h-20 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-32 relative">
+        {/* <div className="hidden lg:flex items-center gap-x-2 overflow-x-auto"></div> */}
         <div className="h-full flex items-center justify-between md:hidden">
           <Link href="/">
             <div className="text-2xl tracking-wide">MARKETPLACE</div>
