@@ -1,5 +1,4 @@
 "use client";
-import { useEffect } from "react";
 import { Session } from "next-auth";
 import { MainNav } from "./main-nav";
 import { Navbar } from "@/app/(protected)/_components/navbar";
