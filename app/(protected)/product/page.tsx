@@ -18,9 +18,7 @@ import {
 } from "@/components/ui/popover";
 import LoaderState from "@/components/Loader";
 
-export default function ProductManagment({
-  className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+export default function ProductManagment() {
   const queryClient = useQueryClient();
 
   const fetchProducts = async ({ queryKey }: any) => {
@@ -59,7 +57,7 @@ export default function ProductManagment({
 
   return (
     <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-12">
-      <div className={cn("grid gap-2", className)}>
+      <div className={cn("grid gap-2")}>
         <Popover>
           <PopoverTrigger asChild>
             <Button
