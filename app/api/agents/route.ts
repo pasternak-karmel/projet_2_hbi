@@ -23,7 +23,6 @@ export async function GET() {
         { status: 404 }
       );
     }
-    // console.log(agents);
 
     return NextResponse.json(agents);
   } catch (error) {

@@ -82,7 +82,7 @@ export async function POST(req: Request) {
           nom: article.nom,
           image: article.image?.[0],
         },
-        status: "payed",
+        status: "payer",
       },
       include: {
         User: true,

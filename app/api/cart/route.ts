@@ -13,7 +13,6 @@ export async function POST(request: Request) {
   if (!session || !session.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  // console.log(session.user.cart);
 
   const { productId, quantity } = await request.json();
 
@@ -69,9 +68,6 @@ export async function POST(request: Request) {
         { status: 403 }
       );
     }
-    // console.log(updatedSession);
-    // console.log("Updated session:", JSON.stringify(session, null, 2));
-
     return NextResponse.json(
       { cart: updatedSession.user.cart },
       { status: 200 }
