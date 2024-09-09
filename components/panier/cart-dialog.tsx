@@ -52,7 +52,7 @@ export function MyCart() {
             remove items.
           </SheetDescription>
         </SheetHeader>
-        <ScrollArea className="h-3/4 w-full rounded-md ">
+        <ScrollArea className="h-3/5 w-full rounded-md ">
           <div className="mt-8">
             <div className="flow-root">
               <ul role="list" className="-my-6 divide-y divide-gray-200">

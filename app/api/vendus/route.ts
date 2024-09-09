@@ -7,7 +7,7 @@ export async function GET(req: Request) {
 
   if (!session?.user) {
     return NextResponse.json(
-      { error: "pas d'article trouvé pour vous" },
+      { error: "pas d'article trouver pour vous" },
       { status: 403 }
     );
   }
@@ -26,7 +26,11 @@ export async function GET(req: Request) {
       );
     }
 
-    const orders = await db.order.findMany();
+    const orders = await db.order.findMany({
+      where: {
+        userId,
+      },
+    });
 
     const soldArticles = articles.map((article) => {
       let totalSold = 0;

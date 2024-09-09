@@ -31,44 +31,7 @@ import {
   MultiImageDropzone,
   type FileState,
 } from "@/components/multi-image-dropzone";
-
-const formSchema = z.object({
-  nom: z
-    .string()
-    .min(2, { message: "Le nom doit contenir au moins 2 caractères" })
-    .max(50, { message: "Le nom ne peut pas dépasser 50 caractères" }),
-  prix: z.coerce.number().min(0, "Price must be greater than or equal to 0"),
-  quantite: z.coerce.number().min(1, "Quantity be greater than or equal to 0"),
-  usage: z.boolean().default(false).optional(),
-  description: z.string().optional(),
-  categories: z.enum([
-    "outils",
-    "meubles",
-    "jardin",
-    "Electroménager",
-    "pour la maison",
-    "jeux videos",
-    "livre films et musique",
-    "bijoux et accessoires",
-    "sac et bagages",
-    "vetements et chaussures pour hommes",
-    "vetements et chaussures pour femmes",
-    "jouer et jeux",
-    "puericulture et enfants",
-    "sante et beaute",
-    "telephones mobiles",
-    "electroniques et ordinateurs",
-    "sports et activites exterieures",
-    "instruments de musique",
-    "artisanat d'art",
-    "antiquites et objects de collection",
-    "pieces automobiles",
-    "velos",
-    "vide-grenier",
-    "divers",
-  ]),
-  image: z.array(z.string()).optional(),
-});
+import { AddArticleSchema } from "@/schemas";
 
 export default function AddProduit() {
   const [fileStates, setFileStates] = useState<FileState[]>([]);
@@ -77,8 +40,8 @@ export default function AddProduit() {
   >([]);
   const [loading, setLoading] = useState(false);
   const { edgestore } = useEdgeStore();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof AddArticleSchema>>({
+    resolver: zodResolver(AddArticleSchema),
     defaultValues: {
       nom: "",
       description: "",
@@ -102,7 +65,7 @@ export default function AddProduit() {
     });
   }
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof AddArticleSchema>) => {
     setLoading(true);
     try {
       if (fileStates.length === 0) {
@@ -136,7 +99,7 @@ export default function AddProduit() {
           if (fileState.file instanceof File) {
             try {
               const res = await edgestore.myArrowImages.upload({
-                options: { temporary: true },
+                // options: { temporary: true },
                 file: fileState.file,
                 input: { type: "post" },
                 onProgressChange: (progress) => {
@@ -249,7 +212,8 @@ export default function AddProduit() {
                     />
                   </FormControl>
                   <FormDescription>
-                    C&apos;est le prix auquel vous vendez votre article.
+                    C&apos;est le prix auquel vous vendez votre article. (0 veut
+                    dire gratuit)
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

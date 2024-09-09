@@ -78,3 +78,41 @@ export const CreateLivreurSchema = z.object({
     message: "Email is required",
   }),
 });
+
+export const AddArticleSchema = z.object({
+  nom: z
+    .string()
+    .min(2, { message: "Le nom doit contenir au moins 2 caractères" })
+    .max(50, { message: "Le nom ne peut pas dépasser 50 caractères" }),
+  prix: z.coerce.number().min(0, "Price must be greater than or equal to 0"),
+  quantite: z.coerce.number().min(1, "Quantity be greater than or equal to 0"),
+  usage: z.boolean().default(false).optional(),
+  description: z.string().optional(),
+  categories: z.enum([
+    "outils",
+    "meubles",
+    "jardin",
+    "Electroménager",
+    "pour la maison",
+    "jeux videos",
+    "livre films et musique",
+    "bijoux et accessoires",
+    "sac et bagages",
+    "vetements et chaussures pour hommes",
+    "vetements et chaussures pour femmes",
+    "jouer et jeux",
+    "puericulture et enfants",
+    "sante et beaute",
+    "telephones mobiles",
+    "electroniques et ordinateurs",
+    "sports et activites exterieures",
+    "instruments de musique",
+    "artisanat d'art",
+    "antiquites et objects de collection",
+    "pieces automobiles",
+    "velos",
+    "vide-grenier",
+    "divers",
+  ]),
+  image: z.array(z.string()).optional(),
+});

@@ -2,12 +2,14 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
 export async function GET(request: Request) {
- 
   try {
     const allArticles = await db.article.findMany({
       where: {
         status: "ACCEPTE",
         isDeleted: false,
+        quantite: {
+          gt: 0,
+        },
       },
       include: {
         categories: true,

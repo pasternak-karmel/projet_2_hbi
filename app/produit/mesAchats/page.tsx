@@ -1,8 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import Loader from "@/components/Loader";
-import { fetchPurchases } from "@/actions/my_api";
 import LoaderState from "@/components/Loader";
 
 export default function UserPurchases() {
@@ -12,7 +10,7 @@ export default function UserPurchases() {
     data: purchases,
   } = useQuery({
     queryKey: ["achats"],
-    queryFn: () => fetchPurchases(),
+    queryFn: () => fetch(`/api/achats`).then((res) => res.json()),
   });
 
   if (isLoading) return <LoaderState />;
@@ -53,8 +51,8 @@ export default function UserPurchases() {
         </div>
       ) : (
         <div className="text-center text-gray-500">
-          Vous n&apos;avez pas encore effectué d&apos;achats. Allez-y et choisissez votre
-          prochain coup de coeur
+          Vous n&apos;avez pas encore effectué d&apos;achats. Allez-y et
+          choisissez votre prochain coup de coeur
         </div>
       )}
     </div>
