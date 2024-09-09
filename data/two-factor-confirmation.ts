@@ -4,11 +4,12 @@ export const getTwoFactorConfirmationByUserId = async (
   userId: string
 ) => {
   try {
-    const twoFactorConfirmation = await db.twoFactorConfirmation.findUnique({
-      where: { userId }
-    });
+    // const twoFactorConfirmation = await db.twoFactorConfirmation.findUnique({
+    //   where: { userId }
+    // });
 
-    return twoFactorConfirmation;
+    // return twoFactorConfirmation;
+    return null
   } catch {
     return null;
   }
