@@ -2,9 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowUpDown } from "lucide-react";
-import { MoreHorizontal } from "lucide-react";
-
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -21,15 +19,36 @@ export type Article = {
   description: string;
   prix: number;
   usage: boolean;
-  image: string;
+  image: string[];
   categories: {
     nom: string;
   };
   quantite: number;
 };
 
+const ActionsMenu = ({ articleId }: { articleId: string }) => {
+  const router = useRouter();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <span className="sr-only">Open menu</span>
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem onClick={() => router.push(`/article/${articleId}`)}>
+          Consulter les infos de l&apos;article
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+
 export const Columns: ColumnDef<Article>[] = [
-  //id
+  // id
   {
     id: "select",
     header: ({ table }) => (
@@ -52,71 +71,48 @@ export const Columns: ColumnDef<Article>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  //nom
+  // nom
   {
     accessorKey: "nom",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Nom
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Nom
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
   },
-  //description
+  // description
   {
     accessorKey: "description",
     header: "Description",
   },
-  //prix
+  // prix
   {
     accessorKey: "prix",
     header: "Prix",
   },
-  //usage
+  // usage
   {
     accessorKey: "usage",
     header: "Usage",
+    cell: ({ row }) => (row.original.usage ? "Déjà utilisé" : "Nouveau"),
   },
-  //categories
+  // categories
   {
     accessorKey: "categories.nom",
     header: "Catégorie",
   },
-  //quantite
+  // quantite
   {
     accessorKey: "quantite",
     header: "Quantité",
   },
-  //actions
+  // actions
   {
     id: "actions",
-    cell: ({ row }) => {
-      const router = useRouter();
-      const articleId = row.original.id;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => router.push(`/article/${articleId}`)}
-            >
-              Consulter les infos de l&apos;article
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => <ActionsMenu articleId={row.original.id} />,
   },
 ];
