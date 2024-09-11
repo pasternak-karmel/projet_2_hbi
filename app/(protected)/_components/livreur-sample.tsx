@@ -16,7 +16,7 @@ export function LiveurSample() {
     return <div>No Livreurs available</div>;
   }
   return (
-    <div className="">
+    <div className="group w-full sm:w-[45%] lg:w-[22%] flex flex-col gap-4">
       {data.livreur.map((livreurs: any) => (
         <div key={livreurs.id} className="p-4 border rounded-lg shadow-md">
           <img

@@ -59,7 +59,7 @@ const SettingsPage = () => {
 
   return (
     <div>
-      <Card className="text-center justify-center w-full max-w-4xl mx-auto  border-none">
+      <Card className="w-full max-w-4xl justify-center items-center border-none">
         <CardHeader>
           <p className="text-2xl font-semibold text-center">⚙️ Settings</p>
         </CardHeader>
@@ -153,7 +153,6 @@ const SettingsPage = () => {
           </Form>
         </CardContent>
       </Card>
-      <Button>Contacter le support</Button>
     </div>
   );
 };

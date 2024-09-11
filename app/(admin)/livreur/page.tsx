@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import AddLivreur from "../_components/livreur";
 import { Button } from "@/components/ui/button";
-import LiveurSample from "../_components/livreur-sample";
+import LiveurSample from "@/app/(protected)/_components/livreur-sample";
+import AddLivreur from "@/app/(protected)/_components/livreur";
 
 export default function LivreurPage() {
   const [search, setSearch] = useState<string>("");
@@ -12,12 +12,6 @@ export default function LivreurPage() {
       <h1 className="text-2xl font-bold mb-4">Gestion des Livreurs</h1>
 
       <div className="mb-4 w-full flex items-center justify-between">
-        <button
-          onClick={() => window.history.back()}
-          className="text-teal-600 font-semibold underline mb-4"
-        >
-          Retour
-        </button>
         <input
           type="text"
           placeholder="Rechercher un livreur..."
@@ -30,7 +24,7 @@ export default function LivreurPage() {
         </AddLivreur>
       </div>
 
-      <div className="grid grid-flow-col gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="flex flex-wrap gap-x-8 gap-y-16 justify-start">
         <LiveurSample />
       </div>
     </div>

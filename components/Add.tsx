@@ -2,10 +2,9 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useKKiaPay } from "kkiapay-react";
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { Button } from "./ui/button";
-import { BuyArticle } from "@/actions/my_api";
+import { BuyKkiapay } from "@/function/buyArticle";
 
 const Add = ({
   productId,
@@ -16,19 +15,10 @@ const Add = ({
 }) => {
   const role = useCurrentRole();
 
-  const { openKkiapayWidget, addKkiapayListener } = useKKiaPay();
+  const { BuyOpen } = BuyKkiapay();
+
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
-
-  function open() {
-    openKkiapayWidget({
-      amount: 4000,
-      api_key: "245fd7ddb2f2fc9acf1416b4796b24a40809ca0d",
-      // sandbox: true,
-      email: "randomgail@gmail.com",
-      phone: "97000000",
-    });
-  }
 
   const handleQuantity = (type: "i" | "d") => {
     if (type === "d" && quantity > 1) {
@@ -41,10 +31,12 @@ const Add = ({
 
   const mutation = useMutation({
     mutationFn: async () => {
-      const response = await // BuyArticle(productId, quantity);
-      fetch(`/api/order?id=${productId}&quantite=${quantity}`, {
-        method: "POST",
-      });
+      const response = await fetch(
+        `/api/order?id=${productId}&quantite=${quantity}`,
+        {
+          method: "POST",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to complete the order");
@@ -62,6 +54,10 @@ const Add = ({
 
   const handleSubmit = () => {
     mutation.mutate();
+  };
+
+  const onSubmit = async () => {
+    await BuyOpen(productId, quantity);
   };
 
   return (
@@ -100,7 +96,8 @@ const Add = ({
         {role !== "ADMIN" ? (
           <button
             disabled={mutation.isPending}
-            onClick={handleSubmit}
+            onClick={onSubmit}
+            // onClick={handleSubmit}
             className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
           >
             {mutation.isPending ? "Paiement en cours..." : "Payer maintenant"}
@@ -119,3 +116,13 @@ const Add = ({
 };
 
 export default Add;
+
+// function open() {
+//   openKkiapayWidget({
+//     amount: 4000,
+//     api_key: "33ca75c0652011efbf02478c5adba4b8",
+//     sandbox: true,
+//     email: "randomgail@gmail.com",
+//     phone: "97000000",
+//   });
+// }

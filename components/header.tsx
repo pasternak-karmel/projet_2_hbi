@@ -14,36 +14,14 @@ export default function Header({ session, role }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
 
-  // useEffect(() => {
-  //   if (session) {
-  //     if (role === "ADMIN" && pathname !== "/admin") {
-  //       router.push("/admin");
-  //     } else if (role === "AGENT" && pathname !== "/agent") {
-  //       router.push("/agent/dashboard");
-  //     } else if (!role && pathname !== "/") {
-  //       router.push("/");
-  //     }
-  //   }
-  // }, [session, role, pathname, router]);
-
-  // useEffect(() => {
-  //   if (session) {
-  //     if (role === "ADMIN") {
-  //       router.push("/admin");
-  //     } else if (role === "AGENT") {
-  //       router.push("/agent");
-  //     } else {
-  //       router.push("/");
-  //     }
-  //   }
-  // }, [session, role, router]);
-
   if (role === "ADMIN") {
-    return <Navbar />;
+    return null;
+    // return <Navbar />;
   }
-  
+
   if (role === "AGENT") {
-    return <NavbarAgent />;
+    return null;
+    // return <NavbarAgent />;
   }
 
   return (

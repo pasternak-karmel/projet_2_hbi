@@ -20,7 +20,7 @@ export default async function Attente() {
     <div>
       <div className="mx-1">
         <div className="container mx-auto py-10">
-          Les articles en attente d&pos;être approuvés
+          Les articles en attente d&apos;être approuvés
           <DataTable columns={Columns} data={data} />
         </div>
       </div>

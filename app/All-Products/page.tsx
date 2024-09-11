@@ -15,20 +15,42 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Article } from "@/types";
 import { ProduitSkeleton } from "@/components/article/ProduitSkeleton";
 import { useState } from "react";
-import { fetchProduit } from "@/actions/my_api";
+import { fetchProduit, fetchProduitAll } from "@/actions/my_api";
+import { useSearchParams } from "next/navigation";
 
 export default function AllProduct() {
+  const searchParams = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
+  const [filters, setFilters] = useState({
+    min: "",
+    max: "",
+    category: "",
+    sort: "",
+  });
+
   const productsPerPage = 10;
-  // const fetchProduit = (page = 1) =>
-  //   fetch(`/api/getProduit?page=${page}&limit=${productsPerPage}`).then((res) =>
-  //     res.json()
-  //   );
+  // const { isPending, error, data, isPlaceholderData } = useQuery({
+  //   queryKey: ["Allproduit", currentPage],
+  //   queryFn: () => fetchProduit(currentPage),
+  //   placeholderData: keepPreviousData,
+  // });
+
   const { isPending, error, data, isPlaceholderData } = useQuery({
-    queryKey: ["Allproduit", currentPage],
-    queryFn: () => fetchProduit(currentPage),
+    queryKey: ["Allproduit", currentPage, searchParams.toString()],
+    queryFn: () =>
+      fetchProduitAll(
+        currentPage,
+        filters.min,
+        filters.max,
+        filters.category,
+        filters.sort
+      ), // Pass the params
     placeholderData: keepPreviousData,
   });
+
+  const handleFilterChange = (updatedFilters: any) => {
+    setFilters((prev) => ({ ...prev, ...updatedFilters }));
+  };
 
   if (isPending) {
     return (
@@ -50,6 +72,7 @@ export default function AllProduct() {
   return (
     <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-12">
       <Filter />
+      {/* <Filter onFilterChange={handleFilterChange} /> */}
       <Separator className="my-4 w-full" />
       <div className="mt-12 flex flex-wrap gap-x-8 gap-y-16 justify-center">
         {articles.map((product: Article) => (
@@ -63,10 +86,8 @@ export default function AllProduct() {
             <PaginationPrevious
               className="cursor-pointer"
               onClick={() => setCurrentPage((old) => Math.max(old - 1, 1))}
-              // disabled={currentPage === 1}
             />
           </PaginationItem>
-          {/* page ===1 */}
           <PaginationItem>
             <PaginationLink
               isActive={currentPage === 1}
@@ -117,7 +138,6 @@ export default function AllProduct() {
                   setCurrentPage((old) => old + 1);
                 }
               }}
-              // disabled={currentPage === totalPages}
             />
           </PaginationItem>
         </PaginationContent>

@@ -58,7 +58,6 @@ const routes = [
     href: "/auth/login",
     label: "Se connecter",
   },
-  //https://vtmd5csx-3000.uks1.devtunnels.ms/
 ];
 
 export function MainNav({ session }: MainNavProps) {

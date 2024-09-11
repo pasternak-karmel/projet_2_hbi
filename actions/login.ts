@@ -3,27 +3,24 @@
 import * as z from "zod";
 import { AuthError } from "next-auth";
 
-import { db } from "@/lib/db";
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { LoginSchema } from "@/schemas";
 import { getUserByEmail } from "@/data/user";
 import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
-// import { 
+// import {
 //   sendVerificationEmail,
 //   sendTwoFactorTokenEmail,
 // } from "@/lib/mail";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-// import { 
+// import {
 //   generateVerificationToken,
 //   generateTwoFactorToken
 // } from "@/lib/tokens";
-import { 
-  getTwoFactorConfirmationByUserId
-} from "@/data/two-factor-confirmation";
+import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 
 export const login = async (
   values: z.infer<typeof LoginSchema>,
-  callbackUrl?: string | null,
+  callbackUrl?: string | null
 ) => {
   const validatedFields = LoginSchema.safeParse(values);
 
@@ -36,7 +33,7 @@ export const login = async (
   const existingUser = await getUserByEmail(email);
 
   if (!existingUser || !existingUser.email || !existingUser.password) {
-    return { error: "Email does not exist!" }
+    return { error: "Email does not exist!" };
   }
 
   // if (!existingUser.emailVerified) {
@@ -106,15 +103,29 @@ export const login = async (
     await signIn("credentials", {
       email,
       password,
-      redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
-    })
+      // redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+      redirect: false,
+    });
+    const session = await auth();
+    let redirectUrl = callbackUrl;
+    if (!redirectUrl) {
+      if (session?.user.role === "ADMIN") {
+        redirectUrl = "admin";
+      } else if (session?.user.role === "AGENT") {
+        redirectUrl = "agent";
+      } else {
+        redirectUrl = DEFAULT_LOGIN_REDIRECT;
+      }
+    }
+
+    return { redirectUrl };
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return { error: "Invalid credentials!" }
+          return { error: "Invalid credentials!" };
         default:
-          return { error: "Something went wrong!" }
+          return { error: "Something went wrong!" };
       }
     }
 

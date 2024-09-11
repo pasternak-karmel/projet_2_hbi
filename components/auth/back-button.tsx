@@ -18,7 +18,7 @@ interface BackButtonProps {
 export const BackButton = ({
   href,
   label,
-  mode = "modal",
+  mode = "redirect",
   asChild,
 }: BackButtonProps) => {
   const router = useRouter();

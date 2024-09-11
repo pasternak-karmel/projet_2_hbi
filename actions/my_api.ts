@@ -10,6 +10,30 @@ export const fetchProduit = async (page = 1) =>
     `${mydomain}/api/getProduit?page=${page}&limit=${productsPerPage}`
   ).then((res) => res.json());
 
+export async function fetchProduitAll(
+  page = 1,
+  min = "",
+  max = "",
+  category = "",
+  sort = ""
+) {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    limit: "10", // Adjust the limit if necessary
+  });
+
+  if (min) params.append("min", min);
+  if (max) params.append("max", max);
+  if (category) params.append("cat", category);
+  if (sort) params.append("sort", sort);
+
+  const res = await fetch(`${mydomain}/api/getProduit?${params.toString()}`);
+  if (!res.ok) {
+    throw new Error("Failed to fetch articles");
+  }
+  return res.json();
+}
+
 export const getProduitVendor = async (id: string) =>
   fetch(`${mydomain}/api/getUser?userId=${id}`)
     .then((res) => {

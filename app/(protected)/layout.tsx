@@ -6,15 +6,11 @@ interface ProtectedLayoutProps {
 }
 
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
-  return ( 
-    <div>
-      <div className=" items-center justify-center">
-        
-        {/* <Navbar /> */}
-        {children}
-      </div>
-      <Footer/> 
-    </div>  
+  return (
+    <div className="">
+      <div className=" items-center justify-center">{children}</div>
+      {/* <Footer /> */}
+    </div>
   );
 };
 

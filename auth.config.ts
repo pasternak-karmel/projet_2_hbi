@@ -70,7 +70,6 @@ export default {
       }
       return token;
     },
-
     async session({ session, token }) {
       if (token?.accessToken) {
         session.accessToken = token.accessToken;

@@ -74,26 +74,6 @@ export default function AddProduit() {
           action: { label: "Fermer", onClick: () => console.log("Undo") },
         });
       }
-
-      // const imageUrls = await Promise.all(
-      //   fileStates.map(async (fileState) => {
-      //     try {
-      //       const res = await edgestore.myArrowImages.upload({
-      //         options: { temporary: true },
-      //         file: fileState.file,
-      //         input: { type: "post" },
-      //         onProgressChange: async (progress) => {},
-      //       });
-      //       return res.url;
-      //     } catch (err) {
-      //       toast.error(`Erreur lors de l'upload de l'image`, {
-      //         description: `Image: ${fileState.key} - Erreur lors de l'upload`,
-      //       });
-      //       return null;
-      //     }
-      //   })
-      // );
-
       const imageUrls = await Promise.all(
         fileStates.map(async (fileState) => {
           if (fileState.file instanceof File) {
@@ -168,8 +148,8 @@ export default function AddProduit() {
 
   return (
     <div className="w-full min-h-screen p-5 flex items-center justify-center">
-      <div className="max-w-3xl w-full bg-white p-10 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-8 text-center text-gray-800">
+      <div className="max-w-3xl w-full bg-white p-5 sm:p-8 lg:p-10 rounded-lg shadow-lg">
+        <h2 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-center text-gray-800">
           Ajouter un nouvel article
         </h2>
         <Form {...form}>
@@ -424,15 +404,4 @@ export default function AddProduit() {
       </div>
     </div>
   );
-}
-
-{
-  /* <SingleImageDropzone
-                width={200}
-                height={200}
-                value={file}
-                dropzoneOptions={{ maxSize: 1024 * 1024 * 1 }}
-                onChange={(file) => setFile(file)}
-                className="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-gray-500 transition-colors"
-              /> */
 }
