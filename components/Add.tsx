@@ -1,7 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { Button } from "./ui/button";
 import { BuyKkiapay } from "@/function/buyArticle";
@@ -17,7 +16,6 @@ const Add = ({
 
   const { BuyOpen } = BuyKkiapay();
 
-  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
 
   const handleQuantity = (type: "i" | "d") => {
@@ -27,33 +25,6 @@ const Add = ({
     if (type === "i" && quantity < stockNumber) {
       setQuantity((prev) => prev + 1);
     }
-  };
-
-  const mutation = useMutation({
-    mutationFn: async () => {
-      const response = await fetch(
-        `/api/order?id=${productId}&quantite=${quantity}`,
-        {
-          method: "POST",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to complete the order");
-      }
-
-      return response.json();
-    },
-    onSuccess: (data) => {
-      router.push(`/All-Products/${productId}/success?orderId=${data.id}`);
-    },
-    onError: (error) => {
-      console.error("Error completing the order:", error);
-    },
-  });
-
-  const handleSubmit = () => {
-    mutation.mutate();
   };
 
   const onSubmit = async () => {
@@ -94,14 +65,22 @@ const Add = ({
           )}
         </div>
         {role !== "ADMIN" ? (
-          <button
-            disabled={mutation.isPending}
-            onClick={onSubmit}
-            // onClick={handleSubmit}
-            className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
-          >
-            {mutation.isPending ? "Paiement en cours..." : "Payer maintenant"}
-          </button>
+          <div>
+            <button
+              // disabled={mutation.isPending}
+              onClick={onSubmit}
+              className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
+            >
+              "Paiement à la livraison"
+            </button>
+            <button
+              // disabled={mutation.isPending}
+              onClick={onSubmit}
+              className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
+            >
+              "Payer maintenant"
+            </button>
+          </div>
         ) : (
           <Button
             className="disabled:cursor-not-allowed"

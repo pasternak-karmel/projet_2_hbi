@@ -28,14 +28,6 @@ export default function Produit({ product }: ProduitProps) {
   const { isLoading, error, data } = useQuery({
     queryKey: ["getProduitVendor", product.userId],
     queryFn: () => getProduitVendor(product.userId),
-    // fetch(`/api/getUser?userId=${product.userId}`)
-    //   .then((res) => {
-    //     if (!res.ok) {
-    //       throw new Error(`Error: ${res.statusText}`);
-    //     }
-    //     return res.json();
-    //   })
-    //   .then((data) => data.user),
   });
 
 
