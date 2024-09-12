@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+"use client"
 import React, { useState, useEffect } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import {
