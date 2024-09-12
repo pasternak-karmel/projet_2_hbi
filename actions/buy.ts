@@ -1,5 +1,6 @@
 "use server";
 
+import { auth } from "@/auth";
 import { currentRole } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { UserRole } from "@prisma/client";
@@ -16,18 +17,27 @@ export const CalculateAmount = async (productId: string, quantite: number) => {
 
     const totalAmount = article.prix * quantite;
 
-    return { succes: "Article", totalAmount };
+    return { succes: "amount calculated", totalAmount };
   } catch (error) {
-    return { error: "Failed to create order" };
+    return { error: "Failed to calculate total amount" };
   }
 };
 
-export const Buy = async () => {
-  const role = await currentRole();
+export const CalculateAmountPanier = async () => {
+  try {
+    const session = await auth();
+    if (!session || !session.user || !session.user.cart) {
+      return { error: "No cart found" };
+    }
 
-  if (role !== UserRole.ADMIN) {
-    return { error: "Forbidden Server Action!" };
+    const cart = session.user.cart;
+
+    const totalAmount = cart.reduce((total, item) => {
+      return total + item.prix * item.quantity;
+    }, 0);
+
+    return { succes: "Cart calculated", totalAmount };
+  } catch (error) {
+    return { error: "Failed to calculate total amount" };
   }
-
-  return { success: "Allowed Server Action!" };
 };

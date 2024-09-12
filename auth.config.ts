@@ -64,6 +64,7 @@ export default {
       token.email = existingUser.email;
       token.role = existingUser.role;
       token.id = existingUser.id;
+      token.num = existingUser.numTel;
 
       if (session?.user?.cart) {
         token.cart = session.user.cart;
@@ -80,6 +81,7 @@ export default {
       }
 
       session.user.id = token.id ? (token.id as string) : "";
+      session.user.num = token.num as number;
       session.user.cart = Array.isArray(token.cart) ? token.cart : [];
 
       return session;
@@ -99,6 +101,7 @@ declare module "next-auth" {
       email: string;
       image: string;
       role: string;
+      num: number;
       cart?: {
         productId: string;
         quantity: number;

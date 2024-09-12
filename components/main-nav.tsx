@@ -54,10 +54,10 @@ const routes = [
     href: "/produit",
     label: "Publier un produit",
   },
-  {
-    href: "/auth/login",
-    label: "Se connecter",
-  },
+  // {
+  //   href: "/auth/login",
+  //   label: "Se connecter",
+  // },
 ];
 
 export function MainNav({ session }: MainNavProps) {
@@ -73,38 +73,110 @@ export function MainNav({ session }: MainNavProps) {
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger>
-          <Button
-            variant="outline"
-            size="sm"
-            className="font-normal bg-white/10 hover:bg-white/20 hover:text-white border-none focus-visible:ring-offset-0 focus-visible:ring-transparent outline-none text-white focus:bg-white/30 transition"
-          >
-            <Menu className="size-8 text-black" />
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="px-2">
-          <nav className="flex flex-col gap-y-2 pt-6">
-            {routes.map((route) => (
-              <Button
-                variant={route.href === pathname ? "secondary" : "ghost"}
-                key={route.href}
-                onClick={() => onClick(route.href)}
-                className="w-full justify-start"
-              >
-                {route.label}
+      <div className="flex items-center justify-between h-20 px-4">
+        {/* Left Side - Logo */}
+        <Link href="/">
+          <div className="text-2xl tracking-wide">MARKETPLACE</div>
+        </Link>
+
+        {/* Right Side - User Button or Login */}
+        <div className="flex items-center gap-2">
+          {session ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative w-8 h-8 rounded-full"
+                >
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage
+                      src={
+                        session.user?.image ??
+                        "https://source.boringavatars.com/marble/120"
+                      }
+                      alt={session.user?.name ?? ""}
+                    />
+                    <AvatarFallback className="bg-sky-500">
+                      <FaUser className="text-white" />
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <div className="flex gap-2">
+                      <Avatar className="w-8 h-8">
+                        <AvatarImage
+                          src={
+                            session.user?.image ??
+                            "https://source.boringavatars.com/marble/120"
+                          }
+                          alt={session.user?.name ?? ""}
+                        />
+                        <AvatarFallback className="bg-sky-500">
+                          <FaUser className="text-white" />
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="text-sm font-medium leading-none">
+                          {session.user?.name}
+                        </p>
+                        <p className="text-xs leading-none text-muted-foreground">
+                          {session.user?.email}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuItem onClick={() => signOut()}>
+                  <ExitIcon className="h-4 w-4 mr-2" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <LoginButton asChild>
+              <Button variant="secondary" size="sm">
+                Se connecter
               </Button>
-            ))}
-          </nav>
-        </SheetContent>
-      </Sheet>
+            </LoginButton>
+          )}
+
+          {/* Menu Icon on the right */}
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger>
+              <Button
+                variant="outline"
+                size="sm"
+                className="font-normal bg-white/10 hover:bg-white/20 hover:text-white border-none focus-visible:ring-offset-0 focus-visible:ring-transparent outline-none text-black focus:bg-white/30 transition"
+              >
+                <Menu className="size-8 text-black" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="px-2">
+              <nav className="flex flex-col gap-y-2 pt-6">
+                {routes.map((route) => (
+                  <Button
+                    variant={route.href === pathname ? "secondary" : "ghost"}
+                    key={route.href}
+                    onClick={() => onClick(route.href)}
+                    className="w-full justify-start"
+                  >
+                    {route.label}
+                  </Button>
+                ))}
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
     );
   }
 
   return (
     <>
       <div className="h-20 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-32 relative">
-        {/* <div className="hidden lg:flex items-center gap-x-2 overflow-x-auto"></div> */}
         <div className="h-full flex items-center justify-between md:hidden">
           <Link href="/">
             <div className="text-2xl tracking-wide">MARKETPLACE</div>

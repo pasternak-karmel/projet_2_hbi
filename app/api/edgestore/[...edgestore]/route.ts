@@ -13,7 +13,7 @@ type Context = {
 
 async function createContext({ req }: CreateContextOptions): Promise<Context> {
   // const session = await auth();
-  // if (!session) return "";  
+  // if (!session) return "";
   return {
     // userId: session?.user.id,
     userId: "1234",
@@ -43,6 +43,12 @@ const edgeStoreRouter = es.router({
         type: z.enum(["post", "profile"]),
       })
     )
+    .beforeUpload(({ ctx, input, fileInfo }) => {
+      return true;
+    })
+    .beforeDelete(({ ctx, fileInfo }) => {
+      return true;
+    })
     .path(({ input }) => [{ type: input.type }]),
 
   myProtectedFiles: es

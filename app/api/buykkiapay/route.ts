@@ -13,12 +13,9 @@ export async function POST(req: Request) {
       sandbox: true,
     });
 
-    const verificationResponse = await k.verify("Y3irGKg2C");
-    console.log("Verification Response:", verificationResponse);
+    const verificationResponse = await k.verify(transactionId);
 
     if (verificationResponse && verificationResponse.status === "SUCCESS") {
-      console.log("Payment Verified:", verificationResponse);
-
       return NextResponse.json(
         {
           message: "Payment verified",
@@ -27,16 +24,12 @@ export async function POST(req: Request) {
         { status: 200 }
       );
     } else {
-      console.error("Payment verification failed:", verificationResponse);
-
       return NextResponse.json(
         { error: "Payment verification failed", details: verificationResponse },
         { status: 401 }
       );
     }
   } catch (error: any) {
-    console.error("Error verifying payment:", error);
-
     return NextResponse.json(
       {
         error: "An error occurred during payment verification",

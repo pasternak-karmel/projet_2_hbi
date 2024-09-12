@@ -71,7 +71,6 @@ export default function Produit({ params }: { params: { id: string } }) {
       return response.json();
     },
     onSuccess: () => {
-      // router.push(`/produit/vosproduits/${params.id}`);
       router.push("/produit/vosproduits");
     },
   });
@@ -137,78 +136,84 @@ export default function Produit({ params }: { params: { id: string } }) {
                   onSubmit={form.handleSubmit(onSubmit)}
                   className="space-y-6"
                 >
-                  <FormField
-                    control={form.control}
-                    name="nom"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nom</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            disabled={mutation.isPending}
-                            placeholder="Product Name"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="prix"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Prix</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            {...field}
-                            disabled={mutation.isPending}
-                            placeholder="Price"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="usage"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center justify-between rounded-lg border p-4 bg-gray-100">
-                        <div>
-                          <FormLabel>Usage</FormLabel>
-                          <FormDescription>
-                            Cochez veut dire que votre article est neuf
-                          </FormDescription>
-                        </div>
-                        <FormControl>
-                          <Switch
-                            disabled={mutation.isPending}
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            className="transition-colors duration-200"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="quantite"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Quantite</FormLabel>
-                        <FormControl>
-                          <Input
-                            disabled={mutation.isPending}
-                            type="number"
-                            {...field}
-                            placeholder="Quantity"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="nom"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nom</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              disabled={mutation.isPending}
+                              placeholder="Product Name"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="prix"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Prix</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              {...field}
+                              disabled={mutation.isPending}
+                              placeholder="Price"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="usage"
+                      render={({ field }) => (
+                        <FormItem className="flex items-center justify-between rounded-lg border p-4 bg-gray-100">
+                          <div>
+                            <FormLabel>Usage</FormLabel>
+                            <FormDescription>
+                              Cochez veut dire que votre article est neuf
+                            </FormDescription>
+                          </div>
+                          <FormControl>
+                            <Switch
+                              disabled={mutation.isPending}
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="transition-colors duration-200"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="quantite"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Quantite</FormLabel>
+                          <FormControl>
+                            <Input
+                              disabled={mutation.isPending}
+                              type="number"
+                              {...field}
+                              placeholder="Quantity"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
                   <FormField
                     control={form.control}
                     name="description"
@@ -226,6 +231,7 @@ export default function Produit({ params }: { params: { id: string } }) {
                       </FormItem>
                     )}
                   />
+
                   <FormField
                     control={form.control}
                     name="delete"
@@ -255,6 +261,7 @@ export default function Produit({ params }: { params: { id: string } }) {
                       </FormItem>
                     )}
                   />
+
                   <Button
                     type="submit"
                     disabled={mutation.isPending}

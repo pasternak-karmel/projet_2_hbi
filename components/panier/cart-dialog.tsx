@@ -15,10 +15,12 @@ import { useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ScrollArea } from "../ui/scroll-area";
+import { BuyKkiapay } from "@/function/buyArticle";
 
 export function MyCart() {
   const pathname = usePathname();
   const [open, setOpen] = useState(true);
+  const { BuyOpenPanier } = BuyKkiapay();
 
   const { data: session } = useSession();
   const cartItems = session?.user?.cart || [];
@@ -30,6 +32,10 @@ export function MyCart() {
   const subtotal = cartItems.reduce((total, product) => {
     return total + product.prix * product.quantity;
   }, 0);
+
+  const onSubmit = async () => {
+    await BuyOpenPanier();
+  };
 
   return (
     <Sheet>
@@ -111,21 +117,12 @@ export function MyCart() {
                 Livraison et taxes calculés a l&apos;étapes du paiement.
               </p>
               <div className="mt-6">
-                {pathname === "/payment-method" ? (
-                  <Button
-                    className="flex items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow hover:bg-indigo-700 transition duration-150 ease-in-out "
-                    disabled
-                  >
-                    Déjà sur la page de paiement
-                  </Button>
-                ) : (
-                  <a
-                    href="/payment-method"
-                    className="flex items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow hover:bg-indigo-700 transition duration-150 ease-in-out"
-                  >
-                    Payer
-                  </a>
-                )}
+                <Button
+                  className="flex text-center items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow hover:bg-indigo-700 transition duration-150 ease-in-out "
+                  onClick={onSubmit}
+                >
+                  Payer
+                </Button>
               </div>
             </div>
 
@@ -137,7 +134,7 @@ export function MyCart() {
                     onClick={() => setOpen(false)}
                     className="text-sm font-medium text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out"
                   >
-                    Continue Shopping
+                    Continue les achats
                     <span aria-hidden="true"> &rarr;</span>
                   </button>
                 </div>

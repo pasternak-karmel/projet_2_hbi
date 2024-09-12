@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 
   if (!session || !session.user) {
     return NextResponse.json(
-      { succes: false, message: "User not authenticated" },
+      { success: false, message: "User not authenticated" },
       { status: 401 }
     );
   }
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     if (!userProfile?.numTel || !userProfile?.adresse) {
       return NextResponse.json(
         {
-          succes: false,
+          success: false,
           message: "Veuillez remplir votre profil avant de pourvoir continuer",
         },
         { status: 400 }
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
 
     if (prix < 0) {
       return NextResponse.json(
-        { succes: false, message: "Le prix ne peut être inférieur à 0 XOF" },
+        { success: false, message: "Le prix ne peut être inférieur à 0 XOF" },
         { status: 400 }
       );
     }
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
 
     if (quantite < 1) {
       return NextResponse.json(
-        { succes: false, message: "La quantité ne peut être inférieure à 1" },
+        { success: false, message: "La quantité ne peut être inférieure à 1" },
         { status: 400 }
       );
     }
@@ -94,7 +94,7 @@ export async function POST(req: Request) {
     if (!article) {
       console.log("here article not created");
       return NextResponse.json(
-        { succes: false, message: "Erreur lors de l'ajout de l'article" },
+        { success: false, message: "Erreur lors de l'ajout de l'article" },
         { status: 400 }
       );
     }
@@ -102,13 +102,13 @@ export async function POST(req: Request) {
     await CreateProduct(session.user.email, nom);
 
     return NextResponse.json(
-      { succes: true, message: `L'article ${nom} a été mis en vente` },
+      { success: true, message: `L'article ${nom} a été mis en vente` },
       { status: 200 }
     );
   } catch (err) {
     console.error("Error:", err);
     return NextResponse.json(
-      { succes: false, message: "Une erreur s'est produite" },
+      { success: false, message: "Une erreur s'est produite" }, //
       { status: 500 }
     );
   }

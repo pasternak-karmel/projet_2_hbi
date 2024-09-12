@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { Button } from "./ui/button";
 import { BuyKkiapay } from "@/function/buyArticle";
+import { useAddToCart } from "@/function/ajouter-panier";
 
 const Add = ({
   productId,
@@ -12,10 +13,12 @@ const Add = ({
   stockNumber: number;
 }) => {
   const role = useCurrentRole();
+  const { handleAddToCart } = useAddToCart();
 
   const { BuyOpen } = BuyKkiapay();
 
   const [quantity, setQuantity] = useState(1);
+  const [loadingProduct, setLoadingProduct] = useState(false);
 
   const handleQuantity = (type: "i" | "d") => {
     if (type === "d" && quantity > 1) {
@@ -24,6 +27,12 @@ const Add = ({
     if (type === "i" && quantity < stockNumber) {
       setQuantity((prev) => prev + 1);
     }
+  };
+
+  const handleSubmit = async () => {
+    setLoadingProduct(true);
+    await handleAddToCart(productId, quantity);
+    setLoadingProduct(false);
   };
 
   const onSubmit = async () => {
@@ -56,29 +65,66 @@ const Add = ({
             <div className="text-xs">Le stock n&apos;est plus disponible</div>
           ) : (
             <div className="text-xs">
-              Seulement
-              <span className="text-orange-500">{stockNumber} articles</span>
-              restant!
+              Seulement{" "}
+              <span className="text-orange-500">{stockNumber} articles</span>{" "}
+              restant !
               <br />
               Ne le rate pas!!
             </div>
           )}
         </div>
         {role !== "ADMIN" ? (
-          <div>
+          <div className="flex flex-col gap-2">
             <button
-              // disabled={mutation.isPending}
               onClick={onSubmit}
               className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
             >
               Paiement à la livraison
             </button>
             <button
-              // disabled={mutation.isPending}
               onClick={onSubmit}
               className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
             >
               Payer maintenant
+            </button>
+
+            <button
+              className={`rounded-2xl ring-1 ring-lama text-lama w-max py-2 px-4 text-xs transition-all duration-200 ease-in-out 
+           ${
+             loadingProduct
+               ? "bg-gray-500 text-white"
+               : "hover:bg-black hover:text-white"
+           }`}
+              onClick={handleSubmit}
+              disabled={loadingProduct}
+            >
+              {loadingProduct ? (
+                <span className="flex items-center gap-2">
+                  <svg
+                    className="animate-spin h-5 w-5 text-gray-200"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    ></path>
+                  </svg>
+                  Processing...
+                </span>
+              ) : (
+                "Ajouter au panier"
+              )}
             </button>
           </div>
         ) : (
@@ -86,7 +132,7 @@ const Add = ({
             className="disabled:cursor-not-allowed"
             disabled={role === "ADMIN"}
           >
-            Vous pouvez pas payer
+            Payer
           </Button>
         )}
       </div>
@@ -95,4 +141,3 @@ const Add = ({
 };
 
 export default Add;
-

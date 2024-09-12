@@ -79,7 +79,7 @@ export default function AddProduit() {
           if (fileState.file instanceof File) {
             try {
               const res = await edgestore.myArrowImages.upload({
-                // options: { temporary: true },
+                options: { temporary: true },
                 file: fileState.file,
                 input: { type: "post" },
                 onProgressChange: (progress) => {
@@ -116,10 +116,11 @@ export default function AddProduit() {
         throw new Error(`HTTP error! status: ${response.status}`);
 
       const result = await response.json();
-      if (result.succes) {
-        // edgestore.myArrowImages.confirmUpload(
-        //   validImageUrls.map((urlObj) => urlObj.url)
-        // );
+      console.log(result);
+      if (result.success) {
+        for (const urlObj of validImageUrls) {
+          await edgestore.myArrowImages.confirmUpload({ url: urlObj.url });
+        }
         toast("Article ajouté avec succès", {
           description: result.message,
           action: { label: "Fermer", onClick: () => console.log("Undo") },
@@ -128,9 +129,10 @@ export default function AddProduit() {
         setFileStates([]);
         setUrls([]);
       } else {
-        // edgestore.myArrowImages.delete(
-        //   validImageUrls.map((urlObj) => ({ url: urlObj.url }))
-        // );
+        for (const urlObj of validImageUrls) {
+          await edgestore.myArrowImages.delete({ url: urlObj.url });
+        }
+        
         toast.error("Erreur lors de l'ajout de l'article", {
           description: result.message,
           action: { label: "Fermer", onClick: () => console.log("Undo") },

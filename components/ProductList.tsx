@@ -8,21 +8,13 @@ import { useAddToCart } from "@/function/ajouter-panier";
 import { useState } from "react";
 import LoaderState from "@/components/Loader";
 
-export default function ProductList({}: // categoryId,
-// limit = PRODUCT_PER_PAGE,
-// searchParams,
-{
-  // categoryId: string;
-  // limit?: number;
-  // searchParams?: any;
-}) {
+export default function ProductList() {
   const { handleAddToCart } = useAddToCart();
   const [loadingProductId, setLoadingProductId] = useState<string | null>(null);
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["Acceuilproduit"],
     queryFn: () => fetch(`/api/getnewproduct`).then((res) => res.json()),
-    // fetch(`/api/getnewproduct?categoryId=${categoryId}&limit=${limit}`).then((res) => res.json()),
   });
 
   if (isLoading) return <LoaderState />;

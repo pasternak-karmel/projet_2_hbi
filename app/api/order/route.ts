@@ -3,24 +3,23 @@ import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const productId = searchParams.get("id");
-  const quantite = Number(searchParams.get("quantite"));
-
-  if (!productId || !quantite) {
-    return NextResponse.json(
-      { error: "Invalid request parameters" },
-      { status: 400 }
-    );
-  }
-
   const session = await auth();
-
+  
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const userId = session.user.id;
+  const body = await req.json();
+  
+  const { cart, productId, quantite } = body;
+
+  if (!cart && (!productId || !quantite)) {
+    return NextResponse.json(
+      { error: "Invalid request parameters" },
+      { status: 400 }
+    );
+  }
 
   try {
     const isRempli = await db.user.findFirst({
@@ -44,44 +43,90 @@ export async function POST(req: Request) {
   }
 
   try {
-    const article = await db.article.findUnique({
-      where: { id: productId },
-    });
+    let totalAmount = 0;
+    const orderItems = [];
 
-    if (!article) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 });
-    }
-    if (article?.userId === userId) {
-      return NextResponse.json(
-        { error: "Tu ne peux pas encore payer ton propore produit" },
-        { status: 400 }
-      );
-    }
-    if (article.quantite < quantite) {
-      return NextResponse.json(
-        { error: "Pas assez de stock " },
-        { status: 400 }
-      );
-    }
+    if (cart) {
+      for (const item of cart) {
+        const { productId, quantity } = item;
 
-    await db.article.update({
-      where: { id: productId },
-      data: { quantite: article.quantite - quantite },
-    });
+        const article = await db.article.findUnique({
+          where: { id: productId },
+        });
 
-    const totalAmount = article.prix * quantite;
+        if (!article) {
+          return NextResponse.json({ error: `Product with ID ${productId} not found` }, { status: 404 });
+        }
+        if (article?.userId === userId) {
+          return NextResponse.json(
+            { error: "Tu ne peux pas encore payer ton propre produit" },
+            { status: 400 }
+          );
+        }
+        if (article.quantite < quantity) {
+          return NextResponse.json(
+            { error: `Pas assez de stock pour ${article.nom}` },
+            { status: 400 }
+          );
+        }
+
+        await db.article.update({
+          where: { id: productId },
+          data: { quantite: article.quantite - quantity },
+        });
+
+        totalAmount += article.prix * quantity;
+
+        orderItems.push({
+          productId: article.id,
+          quantity: quantity,
+          price: article.prix,
+          nom: article.nom,
+          image: article.image?.[0],
+        });
+      }
+    } else {
+      const article = await db.article.findUnique({
+        where: { id: productId },
+      });
+
+      if (!article) {
+        return NextResponse.json({ error: "Product not found" }, { status: 404 });
+      }
+      if (article?.userId === userId) {
+        return NextResponse.json(
+          { error: "Tu ne peux pas encore payer ton propre produit" },
+          { status: 400 }
+        );
+      }
+      if (article.quantite < quantite) {
+        return NextResponse.json(
+          { error: "Pas assez de stock" },
+          { status: 400 }
+        );
+      }
+
+      await db.article.update({
+        where: { id: productId },
+        data: { quantite: article.quantite - quantite },
+      });
+
+      totalAmount = article.prix * quantite;
+
+      orderItems.push({
+        productId: article.id,
+        quantity: quantite,
+        price: article.prix,
+        nom: article.nom,
+        image: article.image?.[0],
+      });
+    }
 
     const order = await db.order.create({
       data: {
         userId,
         totalAmount,
-        items: {
-          productId: article.id,
-          quantity: quantite,
-          price: article.prix,
-          nom: article.nom,
-          image: article.image?.[0],
-        },
+        items: orderItems,
         status: "payer",
       },
       include: {
