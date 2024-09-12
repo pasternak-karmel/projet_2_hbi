@@ -15,3 +15,6 @@
 //produit page
   //should correctly fill are field  
   //solve api which isn't working (solved)
+
+
+  //user can choose paiement à la livraison

@@ -44,8 +44,8 @@ export const CommandMenu = ({
         />
         <Command.List className="p-3">
           <Command.Empty>
-            No results found for{" "}
-            <span className="text-violet-500">"{value}"</span>
+            No results found for
+            <span className="text-violet-500">{value}</span>
           </Command.Empty>
 
           <Command.Group heading="Team" className="text-sm mb-3 text-stone-400">
