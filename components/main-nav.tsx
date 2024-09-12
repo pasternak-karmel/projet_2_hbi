@@ -47,8 +47,8 @@ const routes = [
     label: "categories",
   },
   {
-    href: "/Produits",
-    label: "All-Products",
+    href: "/All-Products",
+    label: "Nos Produits",
   },
   {
     href: "/produit",
