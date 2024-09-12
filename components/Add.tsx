@@ -54,13 +54,14 @@ const Add = ({
             </button>
           </div>
           {stockNumber < 1 ? (
-            <div className="text-xs">Product is out of stock</div>
+            <div className="text-xs">Le stock n'est plus disponible</div>
           ) : (
             <div className="text-xs">
-              Only <span className="text-orange-500">{stockNumber} items</span>{" "}
-              left!
+              Seulement{" "}
+              <span className="text-orange-500">{stockNumber} articles</span>{" "}
+              restant!
               <br />
-              Don&apos;t miss it
+              Ne le rate pas!!
             </div>
           )}
         </div>
@@ -71,14 +72,14 @@ const Add = ({
               onClick={onSubmit}
               className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
             >
-              "Paiement à la livraison"
+              Paiement à la livraison
             </button>
             <button
               // disabled={mutation.isPending}
               onClick={onSubmit}
               className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
             >
-              "Payer maintenant"
+              Payer maintenant
             </button>
           </div>
         ) : (
