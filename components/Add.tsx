@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { Button } from "./ui/button";
@@ -33,7 +32,7 @@ const Add = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <h4 className="font-medium">Choose a Quantity</h4>
+      <h4 className="font-medium">Choisir la quantitée</h4>
       <div className="flex justify-between">
         <div className="flex items-center gap-4">
           <div className="bg-gray-100 py-2 px-4 rounded-3xl flex items-center justify-between w-32">
@@ -54,11 +53,11 @@ const Add = ({
             </button>
           </div>
           {stockNumber < 1 ? (
-            <div className="text-xs">Le stock n'est plus disponible</div>
+            <div className="text-xs">Le stock n&apos;est plus disponible</div>
           ) : (
             <div className="text-xs">
-              Seulement{" "}
-              <span className="text-orange-500">{stockNumber} articles</span>{" "}
+              Seulement
+              <span className="text-orange-500">{stockNumber} articles</span>
               restant!
               <br />
               Ne le rate pas!!
@@ -97,12 +96,3 @@ const Add = ({
 
 export default Add;
 
-// function open() {
-//   openKkiapayWidget({
-//     amount: 4000,
-//     api_key: "33ca75c0652011efbf02478c5adba4b8",
-//     sandbox: true,
-//     email: "randomgail@gmail.com",
-//     phone: "97000000",
-//   });
-// }
