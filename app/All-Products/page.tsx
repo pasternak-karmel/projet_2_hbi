@@ -29,13 +29,8 @@ export default function AllProduct() {
   });
 
   const productsPerPage = 10;
-  // const { isPending, error, data, isPlaceholderData } = useQuery({
-  //   queryKey: ["Allproduit", currentPage],
-  //   queryFn: () => fetchProduit(currentPage),
-  //   placeholderData: keepPreviousData,
-  // });
 
-  const { isPending, error, data, isPlaceholderData } = useQuery({
+  const { isPending, error, data } = useQuery({
     queryKey: ["Allproduit", currentPage, searchParams.toString()],
     queryFn: () =>
       fetchProduitAll(
@@ -48,7 +43,6 @@ export default function AllProduct() {
     placeholderData: keepPreviousData,
   });
 
-  
   const handleFilterChange = (name: string, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -75,7 +69,6 @@ export default function AllProduct() {
   };
   return (
     <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-12">
-      {/* <Filter /> */}
       <Filter filters={filters} onFilterChange={handleFilterChange} />
       <Separator className="my-4 w-full" />
       <div className="mt-12 flex flex-wrap gap-x-8 gap-y-16 justify-center">
