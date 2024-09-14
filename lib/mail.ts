@@ -1,12 +1,21 @@
 import { Resend } from "resend";
 import { useQRCode } from "next-qrcode";
-// import fs from "fs";
-// import QrCode from "./qrCode";
+import QRCode from "qrcode";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const domain = process.env.NEXT_PUBLIC_APP_URL;
 // const { Image } = useQRCode();
+
+export const generateQRCode = async (text: string) => {
+  try {
+    const qrCode = await QRCode.toDataURL(text);
+    return qrCode;
+  } catch (err) {
+    console.error("Failed to generate QR code", err);
+    throw err;
+  }
+};
 
 export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
   await resend.emails.send({
@@ -40,11 +49,23 @@ export const sendVerificationEmail = async (email: string, token: string) => {
 };
 
 export const CreateProduct = async (email: string, nom: string) => {
+  const qrCodeBuffer = await QRCode.toBuffer(nom);
+
+  const emailContent = `
+      <p>Votre produit ${nom} a été mis en examen. vous reçevrez un mail lorsqu'il sera confirmé. Merci</p>
+      <p>Un Qr Code a été join a cet mail pour la confirmation:</p>`;
   await resend.emails.send({
     from: "Acme <onboarding@resend.dev>",
     to: email,
     subject: "Création de votre produit sur Project HBI",
-    html: `<p>Votre produit ${nom} a été mis en examen. vous reçevrez un mail lorsqu'il sera confirmé. Merci</p>`,
+    html: emailContent,
+    attachments: [
+      {
+        filename: "qrcode.png",
+        content: qrCodeBuffer.toString("base64"),
+        contentType: "image/png",
+      },
+    ],
   });
 };
 

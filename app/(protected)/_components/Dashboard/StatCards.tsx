@@ -1,26 +1,59 @@
-import React from "react";
+"use client"
+import React, { useEffect, useState } from "react";
 import { FiTrendingDown, FiTrendingUp } from "react-icons/fi";
 
+interface Metrics {
+  grossRevenue: number;
+  averageOrderValue: number;
+  trailingYearRevenue: number;
+}
+
 export const StatCards = () => {
+  const [metrics, setMetrics] = useState<Metrics>({
+    grossRevenue: 0,
+    averageOrderValue: 0,
+    trailingYearRevenue: 0,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        const response = await fetch("/api/order/metrics");
+        const data = await response.json();
+        setMetrics(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching metrics:", error);
+        setLoading(false);
+      }
+    };
+    fetchMetrics();
+  }, []);
+
+  if (loading) {
+    return <p>Loading metrics...</p>;
+  }
+
   return (
     <>
       <Card
         title="Gross Revenue"
-        value="$120,054.24"
+        value={`${metrics.grossRevenue.toFixed(2)} XOF`}
         pillText="2.75%"
         trend="up"
         period="From Jan 1st - Jul 31st"
       />
       <Card
         title="Avg Order"
-        value="$27.97"
+        value={`${metrics.averageOrderValue.toFixed(2)} XOF`}
         pillText="1.01%"
         trend="down"
         period="From Jan 1st - Jul 31st"
       />
       <Card
         title="Trailing Year"
-        value="$278,054.24"
+        value={`${metrics.trailingYearRevenue.toFixed(2)} XOF`}
         pillText="60.75%"
         trend="up"
         period="Previous 365 days"

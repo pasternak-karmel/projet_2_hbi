@@ -15,7 +15,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Article } from "@/types";
 import { ProduitSkeleton } from "@/components/article/ProduitSkeleton";
 import { useState } from "react";
-import { fetchProduit, fetchProduitAll } from "@/actions/my_api";
+import { fetchProduitAll } from "@/actions/my_api";
 import { useSearchParams } from "next/navigation";
 
 export default function AllProduct() {
@@ -44,12 +44,16 @@ export default function AllProduct() {
         filters.max,
         filters.category,
         filters.sort
-      ), // Pass the params
+      ),
     placeholderData: keepPreviousData,
   });
 
-  const handleFilterChange = (updatedFilters: any) => {
-    setFilters((prev) => ({ ...prev, ...updatedFilters }));
+  
+  const handleFilterChange = (name: string, value: string) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
   };
 
   if (isPending) {
@@ -71,8 +75,8 @@ export default function AllProduct() {
   };
   return (
     <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-12">
-      <Filter />
-      {/* <Filter onFilterChange={handleFilterChange} /> */}
+      {/* <Filter /> */}
+      <Filter filters={filters} onFilterChange={handleFilterChange} />
       <Separator className="my-4 w-full" />
       <div className="mt-12 flex flex-wrap gap-x-8 gap-y-16 justify-center">
         {articles.map((product: Article) => (

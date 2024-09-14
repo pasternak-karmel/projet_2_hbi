@@ -72,36 +72,38 @@ export async function GET(request: Request) {
   try {
     const skip = (page - 1) * limit;
 
-    // Build the filter conditions dynamically
     const whereClause: any = {
       status: "ACCEPTE",
       isDeleted: false,
       quantite: { gt: 0 },
     };
 
-    // Add price filter
     if (minPrice || maxPrice) {
       whereClause.prix = {};
       if (minPrice) whereClause.prix.gte = parseInt(minPrice);
       if (maxPrice) whereClause.prix.lte = parseInt(maxPrice);
     }
 
-    // Add category filter
     if (category) {
       whereClause.categories = {
         nom: category,
       };
     }
 
-    // Define sorting logic
     let orderByClause = {};
     if (sort) {
-      const [order, field] = sort.split(" ");
-      orderByClause = {
-        [field]: order, // e.g., { price: 'asc' }
-      };
+      let [order, field] = sort.split(" ");
+      if (order && field) {
+        if (field === "price") {
+          field = "prix";
+        }
+        orderByClause = {
+          [field]: order,
+        };
+      } else {
+        orderByClause = { updatedAt: "desc" };
+      }
     } else {
-      // Default sorting
       orderByClause = { updatedAt: "desc" };
     }
 
@@ -124,7 +126,7 @@ export async function GET(request: Request) {
       nom: article.nom,
       prix: article.prix,
       image: article.image,
-      categories: article.categories.nom,
+      categories: article.categories ? article.categories.nom : "Unknown",
       userId: article.userId,
     }));
 
