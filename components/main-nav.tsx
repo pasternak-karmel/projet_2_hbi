@@ -76,7 +76,8 @@ export function MainNav({ session }: MainNavProps) {
       <div className="flex items-center justify-between h-20 px-4">
         {/* Left Side - Logo */}
         <Link href="/">
-          <div className="text-2xl tracking-wide">MARKETPLACE</div>
+          {/* <div className="text-2xl tracking-wide">MARKETPLACE</div> */}
+          <Image src="/logo.png" alt="logo" width={24} height={24} />
         </Link>
 
         {/* Right Side - User Button or Login */}

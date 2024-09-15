@@ -32,7 +32,6 @@ export default function ProductSpecificPage({
   } = useQuery({
     queryKey: ["product", params.id],
     queryFn: () => produit(params.id),
-    // fetch(`/api/getProduit/${params.id}`).then((res) => res.json()),
   });
 
   if (isLoading) return <LoaderState />;
@@ -82,7 +81,7 @@ export default function ProductSpecificPage({
         <div className="h-[2px] bg-gray-100" />
         <h2 className="font-medium text-2xl">{product.prix} XOF</h2>
         <p className="mt-2 text-gray-500">
-          Condition:{" "}
+          <span className="font-bold underline-offset-2 text-black">Condition: </span>
           {product.usage
             ? "Ce produit a été déjà utilisé au moins une fois"
             : "Nouveau, jamais utilisé"}

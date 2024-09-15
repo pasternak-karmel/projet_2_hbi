@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetClose,
@@ -16,25 +15,68 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ScrollArea } from "../ui/scroll-area";
 import { BuyKkiapay } from "@/function/buyArticle";
+import { fedaserverPanier } from "@/actions/fedaServer";
 
 export function MyCart() {
-  const pathname = usePathname();
   const [open, setOpen] = useState(true);
-  const { BuyOpenPanier } = BuyKkiapay();
+  const { PayerLivraisonPanier } = BuyKkiapay();
+  const [loadingCOD, setLoadingCOD] = useState(false);
+  const [loadingImmediate, setLoadingImmediate] = useState(false);
 
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const cartItems = session?.user?.cart || [];
 
-  const totalItems = cartItems.reduce(
-    (total, product) => total + product.quantity,
-    0
-  );
   const subtotal = cartItems.reduce((total, product) => {
     return total + product.prix * product.quantity;
   }, 0);
 
-  const onSubmit = async () => {
-    await BuyOpenPanier();
+  const handleIncreaseQuantity = (productId: string) => {
+    const updatedCart = cartItems.map((product) => {
+      if (product.productId === productId) {
+        return { ...product, quantity: product.quantity + 1 };
+      }
+      return product;
+    });
+    updateCart(updatedCart);
+  };
+
+  const handleDecreaseQuantity = (productId: string) => {
+    const updatedCart = cartItems.map((product) => {
+      if (product.productId === productId && product.quantity > 1) {
+        return { ...product, quantity: product.quantity - 1 };
+      }
+      return product;
+    });
+    updateCart(updatedCart);
+  };
+
+  const handleRemoveProduct = (productId: string) => {
+    const updatedCart = cartItems.filter((product) => product.productId !== productId);
+    updateCart(updatedCart);
+  };
+
+  const updateCart = async (updatedCart: { productId: string; quantity: number; nom: string; prix: number; image: string; }[]) => {
+    await update({
+      user: {
+        ...session?.user,
+        cart: updatedCart,
+      },
+    });
+  };
+
+  const onSubmit = async (paymentType: "COD" | "Immediate") => {
+    if (paymentType === "COD") {
+      setLoadingCOD(true);
+      await PayerLivraisonPanier();
+      setLoadingCOD(false);
+    } else {
+      setLoadingImmediate(true);
+      const url = await fedaserverPanier();
+      if (url) {
+        window.location.href = url;
+      }
+      setLoadingImmediate(false);
+    }
   };
 
   return (
@@ -54,11 +96,10 @@ export function MyCart() {
             Shopping Cart
           </SheetTitle>
           <SheetDescription className="text-sm text-gray-500">
-            Review the products in your cart. You can adjust quantities or
-            remove items.
+            Dans votre panier vous pouvez ajuster la quantité ou continuer vers la page de paiement.
           </SheetDescription>
         </SheetHeader>
-        <ScrollArea className="h-3/5 w-full rounded-md ">
+        <ScrollArea className="h-3/5 w-full rounded-md">
           <div className="mt-8">
             <div className="flow-root">
               <ul role="list" className="-my-6 divide-y divide-gray-200">
@@ -78,28 +119,39 @@ export function MyCart() {
                       <div className="ml-4 flex flex-1 flex-col">
                         <div className="flex justify-between text-lg font-medium text-gray-900">
                           <h3>{product.nom}</h3>
-                          <p className="ml-4 text-indigo-600">
-                            {product.prix} XOF
-                          </p>
+                          <p className="ml-4 text-indigo-600">{product.prix} XOF</p>
                         </div>
                         <p className="mt-1 text-sm text-gray-500">
-                          Quantity: {product.quantity}
+                          Quantitée: {product.quantity}
                         </p>
                         <div className="flex flex-1 items-end justify-between text-sm">
+                          <div className="flex items-center space-x-4">
+                            <button
+                              onClick={() => handleDecreaseQuantity(product.productId)}
+                              className="px-2 py-1 text-gray-600 bg-gray-200 rounded hover:bg-gray-300"
+                            >
+                              -
+                            </button>
+                            <span>{product.quantity}</span>
+                            <button
+                              onClick={() => handleIncreaseQuantity(product.productId)}
+                              className="px-2 py-1 text-gray-600 bg-gray-200 rounded hover:bg-gray-300"
+                            >
+                              +
+                            </button>
+                          </div>
                           <button
-                            type="button"
+                            onClick={() => handleRemoveProduct(product.productId)}
                             className="font-medium text-red-600 hover:text-red-500 transition duration-150 ease-in-out"
                           >
-                            Remove
+                            Supprimer
                           </button>
                         </div>
                       </div>
                     </li>
                   ))
                 ) : (
-                  <p className="text-gray-500 text-center mt-4">
-                    Votre panier est vide
-                  </p>
+                  <p className="text-gray-500 text-center mt-4">Votre panier est vide</p>
                 )}
               </ul>
             </div>
@@ -114,34 +166,90 @@ export function MyCart() {
                 <p className="text-indigo-600">{subtotal} XOF</p>
               </div>
               <p className="mt-0.5 text-sm text-gray-500">
-                Livraison et taxes calculés a l&apos;étapes du paiement.
+                Livraison et taxes calculés à l'étape du paiement.
               </p>
               <div className="mt-6">
-                <Button
-                  className="flex text-center items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow hover:bg-indigo-700 transition duration-150 ease-in-out "
-                  onClick={onSubmit}
+                <button
+                  onClick={() => onSubmit("Immediate")}
+                  className={`w-full md:w-40 text-sm rounded-full border-2 border-blue-600 text-blue-600 py-2 hover:bg-blue-600 hover:text-white transition duration-200 ${
+                    loadingImmediate ? "cursor-not-allowed opacity-70" : ""
+                  }`}
+                  disabled={loadingImmediate}
                 >
-                  Payer
-                </Button>
+                  {loadingImmediate ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                        ></path>
+                      </svg>
+                      Processing...
+                    </span>
+                  ) : (
+                    "Payer Maintenant"
+                  )}
+                </button>
+                <button
+                  onClick={() => onSubmit("COD")}
+                  className={`w-full md:w-40 text-sm rounded-full border-2 border-green-600 text-green-600 py-2 hover:bg-green-600 hover:text-white transition duration-200 ${
+                    loadingCOD ? "cursor-not-allowed opacity-70" : ""
+                  }`}
+                  disabled={loadingCOD}
+                >
+                  {loadingCOD ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                        ></path>
+                      </svg>
+                      Processing...
+                    </span>
+                  ) : (
+                    "Paiement à la livraison"
+                  )}
+                </button>
               </div>
             </div>
-
-            <SheetFooter className="mt-6">
-              <SheetClose asChild>
-                <div className="flex justify-center">
-                  <button
-                    type="button"
-                    onClick={() => setOpen(false)}
-                    className="text-sm font-medium text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out"
-                  >
-                    Continue les achats
-                    <span aria-hidden="true"> &rarr;</span>
-                  </button>
-                </div>
-              </SheetClose>
-            </SheetFooter>
           </>
         )}
+        <SheetFooter>
+          <SheetClose asChild>
+            <button className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">
+              Fermer
+            </button>
+          </SheetClose>
+        </SheetFooter>
       </SheetContent>
     </Sheet>
   );

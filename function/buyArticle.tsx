@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { CalculateAmount, CalculateAmountPanier } from "@/actions/buy";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { Customer } from "fedapay";
 
 export function BuyKkiapay() {
   const { openKkiapayWidget, addKkiapayListener, removeKkiapayListener } =
@@ -18,14 +19,28 @@ export function BuyKkiapay() {
     mutationFn: async ({
       productId,
       quantity,
+      payment,
     }: {
       productId: string;
       quantity: number;
+      payment?: string;
     }) => {
+      let paie;
+      if (!payment) {
+        paie = "Immediate";
+      } else {
+        paie = "COD";
+      }
       const response = await fetch(
-        `/api/order?id=${productId}&quantite=${quantity}`,
+        `/api/order?id=${productId}&quantite=${quantity}&payment=${paie}`,
         {
           method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            productId,
+            quantite: quantity,
+            payment: paie,
+          }),
         }
       );
 
@@ -44,13 +59,19 @@ export function BuyKkiapay() {
   });
 
   const cartMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (payment?) => {
+      let paie;
+      if (!payment) {
+        paie = "Immediate";
+      } else {
+        paie = "COD";
+      }
       const response = await fetch(`/api/order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ cart: session?.user.cart }),
+        body: JSON.stringify({ cart: session?.user.cart, payment: paie }),
       });
 
       if (!response.ok) {
@@ -60,7 +81,7 @@ export function BuyKkiapay() {
       return response.json();
     },
     onSuccess: (data) => {
-      router.push(`/All-Products/cart/success?orderId=${data.id}`);
+      router.push(`/All-Products/cart/success?orderId=${data.order.id}`);
     },
     onError: (error) => {
       console.error("Error completing the cart order:", error);
@@ -94,9 +115,6 @@ export function BuyKkiapay() {
           description: "Paiement vérifié avec succès",
         });
 
-        console.log("Payment verification success:", data);
-
-        // Handle individual product or cart based on presence of productId
         if (productId && quantity) {
           mutation.mutate({ productId, quantity });
         } else {
@@ -182,5 +200,12 @@ export function BuyKkiapay() {
     }
   };
 
-  return { BuyOpen, BuyOpenPanier };
+  const PayerLivraison = async (productId: string, quantity: number) => {
+    mutation.mutate({ productId, quantity, payment: "COD" });
+  };
+  const PayerLivraisonPanier = async () => {
+    cartMutation.mutate();
+  };
+
+  return { BuyOpen, BuyOpenPanier, PayerLivraison, PayerLivraisonPanier };
 }

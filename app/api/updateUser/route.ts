@@ -4,12 +4,7 @@ import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
-
+export async function PUT(req: Request) {
   if (!req || !req.body) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

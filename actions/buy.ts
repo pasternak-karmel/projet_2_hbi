@@ -27,7 +27,7 @@ export const CalculateAmountPanier = async () => {
   try {
     const session = await auth();
     if (!session || !session.user || !session.user.cart) {
-      return { error: "No cart found" };
+      return { error: "Pas de panier trouver" };
     }
 
     const cart = session.user.cart;
