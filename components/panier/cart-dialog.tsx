@@ -166,7 +166,7 @@ export function MyCart() {
                 <p className="text-indigo-600">{subtotal} XOF</p>
               </div>
               <p className="mt-0.5 text-sm text-gray-500">
-                Livraison et taxes calculés à l'étape du paiement.
+                Livraison et taxes calculés à l&apos;étape du paiement.
               </p>
               <div className="mt-6">
                 <button
