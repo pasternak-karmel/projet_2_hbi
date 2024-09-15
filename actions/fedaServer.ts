@@ -63,8 +63,8 @@ export const fedaserverPanier = async () => {
 
     const transaction = await Transaction.create({
       description: "Confirmer votre achats",
-      amount: 100,
-      // amount: res.totalAmount,
+      // amount: 100,
+      amount: res.totalAmount,
       callback_url: `http://localhost:3000/fedakarmel?cart=&payment=Immediate`,
       currency: {
         iso: "XOF",
