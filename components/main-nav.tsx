@@ -74,77 +74,82 @@ export function MainNav({ session }: MainNavProps) {
   if (isMobile) {
     return (
       <div className="flex items-center justify-between h-20 px-4">
-        {/* Left Side - Logo */}
         <Link href="/">
-          {/* <div className="text-2xl tracking-wide">MARKETPLACE</div> */}
           <Image src="/logo.png" alt="logo" width={24} height={24} />
         </Link>
+        {/* <div className="w-3 h-3">
+          <MyCart />
+        </div> */}
 
-        {/* Right Side - User Button or Login */}
         <div className="flex items-center gap-2">
           {session ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="relative w-8 h-8 rounded-full"
-                >
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage
-                      src={
-                        session.user?.image ??
-                        "https://source.boringavatars.com/marble/120"
-                      }
-                      alt={session.user?.name ?? ""}
-                    />
-                    <AvatarFallback className="bg-sky-500">
-                      <FaUser className="text-white" />
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end">
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <div className="flex gap-2">
-                      <Avatar className="w-8 h-8">
-                        <AvatarImage
-                          src={
-                            session.user?.image ??
-                            "https://source.boringavatars.com/marble/120"
-                          }
-                          alt={session.user?.name ?? ""}
-                        />
-                        <AvatarFallback className="bg-sky-500">
-                          <FaUser className="text-white" />
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="text-sm font-medium leading-none">
-                          {session.user?.name}
-                        </p>
-                        <p className="text-xs leading-none text-muted-foreground">
-                          {session.user?.email}
-                        </p>
+            <div>
+              <MyCart />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="relative w-8 h-8 rounded-full"
+                  >
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage
+                        src={
+                          session.user?.image ??
+                          "https://source.boringavatars.com/marble/120"
+                        }
+                        alt={session.user?.name ?? ""}
+                      />
+                      <AvatarFallback className="bg-sky-500">
+                        <FaUser className="text-white" />
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end">
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <div className="flex gap-2">
+                        <Avatar className="w-8 h-8">
+                          <AvatarImage
+                            src={
+                              session.user?.image ??
+                              "https://source.boringavatars.com/marble/120"
+                            }
+                            alt={session.user?.name ?? ""}
+                          />
+                          <AvatarFallback className="bg-sky-500">
+                            <FaUser className="text-white" />
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-sm font-medium leading-none">
+                            {session.user?.name}
+                          </p>
+                          <p className="text-xs leading-none text-muted-foreground">
+                            {session.user?.email}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => signOut()}>
-                  <ExitIcon className="h-4 w-4 mr-2" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  </DropdownMenuLabel>
+                  <DropdownMenuItem onClick={() => signOut()}>
+                    <ExitIcon className="h-4 w-4 mr-2" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           ) : (
-            <LoginButton asChild>
-              <Button variant="secondary" size="sm">
-                Se connecter
-              </Button>
-            </LoginButton>
+            <div>
+              <MyCart />
+              <LoginButton asChild>
+                <Button variant="secondary" size="sm">
+                  Se connecter
+                </Button>
+              </LoginButton>
+            </div>
           )}
 
-          {/* Menu Icon on the right */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger>
               <Button

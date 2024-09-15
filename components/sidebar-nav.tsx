@@ -17,7 +17,7 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
 export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const isMobile = useMedia("(max-width: 1024px)", false); // Breakpoint for mobile
+  const isMobile = useMedia("(max-width: 1024px)", false);
 
   const onClick = (href: string) => {
     router.push(href);
@@ -43,12 +43,11 @@ const MobileNav = ({
 
   return (
     <div className="w-full">
-      {/* Toggle button for mobile */}
       <button
         onClick={() => setMenuOpen(!menuOpen)}
         className="p-2 bg-gray-200 rounded-lg w-full text-left"
       >
-        {menuOpen ? "Close Menu" : "Open Menu"}
+        {menuOpen ? "Fermer le Menu" : "Ouvrir le Menu"}
       </button>
 
       {menuOpen && (
