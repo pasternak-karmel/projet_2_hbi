@@ -41,7 +41,7 @@ export default function AllProduct() {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [page, setPage] = React.useState(0);
-  const productsPerPage = 2;
+  const productsPerPage = 4;
 
   const { data, error, isFetching, isPlaceholderData } = useQuery({
     queryKey: ["Allproduit", page],

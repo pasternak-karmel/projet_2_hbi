@@ -79,7 +79,7 @@ const Filter = ({ filters, onFilterChange }: FilterProps) => {
             Sports et activités extérieures
           </option>
           <option value="instruments de musique">Instruments de musique</option>
-          <option value="artisanat d'art">Artisanat d'art</option>
+          <option value="artisanat d'art">Artisanat d&apos;art</option>
           <option value="antiquites et objects de collection">
             Antiquités et objets de collection
           </option>
