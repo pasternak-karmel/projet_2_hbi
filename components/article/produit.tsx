@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { Avatar, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useCurrentRole } from "@/hooks/use-current-role";
 import { Button } from "@/components/ui/button";
 import { useAddToCart } from "@/function/ajouter-panier";
@@ -29,7 +29,6 @@ export default function Produit({ product }: ProduitProps) {
     queryKey: ["getProduitVendor", product.userId],
     queryFn: () => getProduitVendor(product.userId),
   });
-
 
   const handleSubmit = async () => {
     setLoadingProduct(true);
@@ -64,6 +63,7 @@ export default function Produit({ product }: ProduitProps) {
                   }
                   alt={data.image ?? ""}
                 />
+                <AvatarFallback>{data.image}</AvatarFallback>
               </Avatar>
               {data ? data.name : "Vendeur inconnu"}
             </div>

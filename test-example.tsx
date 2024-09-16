@@ -18,3 +18,6 @@
 
 
   //user can choose paiement à la livraison
+
+
+  

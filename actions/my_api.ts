@@ -6,9 +6,7 @@ const mydomain = process.env.DOMAIN;
 const productsPerPage = 10;
 
 export const fetchProduit = async (page = 1) =>
-  fetch(
-    `${mydomain}/api/getProduit?page=${page}&limit=${productsPerPage}`
-  ).then((res) => res.json());
+  fetch(`${mydomain}/api/getProduit?page=${page}`).then((res) => res.json());
 
 export async function fetchProduitAll(
   page = 1,
@@ -19,7 +17,7 @@ export async function fetchProduitAll(
 ) {
   const params = new URLSearchParams({
     page: page.toString(),
-    limit: "10", // Adjust the limit if necessary
+    limit: "1",
   });
 
   if (min) params.append("min", min);

@@ -29,6 +29,8 @@ export interface Article {
   nomUser: string;
   adresse: string;
   contact: string;
+  updatedAt: Date;
+  categories: string;
 }
 
 export interface ProduitProps {

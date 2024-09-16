@@ -29,15 +29,14 @@ const accountFormSchema = z.object({
   mobile: z.boolean().default(false).optional(),
   name: z.optional(z.string()),
   email: z.optional(z.string().email()),
-  password: z.optional(z.string().min(6)),
-  newPassword: z.optional(z.string().min(6)),
+  // password: z.optional(z.string().min(6)),
+  // newPassword: z.optional(z.string().min(6)),
 });
 
 type AccountFormValues = z.infer<typeof accountFormSchema>;
 
 export default function AccountForm() {
   const user = useCurrentUser();
-  const { data: session } = useSession();
 
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
@@ -46,8 +45,8 @@ export default function AccountForm() {
       email: user?.email || "",
       adresse: user?.adresse || "",
       num: user?.num || 0,
-      password: "",
-      newPassword: "",
+      // password: "",
+      // newPassword: "",
     },
   });
 
@@ -162,7 +161,7 @@ export default function AccountForm() {
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
@@ -197,7 +196,7 @@ export default function AccountForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           <Button type="submit" disabled={mutation.isPending}>
             {mutation.isPending ? "Updating..." : "Save changes"}
           </Button>
