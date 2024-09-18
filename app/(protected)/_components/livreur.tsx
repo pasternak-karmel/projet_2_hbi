@@ -31,11 +31,6 @@ export const AddLivreur = ({ children, asChild }: LivreurProps) => {
           </SheetDescription>
         </SheetHeader>
         <AddLivreurForm />
-        {/* <SheetFooter>
-          <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
-          </SheetClose>
-        </SheetFooter> */}
       </SheetContent>
     </Sheet>
   );

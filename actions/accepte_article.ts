@@ -92,7 +92,10 @@ export const ConfirmRecuArticle = async (
     });
 
     if (!get)
-      return { error: "Ce produit n'est plus trouvé ou a été supprimer" };
+      return {
+        error:
+          "Ce produit n'est plus trouvé ou a été supprimer, oun vous n'êtes pas autorisé à reçevoir le produit",
+      };
 
     if (get?.isRecu === values) {
       return { error: `Ce produit a été deja marquer comme ${confirm}` };
@@ -100,12 +103,12 @@ export const ConfirmRecuArticle = async (
       if (values === false) {
         await db.article.update({
           where: { id: produitId, agentId: session.user.id },
-          data: { isRecu: values, status: "REFUS" },
+          data: { isRecu: true, status: "REFUS" },
         });
       } else {
         await db.article.update({
           where: { id: produitId, agentId: session.user.id },
-          data: { isRecu: values },
+          data: { isRecu: true },
         });
       }
     }

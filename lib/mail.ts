@@ -4,22 +4,12 @@ import QRCode from "qrcode";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const domain = process.env.NEXT_PUBLIC_APP_URL;
-// const { Image } = useQRCode();
-
-export const generateQRCode = async (text: string) => {
-  try {
-    const qrCode = await QRCode.toDataURL(text);
-    return qrCode;
-  } catch (err) {
-    console.error("Failed to generate QR code", err);
-    throw err;
-  }
-};
+// const domain = process.env.NEXT_PUBLIC_APP_URL;
+const domain = process.env.DOMAIN;
 
 export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
   await resend.emails.send({
-    from: "karmelavenon@gmail.com",
+    from: "Acme <onboarding@resend.dev>",
     to: email,
     subject: "2FA Code",
     html: `<p>Your 2FA code: ${token}</p>`,
@@ -30,7 +20,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
   const resetLink = `${domain}/auth/new-password?token=${token}`;
 
   await resend.emails.send({
-    from: "karmelavenon@gmail.com",
+    from: "Acme <onboarding@resend.dev>",
     to: email,
     subject: "Reset your password",
     html: `<p>Click <a href="${resetLink}">here</a> to reset password.</p>`,
@@ -48,8 +38,12 @@ export const sendVerificationEmail = async (email: string, token: string) => {
   });
 };
 
-export const CreateProduct = async (email: string, nom: string) => {
-  const qrCodeBuffer = await QRCode.toBuffer(nom);
+export const CreateProduct = async (
+  email: string,
+  nom: string,
+  aticleId: string
+) => {
+  const qrCodeBuffer = await QRCode.toBuffer(aticleId);
 
   const emailContent = `
       <p>Votre produit ${nom} a été mis en examen. vous reçevrez un mail lorsqu'il sera confirmé. Merci</p>
@@ -80,18 +74,11 @@ export const AttribueProduct = async (
     subject: "Un produit vous êtes assigné",
     html: `<p>Le produit ${nomArticle} Vous a été assigné. Veuillez prendre contact avec le vendeur dans la section mes livraisons. Merci</p>`,
   });
-  // const myImage = QrCode();
   await resend.emails.send({
     from: "Acme <onboarding@resend.dev>",
     to: emailUser,
     subject: "Création de votre produit sur Project HBI",
     html: `<p>Votre produit ${nomArticle} a été accepté. Un agent vous contactera pour prendre les dispositions avec vous. Merci</p>`,
-    // attachments: [
-    //   {
-    //     filename: "qrcode.png",
-    //     content: myImage,
-    //   },
-    // ],
   });
 };
 

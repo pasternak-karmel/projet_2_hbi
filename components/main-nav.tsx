@@ -77,9 +77,6 @@ export function MainNav({ session }: MainNavProps) {
         <Link href="/">
           <Image src="/logo.png" alt="logo" width={24} height={24} />
         </Link>
-        {/* <div className="w-3 h-3">
-          <MyCart />
-        </div> */}
 
         <div className="flex items-center gap-2">
           {session ? (
@@ -141,7 +138,9 @@ export function MainNav({ session }: MainNavProps) {
             </div>
           ) : (
             <div>
-              <MyCart />
+              <div className="w-3 h-3">
+                <MyCart />
+              </div>
               <LoginButton asChild>
                 <Button variant="secondary" size="sm">
                   Se connecter

@@ -1,12 +1,10 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { RadioGroupForm } from "../../_components/radio-agent";
 import LoaderState from "@/components/Loader";
 
 const ProductConfirmationPage = ({ params }: { params: { id: string } }) => {
-  const router = useRouter();
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["confirmationPage"],

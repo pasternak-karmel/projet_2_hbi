@@ -22,7 +22,7 @@ const QRScannerPage = ({ produitId }: Scanner) => {
       setIsScanning(false);
       try {
         const test = "24da6f9b-581f-48d2-a299-de3d6167a3fd";
-        const scanResult = await scan_produit(produitId, test);
+        const scanResult = await scan_produit(produitId, result);
         if (scanResult?.produitIsDisponible) {
           router.push(`/confirmation/${scanResult.produitIsDisponible.id}`);
         } else if (scanResult?.error) {

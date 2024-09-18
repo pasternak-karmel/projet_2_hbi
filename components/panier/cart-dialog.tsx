@@ -12,7 +12,6 @@ import {
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { ScrollArea } from "../ui/scroll-area";
 import { BuyKkiapay } from "@/function/buyArticle";
 import { fedaserverPanier } from "@/actions/fedaServer";

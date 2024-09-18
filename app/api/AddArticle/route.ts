@@ -99,7 +99,7 @@ export async function POST(req: Request) {
       );
     }
 
-    await CreateProduct(session.user.email, nom);
+    await CreateProduct(session.user.email, nom, article.id);
 
     return NextResponse.json(
       { success: true, message: `L'article ${nom} a été mis en vente` },
