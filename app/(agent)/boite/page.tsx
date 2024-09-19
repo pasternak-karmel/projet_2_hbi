@@ -1,20 +1,22 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import Livraison_components from "../_components/livraison_components";
-import { Article } from "@prisma/client";
-import { useRouter } from "next/navigation"; // Importer le useRouter
+import { useRouter } from "next/navigation";
 import LoaderState from "@/components/Loader";
 
 export default function Boite() {
-  const router = useRouter(); // Initialiser useRouter
+  const router = useRouter();
   const { isLoading, error, data } = useQuery({
     queryKey: ["maBoite"],
-    queryFn: () => fetch(`/api/getLivreur/moi`).then((res) => res.json()),
+    queryFn: () => fetch(`/api/agent`).then((res) => res.json()),
   });
 
   if (isLoading) return <LoaderState />;
 
   if (error) return "An error has occurred: " + error.message;
+
+  // Assuming the API returns an object with `articles` and `livraisons`
+  const articles = data?.livraisons || [];
 
   return (
     <main className="min-h-screen p-6 bg-gradient-to-r from-gray-50 to-gray-200 pt-20">
@@ -24,7 +26,7 @@ export default function Boite() {
         </h1>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {data.map((produit: Article) => (
+          {articles.map((produit: any) => (
             <Livraison_components key={produit.id} produit={produit} />
           ))}
         </div>

@@ -24,7 +24,7 @@ export const accepte_article = async (
   }
 };
 
-export const article_accepte = async (article: string, agentId?: string) => {
+export const article_accepte = async (article: string) => {
   const session = await auth();
   if (!session || !session.user || session.user.role !== UserRole.AGENT)
     return { error: "user non autorisé" };
@@ -94,25 +94,14 @@ export const ConfirmRecuArticle = async (
     if (!get)
       return {
         error:
-          "Ce produit n'est plus trouvé ou a été supprimer, oun vous n'êtes pas autorisé à reçevoir le produit",
+          "Ce produit n'est plus trouvé ou a été supprimer, ou vous n'êtes pas autorisé à reçevoir le produit",
       };
 
-    if (get?.isRecu === values) {
-      return { error: `Ce produit a été deja marquer comme ${confirm}` };
-    } else {
-      if (values === false) {
-        await db.article.update({
-          where: { id: produitId, agentId: session.user.id },
-          data: { isRecu: true, status: "REFUS" },
-        });
-      } else {
-        await db.article.update({
-          where: { id: produitId, agentId: session.user.id },
-          data: { isRecu: true },
-        });
-      }
-    }
-    return { succes: true, message: "Produit marquer comme reçu avec succes" };
+    await db.article.update({
+      where: { id: produitId, agentId: session.user.id },
+      data: { isRecu: true, status: values ? "ACCEPTE" : "REFUS" },
+    });
+    return { succes: "Produit marquer comme reçu avec succes" };
   } catch (error) {
     return { error: "Something went wrong" };
   }

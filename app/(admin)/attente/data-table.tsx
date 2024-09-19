@@ -25,6 +25,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Article } from "./columns";
+import { accepte_article } from "@/actions/accepte_article";
+import { ToastRessuable } from "@/function/notification-toast";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -66,15 +68,23 @@ export function DataTable<TData, TValue>({
       table.getSelectedRowModel().rowsById
     ).map((item) => (item.original as Article).id);
 
-    // if (selectedArticleIds.length > 0) {
-    //   const result = await accepte_article(selectedArticleIds)!;
+    if (selectedArticleIds.length > 0) {
+      const result = await accepte_article(selectedArticleIds, "")!;
 
-    //   if (result.success) {
-    //     console.log(result.success);
-    //   } else {
-    //     console.error(result.error);
-    //   }
-    // }
+      if (result.success) {
+        ToastRessuable({
+          titre: "Succès",
+          description: result.success,
+        });
+        console.log(result.success);
+      } else {
+        ToastRessuable({
+          titre: "Erreur",
+          description: result?.error || "",
+        });
+        console.error(result.error);
+      }
+    }
   };
 
   return (

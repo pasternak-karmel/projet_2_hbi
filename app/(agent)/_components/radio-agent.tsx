@@ -25,11 +25,18 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { ConfirmRecuArticle } from "@/actions/accepte_article";
+import { useQueryClient } from "@tanstack/react-query";
+import { ToastRessuable } from "@/function/notification-toast";
 
 interface radioInform {
   produit: string;
+}
+
+interface RadioProps {
+  value: string;
+  label: string;
 }
 
 const FormSchema = z.object({
@@ -38,32 +45,44 @@ const FormSchema = z.object({
   }),
 });
 
+const RadioOption = ({ value, label }: RadioProps) => (
+  <FormItem className="flex items-center space-x-3">
+    <FormControl>
+      <RadioGroupItem value={value} />
+    </FormControl>
+    <FormLabel className="font-normal">{label}</FormLabel>
+  </FormItem>
+);
+
 export function RadioGroupForm({ produit }: radioInform) {
+  const queryClient = useQueryClient();
   const [confirmSubmit, setConfirmSubmit] = useState(false);
+  const [status, setStatus] = useState<{ error?: string; success?: string }>(
+    {}
+  );
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const result = await ConfirmRecuArticle(produit, data.type);
-    if (result.error) {
-      toast("Erreur", {
-        description: result.error,
-        action: {
-          label: "Fermer",
-          onClick: () => console.log("Undo"),
-        },
+  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
+    setStatus({});
+    startTransition(async () => {
+      const result = await ConfirmRecuArticle(produit, values.type);
+      setStatus({ error: result?.error, success: result?.succes || "" });
+      ToastRessuable({
+        titre: result?.error || "",
+        description: result?.succes || "",
       });
-    } else {
-      toast("Confirmation réussi", {
-        description: result.message,
-        action: {
-          label: "Fermer",
-          onClick: () => console.log("Undo"),
-        },
+
+      queryClient.invalidateQueries({
+        queryKey: ["confirmationPage", produit],
+        exact: true,
+        refetchType: "active",
       });
-    }
-  }
+      form.reset();
+    });
+  };
 
   return (
     <Form {...form}>
@@ -83,22 +102,11 @@ export function RadioGroupForm({ produit }: radioInform) {
                   value={field.value}
                   className="flex flex-col space-y-1"
                 >
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="yes" />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      Le produit est conforme
-                    </FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="no" />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      Le produit n&apos;est pas conforme
-                    </FormLabel>
-                  </FormItem>
+                  <RadioOption value="yes" label="Le produit est conforme" />
+                  <RadioOption
+                    value="no"
+                    label="Le produit n'est pas conforme"
+                  />
                 </RadioGroup>
               </FormControl>
               <FormMessage />
@@ -114,7 +122,7 @@ export function RadioGroupForm({ produit }: radioInform) {
             <AlertDialogHeader>
               <AlertDialogTitle>Êtes-vous sûr?</AlertDialogTitle>
               <AlertDialogDescription>
-                Confirmez-vous que le produit est conforme ?
+                Valider votre choix
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -127,7 +135,7 @@ export function RadioGroupForm({ produit }: radioInform) {
                   setConfirmSubmit(false);
                 }}
               >
-                Continue
+                Valider
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

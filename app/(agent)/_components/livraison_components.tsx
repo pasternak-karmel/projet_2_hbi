@@ -51,17 +51,12 @@ export default function Livraison_components({ produit }: LivraisonProps) {
         </span>
       </p>
       <div className="flex space-x-3">
-        {/* <Link
-          href={`/agent/${produit.id}`}
-          className="flex-1 bg-indigo-600 text-white text-center px-4 py-2 rounded-lg hover:bg-indigo-900 transition text-sm"
-        > */}
           <button
             className="flex-1 bg-indigo-600 text-white text-center px-4 py-2 rounded-lg hover:bg-indigo-900 transition text-sm"
             onClick={() => handleViewDetails(produit.id)}
           >
             Détails
           </button>
-        {/* </Link> */}
         {pathname === "/boite" && (
           <button
             className="flex-1 bg-neutral-700 ring-2 ring-slate-800 text-white px-4 py-2 rounded-lg hover:bg-neutral-700 transition"

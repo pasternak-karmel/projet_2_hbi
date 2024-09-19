@@ -1,7 +1,8 @@
 "use client";
+
 import React, { useState } from "react";
 import { QrReader } from "react-qr-reader";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { scan_produit } from "@/actions/scan_qr";
 
 interface Scanner {
@@ -10,42 +11,45 @@ interface Scanner {
 
 const QRScannerPage = ({ produitId }: Scanner) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const [scanResult, setScanResult] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isScanning, setIsScanning] = useState(true);
+  const [status, setStatus] = useState<{
+    scanResult: string | null;
+    error: string | null;
+    isScanning: boolean;
+  }>({
+    scanResult: null,
+    error: null,
+    isScanning: true,
+  });
 
   const handleScan = async (result: string | null) => {
-    if (result && isScanning) {
-      setScanResult(result);
-      setIsScanning(false);
+    if (result && status.isScanning) {
+      setStatus({ ...status, isScanning: false });
       try {
-        const test = "24da6f9b-581f-48d2-a299-de3d6167a3fd";
         const scanResult = await scan_produit(produitId, result);
         if (scanResult?.produitIsDisponible) {
           router.push(`/confirmation/${scanResult.produitIsDisponible.id}`);
         } else if (scanResult?.error) {
-          setError(scanResult.error);
+          setStatus({ ...status, error: scanResult.error });
         }
-        console.log(scanResult);
       } catch (err) {
-        setError("Erreur lors de la confirmation du produit.");
-        console.error(err);
+        setStatus({
+          ...status,
+          error: `Erreur lors de la confirmation du produit: ${err}`,
+        });
       }
     }
   };
 
-  const handleError = (err: any) => {
-    setError(
-      "Erreur lors de l'accès à la caméra. Veuillez vérifier les permissions."
-    );
-    console.error(err);
+  const handleError = () => {
+    setStatus({
+      ...status,
+      error: "Erreur lors de l'accès à la caméra. Veuillez vérifier les permissions.",
+    });
   };
 
   const handleResetScan = () => {
-    setError(null);
-    setIsScanning(true);
+    setStatus({ scanResult: null, error: null, isScanning: true });
   };
 
   return (
@@ -53,12 +57,12 @@ const QRScannerPage = ({ produitId }: Scanner) => {
       <h1 className="text-2xl font-bold text-gray-800 mb-4">Scanner QR Code</h1>
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
         <div className="relative">
-          {isScanning ? (
+          {status.isScanning ? (
             <>
               <QrReader
                 onResult={(result, error) => {
                   if (result) handleScan(result.getText());
-                  if (error) handleError(error);
+                  if (error) handleError();
                 }}
                 constraints={{ facingMode: "environment" }}
                 className="w-full h-64 mb-4 rounded-lg mx-auto"
@@ -67,16 +71,16 @@ const QRScannerPage = ({ produitId }: Scanner) => {
             </>
           ) : (
             <div className="text-center mb-4">
-              {scanResult ? (
+              {status.scanResult ? (
                 <p className="text-green-500 text-lg font-semibold">
-                  Résultat : {scanResult}
+                  Résultat : {status.scanResult}
                 </p>
               ) : (
                 <p className="text-gray-600">Aucun QR Code scanné.</p>
               )}
-              {error && (
+              {status.error && (
                 <div>
-                  <p className="text-red-500 mb-4">{error}</p>
+                  <p className="text-red-500 mb-4">{status.error}</p>
                   <button
                     onClick={handleResetScan}
                     className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"

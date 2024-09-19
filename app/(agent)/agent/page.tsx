@@ -7,12 +7,16 @@ import Livraison_components from "@/app/(agent)/_components/livraison_components
 export default function LivreurDashboard() {
   const { isLoading, error, data } = useQuery({
     queryKey: ["agentPage"],
-    queryFn: () => fetch("/api/getLivreur").then((res) => res.json()),
+    queryFn: () => fetch("/api/agent").then((res) => res.json()),
   });
 
   if (isLoading) return <LoaderState />;
 
   if (error) return "An error has occurred: " + error.message;
+
+  // Assuming the API returns an object with `articles` and `livraisons`
+  const articles = data?.articles || [];
+  const livraisons = data?.livraisons || [];
 
   return (
     <main className="min-h-screen p-6 bg-gradient-to-r from-gray-50 to-gray-200 pt-20">
@@ -21,7 +25,7 @@ export default function LivreurDashboard() {
           Dashboard des Livreurs
         </h1>
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {data.articles.map((produit: any) => (
+          {articles.map((produit: any) => (
             <Livraison_components key={produit.id} produit={produit} />
           ))}
         </div>
