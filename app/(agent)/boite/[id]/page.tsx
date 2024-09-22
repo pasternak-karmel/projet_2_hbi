@@ -94,7 +94,7 @@ export default function BoiteId({ params }: { params: { id: string } }) {
                 ))}
               </div>
             ) : (
-              <p>Pas d'image trouver.</p>
+              <p>Pas d&apos;image trouver.</p>
             )}
           </div>
 
