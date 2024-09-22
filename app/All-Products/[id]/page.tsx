@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,8 +11,10 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import Loader from "@/components/Loader";
 import ProductImages from "@/components/ProductImages";
 import Add from "@/components/Add";
+import { useCurrentRole } from "@/hooks/use-current-role";
 import { produit } from "@/actions/my_api";
 import LoaderState from "@/components/Loader";
 
@@ -21,6 +23,7 @@ export default function ProductSpecificPage({
 }: {
   params: { id: string };
 }) {
+  const role = useCurrentRole();
 
   const {
     isLoading,
@@ -84,7 +87,7 @@ export default function ProductSpecificPage({
             : "Nouveau, jamais utilisé"}
         </p>
         <div className="h-[2px] bg-gray-100" />
-        {/* {role === "ADMIN" ? (
+        {role === "ADMIN" ? (
           <div className="flex flex-col">
             <p>Quantité restante: {product.quantite}</p>
             <p>Action</p>
@@ -93,9 +96,9 @@ export default function ProductSpecificPage({
               <Button>Contacter le vendeur</Button>
             </div>
           </div>
-        ) : ( */}
+        ) : (
           <Add stockNumber={product.quantite} productId={product.id!} />
-         {/* )} */}
+        )}
         <div className="h-[2px] bg-gray-100" />
         <div className="text-sm" key={product.nom}>
           <h4 className="font-medium mb-4">{product.nom}</h4>
@@ -106,13 +109,14 @@ export default function ProductSpecificPage({
         </div>
         <div className="h-[2px] bg-gray-100" />
         {/* REVIEWS */}
-        {/* {role !== "ADMIN" && (
+        {role !== "ADMIN" && (
           <div>
             <h1 className="text-2xl">User Reviews</h1>
             <Suspense fallback="Loading...">
+              {/* <Reviews productId={product.id!} /> */}
             </Suspense>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );
