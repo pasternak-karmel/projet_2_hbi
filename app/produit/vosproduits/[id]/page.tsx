@@ -291,13 +291,11 @@ export default function Produit({ params }: { params: { id: string } }) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 p-6">
-              {product.agentId !== null && (
-                <MessageriesButton asChild produit={product.id}>
+              {product.agentId !== null ? (
+                <MessageriesButton asChild produit={product.id} mode="redirect">
                   <Button> discuter avec l&apos;agent </Button>
                 </MessageriesButton>
-              )}
-
-              {product.agentId === null && (
+              ) : (
                 <p>
                   Vous n&apos;avez pas encore d&apos;agent assigné pour cet
                   article

@@ -61,7 +61,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
 
       {!isDisabled && (
         <Link
-          href={`https://marketplace-umber-one.vercel.app/produit/vosproduits/${article.id}`}
+          href={`vosproduits/${article.id}`}
           className="absolute inset-0 z-10"
         >
           <span className="sr-only">View Article</span>

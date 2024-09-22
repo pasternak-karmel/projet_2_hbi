@@ -37,7 +37,6 @@ export const GetLivreur = async () => {
 
 export const LivreurCreated = async (
   values: z.infer<typeof CreateLivreurSchema>,
-  callbackUrl?: string | null
 ) => {
   const role = await fetchUserRole();
 
@@ -62,14 +61,16 @@ export const LivreurCreated = async (
   const hashedPassword = await bcrypt.hash(password, 10);
   const create = await db.user.create({
     data: {
-      name: values.name,
-      email: values.email,
+      name: name,
+      email: email,
       password: hashedPassword,
       role: "AGENT",
     },
   });
-  if (!create) return { error: "Fail to create livreur" };
-  await CreateLivreur(values.email, password);
+  if (!create) return { error: "Failed to create livreur" };
+
+  await CreateLivreur(email, password);
+  
   return { succes: "Livreur créer avec succès" };
 };
 

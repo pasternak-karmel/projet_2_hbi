@@ -19,8 +19,8 @@ export const MessageriesButton = ({
 }: MessageriesButtonProps) => {
   const router = useRouter();
 
-  const onClick = () => {
-    router.push(`/messages/${produit}`);
+  const onClick = async () => {
+    router.push(`${produit}/messages?id=${produit}`);
   };
 
   if (mode === "modal") {

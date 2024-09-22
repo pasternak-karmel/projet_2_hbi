@@ -14,9 +14,7 @@ export default function LivreurDashboard() {
 
   if (error) return "An error has occurred: " + error.message;
 
-  // Assuming the API returns an object with `articles` and `livraisons`
   const articles = data?.articles || [];
-  const livraisons = data?.livraisons || [];
 
   return (
     <main className="min-h-screen p-6 bg-gradient-to-r from-gray-50 to-gray-200 pt-20">

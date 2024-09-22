@@ -4,15 +4,14 @@ import { UserRole } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  req: NextRequest,
+  req: Request,
   { params }: { params: { id: string } }
 ) {
-  // const { searchParams } = new URL(req.url);
-  // const userId = searchParams.get("userId");
   const userId = await currentUserId();
   const { id } = params;
 
   if (!userId) {
+    console.log("UserId not provided");
     return NextResponse.json(
       { message: "UserId not provided." },
       { status: 404 }
@@ -30,6 +29,8 @@ export async function GET(
     });
 
     if (!article) {
+      console.log("Article not found");
+
       return NextResponse.json(
         { message: "Article not found." },
         { status: 404 }
@@ -37,6 +38,10 @@ export async function GET(
     }
 
     if (!article.agentId) {
+      console.log(
+        "No agent assigned to this article. Please wait until the article is accepted"
+      );
+
       return NextResponse.json(
         {
           message:
@@ -74,13 +79,6 @@ export async function GET(
       },
     });
 
-    if (messages.length === 0) {
-      return NextResponse.json(
-        { message: "No messages exchanged yet." },
-        { status: 404 }
-      );
-    }
-
     return NextResponse.json(messages);
   } catch (error) {
     console.error("Error retrieving messages:", error);
@@ -115,7 +113,6 @@ export async function POST(req: NextRequest) {
     const article = await db.article.findUnique({
       where: { id: articleId },
     });
-    // console.log(article);
 
     if (!article) {
       return NextResponse.json(

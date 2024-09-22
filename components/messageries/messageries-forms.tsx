@@ -7,7 +7,6 @@ import { Loader, Send } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useDebouncedCallback } from "use-debounce";
 import { Message } from "@/actions/my_api";
 
 interface Message {
@@ -36,13 +35,6 @@ export const MessageriesForm = ({ produit }: { produit: string }) => {
   const mutation = useMutation({
     mutationFn: async (newMessage: string) => {
       const response = await Message(newMessage, produit);
-      // fetch(`/api/messages/${produit}`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ content: newMessage, articleId: produit }),
-      // });
 
       if (!response.ok) {
         throw new Error("Failed to send message");
@@ -60,10 +52,6 @@ export const MessageriesForm = ({ produit }: { produit: string }) => {
       refetch();
     },
   });
-
-  const debounced = useDebouncedCallback((value) => {
-    setMessage(value);
-  }, 1000);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();

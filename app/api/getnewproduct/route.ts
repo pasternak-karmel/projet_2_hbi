@@ -16,12 +16,6 @@ export async function GET(request: Request) {
       },
     });
 
-    if (allArticles.length === 0) {
-      return NextResponse.json(
-        { message: "Aucun produit disponible pour le moment." },
-        { status: 200 }
-      );
-    }
 
     const shuffledArticles = allArticles.sort(() => 0.5 - Math.random());
 

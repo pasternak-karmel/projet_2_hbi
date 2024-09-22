@@ -37,7 +37,7 @@ export default async function Home() {
       <div className="mt-24 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64">
         <div className="flex justify-between">
           <h1 className="text-2xl">Nouveaux Produits</h1>
-          <Link href="/categories">
+          <Link href="/All-Products">
             <Button variant="link" className="text-muted-foreground">
               Tout voir
             </Button>

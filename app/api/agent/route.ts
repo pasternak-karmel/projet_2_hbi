@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import {  currentRole, currentUserId } from "@/lib/auth";
+import { currentRole, currentUserId } from "@/lib/auth";
 import { UserRole } from "@prisma/client";
 import { auth } from "@/auth";
 
@@ -32,7 +32,7 @@ export async function GET() {
           isDeleted: false,
           quantite: { gt: 0 },
         },
-        include: { User: true },
+        include: { User: true, categories: true },
       }),
       db.article.findMany({
         where: { agentId },
@@ -51,25 +51,41 @@ export async function GET() {
       userId: article.userId,
       status: article.status,
       agentId: article.agentId,
+      isRecu: article.isRecu,
+      description: article.description,
+      prix: article.prix,
+      quantite: article.quantite,
+      categorieNom: article.categories.nom,
+      userEmail: article.User?.email || null,
     }));
 
     // Map livraisons to a simplified structure
     const plainLivraisons = livraisons.map((livraison) => ({
       id: livraison.id,
-      nom: livraison.nom,
       description: livraison.description,
       prix: livraison.prix,
+      status: livraison.status,
+      isRecu: livraison.isRecu,
       quantite: livraison.quantite,
       categorieNom: livraison.categories.nom,
-      userName: livraison.User?.name || null,
       userEmail: livraison.User?.email || null,
+      Articlenom: livraison.nom,
+      usernom: livraison.User.name || null,
+      adresse: livraison.User.adresse || null,
+      contact: livraison.User.numTel,
+      image: livraison.image,
+      userId: livraison.userId,
+      agentId: livraison.agentId,
     }));
 
     // Return both articles and livraisons in the response
-    return NextResponse.json({
-      articles: plainArticles,
-      livraisons: plainLivraisons,
-    }, { status: 200 });
+    return NextResponse.json(
+      {
+        articles: plainArticles,
+        livraisons: plainLivraisons,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error retrieving data:", error);
     return NextResponse.json(

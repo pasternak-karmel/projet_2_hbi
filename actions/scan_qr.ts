@@ -1,6 +1,5 @@
 "use server";
 import { auth } from "@/auth";
-import { useCurrentRole } from "@/hooks/use-current-role";
 import { db } from "@/lib/db";
 import { UserRole } from "@prisma/client";
 

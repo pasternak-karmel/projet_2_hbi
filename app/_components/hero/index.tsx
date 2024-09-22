@@ -11,7 +11,7 @@ const slides = [
     title: "BIENVENUE SUR MARKETPLACE",
     description: "Achetez et vendez des articles !",
     img: "/image1.jpg",
-    url: "/",
+    url: "/All-Products",
     bg: "bg-gradient-to-r from-yellow-50 to-pink-50",
   },
   {
@@ -19,7 +19,7 @@ const slides = [
     title: "Notre collection d'habit",
     description: "Viens faire tes achats!",
     img: "https://images.pexels.com/photos/1021693/pexels-photo-1021693.jpeg?auto=compress&cs=tinysrgb&w=800",
-    url: "/",
+    url: "/All-Products",
     bg: "bg-gradient-to-r from-pink-50 to-blue-50",
   },
   {
@@ -27,7 +27,7 @@ const slides = [
     title: "Publie ton article et vends le chap",
     description: "La vie en plus simple",
     img: "https://images.pexels.com/photos/1183266/pexels-photo-1183266.jpeg?auto=compress&cs=tinysrgb&w=800",
-    url: "/",
+    url: "/All-Products",
     bg: "bg-gradient-to-r from-blue-50 to-yellow-50",
   },
 ];
