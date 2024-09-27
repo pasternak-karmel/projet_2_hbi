@@ -11,7 +11,7 @@ export const fedaserver = async (productId: string, quantity: number) => {
   const session = await auth();
 
   FedaPay.setApiKey(process.env.FEDA_SECRET as string);
-  FedaPay.setEnvironment("sandbox");
+  FedaPay.setEnvironment("live");
 
   try {
     const res = await CalculateAmount(productId, quantity);

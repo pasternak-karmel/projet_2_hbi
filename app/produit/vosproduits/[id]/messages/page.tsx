@@ -237,9 +237,9 @@ export default function MessageInterface() {
 
           <div
             className="flex-grow overflow-y-auto p-3"
-            style={{
-              backgroundImage: `url('/path-to-your-background-image.jpg')`,
-            }}
+            // style={{
+            //   backgroundImage: `url('/path-to-your-background-image.jpg')`,
+            // }}
           >
             {messages.length === 0 ? (
               <p className="text-center text-gray-500">
@@ -267,7 +267,7 @@ export default function MessageInterface() {
 
           {isTyping && (
             <div className="p-2 text-sm text-gray-500">
-              L'utilisateur est en train d'écrire...
+              L&apos;utilisateur est en train d&apos;écrire...
             </div>
           )}
 

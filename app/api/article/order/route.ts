@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     );
 
   FedaPay.setApiKey(process.env.FEDA_SECRET as string);
-  FedaPay.setEnvironment("sandbox");
+  FedaPay.setEnvironment("live");
 
   let transactionStatus;
 
