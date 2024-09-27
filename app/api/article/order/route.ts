@@ -11,21 +11,23 @@ export async function POST(req: Request) {
   }
 
   const userId = session.user.id;
-
   const body = await req.json();
 
   const { cart, transactionId, productId, quantite, payment } = body;
 
-  if (!cart && (!transactionId || !productId || !quantite || !payment))
+  if (!cart && (!productId || !quantite || !payment))
     return NextResponse.json(
       { error: "Invalid query parameters" },
       { status: 400 }
     );
 
   FedaPay.setApiKey(process.env.FEDA_SECRET as string);
-  FedaPay.setEnvironment("live");
+  FedaPay.setEnvironment("sandbox");
+
   let transactionStatus;
-  if (!cart) {
+
+  if (!cart && payment !== "COD") {
+    console.log(transactionId);
     const transaction = await Transaction.retrieve(transactionId);
     transactionStatus = transaction.status;
   }
@@ -35,20 +37,17 @@ export async function POST(req: Request) {
       where: { id: userId },
     });
 
-    if (isRempli?.numTel === null || isRempli?.adresse === null) {
-      console.log("2");
+    if (!isRempli?.numTel || !isRempli?.adresse) {
       return NextResponse.json(
-        { error: "Veuillez remplir votre profil avant de pourvoir continuer" },
+        { error: "Veuillez remplir votre profil avant de continuer" },
         { status: 400 }
       );
     }
   } catch (error) {
-    console.log("3");
-
     return NextResponse.json(
       {
         succes: false,
-        message: "Veuillez completer profil avant de continuer",
+        message: "Veuillez completer votre profil avant de continuer",
       },
       { status: 400 }
     );
@@ -72,16 +71,13 @@ export async function POST(req: Request) {
             { status: 404 }
           );
         }
-        if (article?.userId === userId) {
-          console.log("4");
-
+        if (article.userId === userId) {
           return NextResponse.json(
-            { error: "Tu ne peux pas encore payer ton propre produit" },
+            { error: "Tu ne peux pas payer ton propre produit" },
             { status: 400 }
           );
         }
         if (article.quantite < quantity) {
-          console.log("5");
           return NextResponse.json(
             { error: `Pas assez de stock pour ${article.nom}` },
             { status: 400 }
@@ -114,17 +110,13 @@ export async function POST(req: Request) {
           { status: 404 }
         );
       }
-      if (article?.userId === userId) {
-        console.log("6");
-
+      if (article.userId === userId) {
         return NextResponse.json(
-          { error: "Tu ne peux pas encore payer ton propre produit" },
+          { error: "Tu ne peux pas payer ton propre produit" },
           { status: 400 }
         );
       }
       if (article.quantite < quantite) {
-        console.log("7");
-
         return NextResponse.json(
           { error: "Pas assez de stock" },
           { status: 400 }
@@ -147,15 +139,31 @@ export async function POST(req: Request) {
       });
     }
 
+    if (payment === "COD") {
+      transactionStatus = "attente";
+    } else {
+      const transaction = await Transaction.retrieve(transactionId);
+      transactionStatus = transaction.status;
+
+      // if (transactionStatus !== "approved") {
+      //   return NextResponse.json(
+      //     { error: "Payment not approved" },
+      //     { status: 400 }
+      //   );
+      // }
+    }
+
     const order = await db.order.create({
       data: {
         userId,
         items: orderItems,
         totalAmount: totalAmount,
         status: payment === "COD" ? "attente" : "payer",
+        transactionId: transactionId || null,
       },
     });
 
+    console.log("status: " + transactionStatus);
     return NextResponse.json(
       { order: order, type: transactionStatus },
       { status: 200 }

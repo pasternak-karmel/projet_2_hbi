@@ -8,7 +8,10 @@ export async function POST(req: Request) {
 
   if (!session || !session.user) {
     return NextResponse.json(
-      { success: false, message: "User not authenticated" },
+      {
+        success: false,
+        message: "Veuillez vous connecter avant de pourvoir continuer",
+      },
       { status: 401 }
     );
   }
@@ -108,7 +111,7 @@ export async function POST(req: Request) {
   } catch (err) {
     console.error("Error:", err);
     return NextResponse.json(
-      { success: false, message: "Une erreur s'est produite" }, //
+      { success: false, message: "Une erreur s'est produite" },
       { status: 500 }
     );
   }

@@ -3,10 +3,11 @@
 import { auth } from "@/auth";
 
 const mydomain = process.env.DOMAIN;
-const productsPerPage = 10;
 
 export const fetchProduit = async (page = 1) =>
-  fetch(`${mydomain}/api/getProduit?page=${page}`).then((res) => res.json());
+  fetch(`${mydomain}/api/article/getProduit?page=${page}`).then((res) =>
+    res.json()
+  );
 
 export async function fetchProduitAll(
   page = 1,
@@ -25,7 +26,9 @@ export async function fetchProduitAll(
   if (category) params.append("cat", category);
   if (sort) params.append("sort", sort);
 
-  const res = await fetch(`${mydomain}/api/getProduit?${params.toString()}`);
+  const res = await fetch(
+    `${mydomain}/api/article/getProduit?${params.toString()}`
+  );
   if (!res.ok) {
     throw new Error("Failed to fetch articles");
   }
@@ -33,7 +36,7 @@ export async function fetchProduitAll(
 }
 
 export const getProduitVendor = async (id: string) =>
-  fetch(`${mydomain}/api/getUser?userId=${id}`)
+  fetch(`${mydomain}/api/user/getUser?userId=${id}`)
     .then((res) => {
       if (!res.ok) {
         throw new Error(`Error: ${res.statusText}`);
@@ -43,13 +46,15 @@ export const getProduitVendor = async (id: string) =>
     .then((data) => data.user);
 
 export const produit = (id: string) =>
-  fetch(`${mydomain}/api/getProduit/${id}`).then((res) => res.json());
+  fetch(`${mydomain}/api/article/getProduit/${id}`).then((res) => res.json());
 
 export const AllCategorie = () =>
-  fetch(`${mydomain}/api/getCategories`).then((res) => res.json());
+  fetch(`${mydomain}/api/article/categories/getCategories`).then((res) =>
+    res.json()
+  );
 
 export const fetchOrder = async (id: string) => {
-  const res = await fetch(`${mydomain}/api/order/${id}`);
+  const res = await fetch(`${mydomain}/api/article/order/${id}`);
   if (!res.ok) {
     throw new Error("Failed to fetch order");
   }
@@ -57,7 +62,7 @@ export const fetchOrder = async (id: string) => {
 };
 
 export const fetchPurchases = async () => {
-  const res = await fetch(`${mydomain}/api/achats`);
+  const res = await fetch(`${mydomain}/api/article/achats`);
   if (!res.ok) {
     throw new Error("Erreur lors de la récupération de vos achats");
   }
@@ -67,13 +72,16 @@ export const fetchPurchases = async () => {
 export const updateUser = async (updatedData: any) => {
   const session = await auth();
 
-  const res = await fetch(`${mydomain}/api/updateUser/${session?.user.id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(updatedData),
-  });
+  const res = await fetch(
+    `${mydomain}/api/user/updateUser/${session?.user.id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedData),
+    }
+  );
 
   if (!res.ok) {
     throw new Error("Erreur lors de la mise à jour de vos infos");
@@ -82,7 +90,7 @@ export const updateUser = async (updatedData: any) => {
 };
 
 export const fetchSoldArticles = async () => {
-  const res = await fetch(`${mydomain}/api/vendus`);
+  const res = await fetch(`${mydomain}/api/article/vendus`);
   if (!res.ok) {
     throw new Error("Failed to fetch sold articles");
   }
@@ -90,7 +98,7 @@ export const fetchSoldArticles = async () => {
 };
 
 export const getProduitSpecific = async () =>
-  fetch(`${mydomain}/api/getProduitSpecific`)
+  fetch(`${mydomain}/api/article/getProduitSpecific`)
     .then((res) => {
       if (!res.ok) {
         throw new Error(`Error: ${res.statusText}`);
@@ -100,7 +108,7 @@ export const getProduitSpecific = async () =>
     .then((data) => data.articles);
 
 export const AddArticle = async (values: any) =>
-  fetch(`${mydomain}/api/AddArticle`, {
+  fetch(`${mydomain}/api/article/AddArticle`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(values),
@@ -116,6 +124,6 @@ export const Message = async (message: string, articleId: string) =>
   });
 
 export const BuyArticle = async (productId: string, quantity: number) =>
-  fetch(`${mydomain}/api/order?id=${productId}&quantite=${quantity}`, {
+  fetch(`${mydomain}/api/article/order?id=${productId}&quantite=${quantity}`, {
     method: "POST",
   });

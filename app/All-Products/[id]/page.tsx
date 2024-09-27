@@ -11,7 +11,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
-import Loader from "@/components/Loader";
 import ProductImages from "@/components/ProductImages";
 import Add from "@/components/Add";
 import { useCurrentRole } from "@/hooks/use-current-role";

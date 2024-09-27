@@ -5,11 +5,10 @@ import { RadioGroupForm } from "../../_components/radio-agent";
 import LoaderState from "@/components/Loader";
 
 const ProductConfirmationPage = ({ params }: { params: { id: string } }) => {
-
   const { isLoading, error, data } = useQuery({
     queryKey: ["confirmationPage"],
     queryFn: () =>
-      fetch(`/api/getProduit/${params.id}`).then((res) => res.json()),
+      fetch(`/api/article/getProduit/${params.id}`).then((res) => res.json()),
   });
 
   if (isLoading) return <LoaderState />;
@@ -27,17 +26,10 @@ const ProductConfirmationPage = ({ params }: { params: { id: string } }) => {
             Détails du Produit
           </h2>
           <p className="text-gray-600 mb-2">Nom du produit : {data.nom}</p>
-          {/* <p className="text-gray-600 mb-2">Identifiant du produit : {data.product.id}</p>
-          <p className="text-gray-600 mb-2">Description : {data.product.description}</p>
-          <p className="text-gray-600 mb-4">Prix : {data.product.price} €</p> */}
-
           <h2 className="text-xl font-semibold text-teal-600 mb-4">
             Détails du Vendeur
           </h2>
           <p className="text-gray-600 mb-2">Nom du vendeur : {data.nom}</p>
-          {/* <p className="text-gray-600 mb-2">Identifiant du vendeur : {data.seller.id}</p>
-          <p className="text-gray-600 mb-2">Lieu de résidence : {data.seller.address}</p>
-          <p className="text-gray-600 mb-4">Contact : {data.seller.phone}</p> */}
         </div>
         {data.isRecu === true ? (
           <div>Ce produit a été déja reçu</div>

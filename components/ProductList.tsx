@@ -14,7 +14,7 @@ export default function ProductList() {
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["Acceuilproduit"],
-    queryFn: () => fetch(`/api/getnewproduct`).then((res) => res.json()),
+    queryFn: () => fetch(`/api/article/getnewproduct`).then((res) => res.json()),
   });
 
   if (isLoading) return <LoaderState />;

@@ -56,7 +56,7 @@ export default function Produit({ params }: { params: { id: string } }) {
 
   const mutation = useMutation({
     mutationFn: async (updatedData: any) => {
-      const response = await fetch(`/api/products/${params.id}`, {
+      const response = await fetch(`/api/article/products/${params.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

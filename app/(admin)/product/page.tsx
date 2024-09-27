@@ -4,7 +4,7 @@ import Produit from "@/components/article/produit";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import * as React from "react";
-import { startOfWeek, endOfWeek, addDays, format } from "date-fns";
+import { startOfWeek, endOfWeek, format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 

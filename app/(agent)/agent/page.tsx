@@ -7,7 +7,7 @@ import Livraison_components from "@/app/(agent)/_components/livraison_components
 export default function LivreurDashboard() {
   const { isLoading, error, data } = useQuery({
     queryKey: ["agentPage"],
-    queryFn: () => fetch("/api/agent").then((res) => res.json()),
+    queryFn: () => fetch("/api/user/agent").then((res) => res.json()),
   });
 
   if (isLoading) return <LoaderState />;

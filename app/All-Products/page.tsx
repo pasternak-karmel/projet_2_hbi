@@ -27,7 +27,7 @@ const fetchProduit = async (
   articles: any;
   hasMore: boolean;
 }> => {
-  const response = await fetch(`/api/getProduit?page=${page}`);
+  const response = await fetch(`/api/article/getProduit?page=${page}`);
   return await response.json();
 };
 

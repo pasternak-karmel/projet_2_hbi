@@ -1,5 +1,3 @@
-// app/fedakarmel/page.tsx
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -11,7 +9,6 @@ export default function FedaKarmelPage() {
   const transactionId = searchParams.get("id");
   const productId = searchParams.get("productId");
   const quantity = searchParams.get("quantity");
-  const payment = searchParams.get("payment");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,7 +19,7 @@ export default function FedaKarmelPage() {
           throw new Error("Transaction ID is missing");
         }
 
-        const res = await fetch("/api/order", {
+        const res = await fetch("/api/article/order", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -68,4 +65,3 @@ export default function FedaKarmelPage() {
   return <div>Processing your transaction...</div>;
 }
 
-// const res = await fetch(`/api/feda-redirect?id=${transactionId}`);

@@ -25,9 +25,9 @@ export default function SuccessPage() {
       <Confetti width={2000} height={1000} />
       <h1 className="text-6xl text-green-700">Successful</h1>
       <h2 className="text-xl font-medium">
-        We sent the invoice to your e-mail
+        Nous vous avons envoyer un reçu via votre email
       </h2>
-      <h3 className="">You are being redirected to the order page...</h3>
+      <h3 className="">Vous serez rediriger vers la page de votre achats...</h3>
     </div>
   );
 }

@@ -2,11 +2,6 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
 
-type CartRequestBody = {
-  productId: string;
-  quantity: number;
-};
-
 export async function POST(request: Request) {
   const session = await auth();
 

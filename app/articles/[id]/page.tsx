@@ -5,7 +5,6 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Loader from "@/components/Loader";
 import { useQuery } from "@tanstack/react-query";
 import { produit } from "@/actions/my_api";
 import LoaderState from "@/components/Loader";

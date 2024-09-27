@@ -52,7 +52,7 @@ export default function AccountForm() {
 
   const mutation = useMutation({
     mutationFn: async (updatedData: any) => {
-      const response = await fetch(`/api/updateUser`, {
+      const response = await fetch(`/api/user/updateUser`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

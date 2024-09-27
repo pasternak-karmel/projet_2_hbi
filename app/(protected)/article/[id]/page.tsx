@@ -1,43 +1,15 @@
 "use client";
 import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { toast } from "@/components/ui/use-toast";
+
 import React, { Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
-import Loader from "@/components/Loader";
 import ProductImages from "@/components/ProductImages";
 import Add from "@/components/Add";
 import SelectAgent from "../../_components/select-agent";
 import LoaderState from "@/components/Loader";
 import { produit } from "@/actions/my_api";
-
-// const FormSchema = z.object({
-//   email: z
-//     .string({
-//       required_error: "Please select an email to display.",
-//     })
-//     .email(),
-// });
 
 export default function ArticlesSpecifiquePage({
   params,
@@ -73,22 +45,6 @@ export default function ArticlesSpecifiquePage({
       </div>
     );
   }
-
-  // const form = useForm<z.infer<typeof FormSchema>>({
-  //   resolver: zodResolver(FormSchema),
-  // });
-
-  // function onSubmit(data: z.infer<typeof FormSchema>) {
-  //   toast({
-  //     title: "You submitted the following values:",
-  //     description: (
-  //       <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-  //         <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-  //       </pre>
-  //     ),
-  //   });
-  // }
-
   return (
     <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64 relative flex flex-col lg:flex-row gap-16">
       <div className="w-full lg:w-1/2 lg:sticky top-20 h-max">

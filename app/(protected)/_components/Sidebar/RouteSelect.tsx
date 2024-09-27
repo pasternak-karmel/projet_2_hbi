@@ -12,7 +12,6 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { usePathname, useRouter } from "next/navigation";
 
 export const RouteSelect = () => {
-  const router = useRouter();
   const pathname = usePathname();
 
   const routes = [

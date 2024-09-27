@@ -87,7 +87,7 @@ export const AddArticleSchema = z.object({
   prix: z.coerce.number().min(0, "Price must be greater than or equal to 0"),
   quantite: z.coerce.number().min(1, "Quantity be greater than or equal to 0"),
   usage: z.boolean().default(false).optional(),
-  description: z.string().optional(),
+  description: z.string().max(1500, "max caracters allowed is 1500"),
   categories: z.enum([
     "outils",
     "meubles",

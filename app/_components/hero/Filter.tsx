@@ -14,7 +14,6 @@ interface FilterProps {
 }
 
 const Filter = ({ filters, onFilterChange }: FilterProps) => {
-  const searchParams = useSearchParams();
 
   const handleFilterChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>

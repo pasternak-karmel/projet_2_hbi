@@ -7,7 +7,7 @@ import LoaderState from "@/components/Loader";
 export default function Livraison() {
   const { isLoading, error, data } = useQuery({
     queryKey: ["AgentLivraison"],
-    queryFn: () => fetch("/api/getLivraison").then((res) => res.json()),
+    queryFn: () => fetch("/api/user/getLivraison").then((res) => res.json()),
   });
 
   if (isLoading) return <LoaderState />;

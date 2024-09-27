@@ -9,7 +9,7 @@ const ArticlePage: React.FC = () => {
   const { isLoading, error, data } = useQuery<Article[]>({
     queryKey: ["vosproduits"],
     queryFn: () =>
-      fetch("/api/getProduitSpecific")
+      fetch("/api/article/getProduitSpecific")
         .then((res) => {
           if (!res.ok) {
             throw new Error(`Error: ${res.statusText}`);

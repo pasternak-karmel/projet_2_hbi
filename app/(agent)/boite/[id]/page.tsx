@@ -32,52 +32,16 @@ export default function BoiteId({ params }: { params: { id: string } }) {
     data: article,
   } = useQuery({
     queryKey: ["boiteId"],
-    queryFn: () => fetch(`/api/agent/${params.id}`).then((res) => res.json()),
+    queryFn: () =>
+      fetch(`/api/user/agent/${params.id}`).then((res) => res.json()),
   });
-  const [sortOption, setSortOption] = useState("default");
   if (isLoading) return <LoaderState />;
 
   if (error) return "An error has occurred: " + error.message;
 
-  // const sortedArticles = [...article].sort((a: Article, b: Article) => {
-  //   switch (sortOption) {
-  //     case "priceAsc":
-  //       return a.prix - b.prix;
-  //     case "priceDesc":
-  //       return b.prix - a.prix;
-  //     case "quantiteAsc":
-  //       return a.quantite - b.quantite;
-  //     case "quantiteDesc":
-  //       return b.quantite - a.quantite;
-  //     case "category":
-  //       return a.categories.nom.localeCompare(b.categories.nom);
-  //     default:
-  //       return 0;
-  //   }
-  // });
-
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-300 p-8">
       <div className="container mx-auto p-6 bg-white rounded-lg shadow-xl">
-        {/* <div className="mb-6">
-          <label htmlFor="sort" className="text-gray-700 mr-3">
-            Trier par :
-          </label>
-          <select
-            id="sort"
-            className="bg-gray-100 p-2 rounded-lg border border-gray-300"
-            value={sortOption}
-            onChange={(e) => setSortOption(e.target.value)}
-          >
-            <option value="default">Par défaut</option>
-            <option value="priceAsc">Prix (croissant)</option>
-            <option value="priceDesc">Prix (décroissant)</option>
-            <option value="quantiteAsc">Quantité (croissant)</option>
-            <option value="quantiteDesc">Quantité (décroissant)</option>
-            <option value="category">Catégorie (alphabétique)</option>
-          </select>
-        </div> */}
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             {article.image.length > 0 ? (
@@ -141,19 +105,9 @@ export default function BoiteId({ params }: { params: { id: string } }) {
             </div>
 
             <div className="flex space-x-4 mt-6">
-              {/* <button
-                className="flex-1 bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-800 transition-all duration-200 shadow-md"
-              >
-                Contacter le vendeur
-              </button> */}
               <MessageriesButton asChild produit={params.id} mode="redirect">
                 <Button>Contacter le vendeur</Button>
               </MessageriesButton>
-              {/* <button
-                className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-800 transition-all duration-200 shadow-md"
-              >
-                Retour à la liste
-              </button> */}
             </div>
           </div>
         </div>

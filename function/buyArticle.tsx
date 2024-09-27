@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 import { CalculateAmount, CalculateAmountPanier } from "@/actions/buy";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { Customer } from "fedapay";
 
 export function BuyKkiapay() {
   const { openKkiapayWidget, addKkiapayListener, removeKkiapayListener } =
@@ -32,7 +31,7 @@ export function BuyKkiapay() {
         paie = "COD";
       }
       const response = await fetch(
-        `/api/order?id=${productId}&quantite=${quantity}&payment=${paie}`,
+        `/api/article/order?id=${productId}&quantite=${quantity}&payment=${paie}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -51,7 +50,9 @@ export function BuyKkiapay() {
       return response.json();
     },
     onSuccess: (data) => {
-      router.push(`/All-Products/${data.productId}/success?orderId=${data.id}`);
+      const orderId = data.order.id;
+
+      router.push(`/All-Products/${produit}/success?orderId=${orderId}`);
     },
     onError: (error) => {
       console.error("Error completing the order:", error);
@@ -66,7 +67,7 @@ export function BuyKkiapay() {
       } else {
         paie = "COD";
       }
-      const response = await fetch(`/api/order`, {
+      const response = await fetch(`/api/article/order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -201,6 +202,7 @@ export function BuyKkiapay() {
   };
 
   const PayerLivraison = async (productId: string, quantity: number) => {
+    setProduit(productId);
     mutation.mutate({ productId, quantity, payment: "COD" });
   };
   const PayerLivraisonPanier = async () => {

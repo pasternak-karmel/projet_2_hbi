@@ -106,17 +106,31 @@ export default function AddProduit() {
 
       values.image = validImageUrls.map((urlObj) => urlObj.url);
 
-      const response = await fetch("/api/AddArticle", {
+      const response = await fetch("/api/article/AddArticle", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
 
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
+      // if (!response.ok)
+      //   throw new Error(`HTTP error! status: ${response.status}`);
+
+      if (!response.ok) {
+        const result = await response.json();
+        if (response.status === 401 || response.status === 400) {
+          toast.error("Erreur", {
+            description: result.message,
+            action: { label: "Fermer", onClick: () => console.log("Undo") },
+          });
+        } else {
+          throw new Error(
+            result.message || `HTTP error! status: ${response.status}`
+          );
+        }
+        return;
+      }
 
       const result = await response.json();
-      console.log(result);
       if (result.success) {
         for (const urlObj of validImageUrls) {
           await edgestore.myArrowImages.confirmUpload({ url: urlObj.url });
@@ -132,7 +146,7 @@ export default function AddProduit() {
         for (const urlObj of validImageUrls) {
           await edgestore.myArrowImages.delete({ url: urlObj.url });
         }
-        
+
         toast.error("Erreur lors de l'ajout de l'article", {
           description: result.message,
           action: { label: "Fermer", onClick: () => console.log("Undo") },
@@ -378,7 +392,7 @@ export default function AddProduit() {
             />
             <div className="space-y-4">
               <FormLabel className="text-lg font-medium text-gray-800">
-                Ajouter une image de votre article
+                Ajouter au moins une image de votre article
               </FormLabel>
 
               <MultiImageDropzone

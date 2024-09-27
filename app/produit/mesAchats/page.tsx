@@ -20,7 +20,7 @@ export default function UserPurchases() {
     data: purchases,
   } = useQuery({
     queryKey: ["achats"],
-    queryFn: () => fetch(`/api/achats`).then((res) => res.json()),
+    queryFn: () => fetch(`/api/article/achats`).then((res) => res.json()),
   });
 
   if (isLoading) return <LoaderState />;

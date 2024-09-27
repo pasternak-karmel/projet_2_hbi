@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
 const fetchSoldArticles = async () => {
-  const res = await fetch(`/api/vendus`);
+  const res = await fetch(`/api/article/vendus`);
   if (!res.ok) {
     throw new Error("Failed to fetch sold articles");
   }

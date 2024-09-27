@@ -97,9 +97,6 @@ export const ConfirmRecuArticle = async (
           "Ce produit n'est plus trouvé ou a été supprimer, ou vous n'êtes pas autorisé à reçevoir le produit",
       };
 
-    // const currentDate = new Date();
-    // const startOfDay = new Date(currentDate.setHours(0, 0, 0, 0));
-
     await db.article.update({
       where: { id: produitId, agentId: session.user.id },
       data: { isRecu: true, status: values ? "ACCEPTE" : "REFUS", },

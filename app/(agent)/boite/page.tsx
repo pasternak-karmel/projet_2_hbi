@@ -8,14 +8,13 @@ export default function Boite() {
   const router = useRouter();
   const { isLoading, error, data } = useQuery({
     queryKey: ["maBoite"],
-    queryFn: () => fetch(`/api/agent`).then((res) => res.json()),
+    queryFn: () => fetch(`/api/user/agent`).then((res) => res.json()),
   });
 
   if (isLoading) return <LoaderState />;
 
   if (error) return "An error has occurred: " + error.message;
 
-  // Assuming the API returns an object with `articles` and `livraisons`
   const articles = data?.livraisons || [];
 
   return (

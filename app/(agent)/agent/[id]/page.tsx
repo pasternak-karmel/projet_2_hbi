@@ -12,7 +12,7 @@ export default function Confirm({ params }: { params: { id: string } }) {
   const { isLoading, error, data } = useQuery({
     queryKey: ["agent"],
     queryFn: () =>
-      fetch(`/api/agent/${params.id}`).then((res) => res.json()),
+      fetch(`/api/user/agent/${params.id}`).then((res) => res.json()),
   });
 
   if (isLoading) return <LoaderState />;

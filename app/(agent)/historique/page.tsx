@@ -1,7 +1,7 @@
 export default function HistoriqueLivreur() {
   return (
     <div>
-      Livreur HistoriqueLivreur
+      Livreur Historique Livreur
       <div></div>
     </div>
   );

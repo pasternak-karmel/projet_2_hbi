@@ -5,13 +5,11 @@ import { UserRole } from "@prisma/client";
 import { auth } from "@/auth";
 
 export async function GET() {
-  // Authenticate the user
   const session = await auth();
   if (!session || !session.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Check if the user has the AGENT role
   const role = await currentRole();
   if (role !== UserRole.AGENT) {
     return NextResponse.json(
@@ -20,17 +18,19 @@ export async function GET() {
     );
   }
 
-  // Get the current agent's ID
   const agentId = await currentUserId();
 
   try {
-    // Fetch articles and deliveries in parallel
     const [articles, livraisons] = await Promise.all([
       db.article.findMany({
         where: {
           status: "ATTENTE",
           isDeleted: false,
           quantite: { gt: 0 },
+          isRecu: false,
+        },
+        orderBy: {
+          createdAt: "asc",
         },
         include: { User: true, categories: true },
       }),
@@ -40,7 +40,6 @@ export async function GET() {
       }),
     ]);
 
-    // Map articles to a simplified structure
     const plainArticles = articles.map((article) => ({
       id: article.id,
       Articlenom: article.nom,
@@ -59,7 +58,6 @@ export async function GET() {
       userEmail: article.User?.email || null,
     }));
 
-    // Map livraisons to a simplified structure
     const plainLivraisons = livraisons.map((livraison) => ({
       id: livraison.id,
       description: livraison.description,
@@ -78,7 +76,6 @@ export async function GET() {
       agentId: livraison.agentId,
     }));
 
-    // Return both articles and livraisons in the response
     return NextResponse.json(
       {
         articles: plainArticles,

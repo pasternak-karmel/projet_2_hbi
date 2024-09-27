@@ -11,12 +11,11 @@ export default function NotificationPage() {
   const [commandes, setCommandes] = useState<Commande[]>([
     { id: 12345, client: "Jean Dupont", produit: "Ordinateur Portable XYZ" },
     { id: 67890, client: "Marie Durand", produit: "Smartphone ABC" },
-    // Ajoutez d'autres commandes par défaut ici si nécessaire
   ]);
 
   const addCommande = () => {
     const newCommande: Commande = {
-      id: Math.floor(Math.random() * 100000), // Génère un ID aléatoire
+      id: Math.floor(Math.random() * 100000), 
       client: "Nouveau Client",
       produit: "Nouveau Produit",
     };

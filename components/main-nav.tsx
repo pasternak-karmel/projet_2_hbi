@@ -53,11 +53,7 @@ const routes = [
   {
     href: "/produit",
     label: "Publier un produit",
-  },
-  // {
-  //   href: "/auth/login",
-  //   label: "Se connecter",
-  // },
+  }
 ];
 
 export function MainNav({ session }: MainNavProps) {

@@ -1,15 +1,17 @@
 "use server";
 
 import { auth } from "@/auth";
-import { FedaPay, Customer, Transaction } from "fedapay";
+import { FedaPay, Transaction } from "fedapay";
 import { CalculateAmount, CalculateAmountPanier } from "./buy";
 import { ToastRessuable } from "@/function/notification-toast";
+
+const domain = process.env.DOMAIN;
 
 export const fedaserver = async (productId: string, quantity: number) => {
   const session = await auth();
 
   FedaPay.setApiKey(process.env.FEDA_SECRET as string);
-  FedaPay.setEnvironment("live");
+  FedaPay.setEnvironment("sandbox");
 
   try {
     const res = await CalculateAmount(productId, quantity);
@@ -23,7 +25,7 @@ export const fedaserver = async (productId: string, quantity: number) => {
     const transaction = await Transaction.create({
       description: "Confirmer votre achats",
       amount: res.totalAmount,
-      callback_url: `http://localhost:3000/fedakarmel?productId=${productId}&quantity=${quantity}&payment=Immediate`,
+      callback_url: `${domain}/fedakarmel?productId=${productId}&quantity=${quantity}&payment=Immediate`,
       currency: {
         iso: "XOF",
       },

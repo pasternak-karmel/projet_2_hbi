@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
-// import { auth } from "auth"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +12,6 @@ import { useSession } from "next-auth/react";
 
 export default async function UserButton() {
   const { data: session } = useSession();
-  // const session = await auth()
   if (!session?.user) return <SignIn />;
   return (
     <div className="flex gap-2 items-center">

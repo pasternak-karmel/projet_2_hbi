@@ -14,8 +14,6 @@ export async function PUT(
   try {
     const data = await req.json();
 
-    // console.log(data);
-
     const updatedProduct = await db.article.update({
       where: { id: id },
       data: {

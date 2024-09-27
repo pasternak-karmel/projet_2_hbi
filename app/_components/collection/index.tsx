@@ -1,7 +1,52 @@
+"use client";
+
+import { useState } from "react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
 const Collection = () => {
+  const { data: session } = useSession();
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const handleSubscription = async () => {
+    if (!email) {
+      setMessage("Veuillez entrer une adresse email valide.");
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await fetch("/api/user/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: session?.user?.email || email,
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setIsSubscribed(true);
+        setMessage("Vous êtes maintenant abonné !");
+      } else {
+        setMessage(result.message || "Une erreur est survenue.");
+      }
+    } catch (error) {
+      setMessage("Erreur de souscription. Veuillez réessayer.");
+      console.error("Subscription error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="py-24 px-4 md:px-8 lg:px-16 xl:32 2xl:px-64 bg-gray-100 text-sm mt-24">
       <div className="flex flex-col md:flex-row justify-between gap-24">
@@ -24,7 +69,7 @@ const Collection = () => {
         </div>
         <div className="hidden lg:flex justify-between w-1/2">
           <div className="flex flex-col justify-between">
-            <h1 className="font-medium text-lg">COMPANY</h1>
+            <h1 className="font-medium text-lg">Karmel LTD</h1>
             <div className="flex flex-col gap-6">
               <Link href="">About Us</Link>
               <Link href="">Careers</Link>
@@ -54,28 +99,49 @@ const Collection = () => {
             </div>
           </div>
         </div>
-        {/* RIGHT */}
         <div className="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-8">
           <h1 className="font-medium text-lg">SUBSCRIBE</h1>
           <p>
             Be the first to get the latest news about trends, promotions, and
             much more!
           </p>
-          <div className="flex">
-            <input
-              type="text"
-              placeholder="Email address"
-              className="p-4 w-3/4"
-            />
-            <button className="w-1/4 bg-black text-white">JOIN</button>
-          </div>
+
+          {!isSubscribed ? (
+            <div className="flex flex-col">
+              <div className="flex">
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="p-4 w-3/4 border border-gray-300"
+                />
+                <button
+                  className="w-1/4 bg-black text-white"
+                  onClick={handleSubscription}
+                  disabled={loading}
+                >
+                  {loading ? "En cours..." : "JOIN"}
+                </button>
+              </div>
+              {message && <p className="text-red-500 mt-2">{message}</p>}
+            </div>
+          ) : (
+            <p className="text-green-500">Vous êtes déjà abonné(e) !</p>
+          )}
+
           <span className="font-semibold">Secure Payments</span>
           <div className="flex justify-between">
-            <Image src="/discover.png" alt="" width={40} height={20} />
-            <Image src="/skrill.png" alt="" width={40} height={20} />
-            <Image src="/paypal.png" alt="" width={40} height={20} />
-            <Image src="/mastercard.png" alt="" width={40} height={20} />
-            <Image src="/visa.png" alt="" width={40} height={20} />
+            <Image src="/discover.png" alt="Discover" width={40} height={20} />
+            <Image src="/skrill.png" alt="Skrill" width={40} height={20} />
+            <Image src="/paypal.png" alt="PayPal" width={40} height={20} />
+            <Image
+              src="/mastercard.png"
+              alt="Mastercard"
+              width={40}
+              height={20}
+            />
+            <Image src="/visa.png" alt="Visa" width={40} height={20} />
           </div>
         </div>
       </div>
